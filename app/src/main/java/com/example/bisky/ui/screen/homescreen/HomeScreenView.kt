@@ -1,6 +1,6 @@
-package com.example.bisky.ui.screen
+package com.example.bisky.ui.screen.homescreen
 
-import com.example.bisky.ui.screen.model.AnimeSeasonUI
+import com.example.bisky.ui.screen.homescreen.model.AnimeSeasonUI
 
 sealed interface HomeScreenView {
     data class State(

@@ -1,6 +1,5 @@
-package com.example.bisky.ui.screen
+package com.example.bisky.ui.screen.homescreen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.runtime.collectAsState
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.bisky.ui.screen.model
+package com.example.bisky.ui.screen.homescreen.model
 
 data class AnimeSeasonUI(
     val img: String,
