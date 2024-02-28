@@ -1,0 +1,199 @@
+type Language {
+  en: String!
+
+  ru: String!
+}
+
+type LinkGenres {
+  anime: Int
+
+  manga: Int!
+}
+
+type GenresModel {
+  linkId: LinkGenres!
+
+  name: Language!
+
+  hentai: Boolean!
+}
+
+type StudiosModel {
+  id: Int!
+
+  name: String!
+
+  img: String
+}
+
+type Episodes {
+  count: Int
+
+  aired: Int
+
+  duration: Int
+
+  nextEpisodeAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Dates {
+  airedOn: DateTime
+
+  releasedOn: DateTime
+}
+
+type RelationInfo {
+  name: String
+
+  animes: [RelationInfoAnime!]!
+}
+
+type RelationInfoAnime {
+  relation: Language!
+
+  id: Int!
+
+  labels: [String!]!
+
+  poster: String
+
+  kind: KindEnum!
+
+  scores: Float!
+
+  anotherScores: [Float!]
+
+  status: StatusEnum!
+}
+
+enum KindEnum {
+  tv
+
+  movie
+
+  ova
+
+  ona
+
+  special
+
+  music
+}
+
+enum StatusEnum {
+  anons
+
+  ongoing
+
+  released
+}
+
+type AnimeInfoModel {
+  id: Int!
+
+  labels: [String!]!
+
+  poster: String
+
+  kind: KindEnum!
+
+  scores: Float!
+
+  anotherScores: [Float!]
+
+  status: StatusEnum!
+
+  episodes: Episodes!
+
+  dates: Dates!
+
+  rating: RatingEnum!
+
+  description: String
+
+  screenshots: [String!]!
+
+  videos: [String!]!
+
+  genres: [GenresModel!]!
+
+  studios: [StudiosModel!]!
+
+  franchise: RelationInfo
+
+  updateDate: DateTime!
+}
+
+enum RatingEnum {
+  none
+
+  g
+
+  pg
+
+  pg_13
+
+  r
+
+  r_plus
+
+  rx
+}
+
+type Query {
+  getOneAnime(id: Int!): AnimeInfoModel!
+
+  getAnimePages(page: Int! = 1, count: Int! = 10, filter: FilterArgs, sort: SortArgs, value: String): [AnimeInfoModel!]!
+
+  getAllGenres(page: Int! = 1, count: Int! = 10, hentai: Boolean! = false): [GenresModel!]!
+
+  getRandomFact: String!
+}
+
+input FilterArgs {
+  kind: KindEnum
+
+  status: StatusEnum
+
+  rating: RatingEnum
+
+  """
+  Format: YYYY.MM.DD
+  """
+  airedOn: airedOnFilter
+
+  genres: [Int!]
+
+  studios: [Int!]
+
+  franchiseName: String
+
+  screenshotsCount: Int
+
+  labelCount: Int
+
+  score: Float
+}
+
+input airedOnFilter {
+  from: String
+
+  to: String
+}
+
+input SortArgs {
+  scores: Boolean
+
+  airedOn: Boolean
+
+  updateDate: Boolean
+}
+
+schema {
+  query: Query
+}
