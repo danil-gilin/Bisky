@@ -4,8 +4,8 @@ import com.example.bisky.ui.screen.homescreen.model.AnimeSeasonUI
 
 sealed interface HomeScreenView {
     data class State(
-        val seasonImg: String? = null,
-        val seasonTitle: String? = null,
+        val seasonImg: Int = 0,
+        val seasonTitle: Int = 0,
         val itemsAnime: List<AnimeSeasonUI> = emptyList(),
     )
 

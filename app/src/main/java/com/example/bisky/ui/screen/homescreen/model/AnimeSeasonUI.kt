@@ -4,7 +4,9 @@ data class AnimeSeasonUI(
     val img: String,
     val title: String,
     val description: String,
-    val rating: Double,
+    val rating: String,
+    val isRatingVisible: Boolean,
+    val ratingColor: Int,
     val genre: String,
     val backgroundImg: String
 )

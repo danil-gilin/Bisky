@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Bisky</string>
+
+
+    <string name="anime_winter_title">Зима</string>
+    <string name="anime_summer_title">Лето</string>
+    <string name="anime_autumn_title">Осень</string>
+    <string name="anime_spring_title">Весна</string>
+
+    <string name="long_text">seasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeee</string>
 </resources>

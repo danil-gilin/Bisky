@@ -23,7 +23,7 @@ class ApolloSeasonAnimeClient @Inject constructor(
                 params.endDate.toOptional()
             ).toOptional()
         )
-        return apolloClient.query(SeasonAnimeQuery(20, Optional.present(filter)))
+        return apolloClient.query(SeasonAnimeQuery(53, Optional.present(filter)))
             .execute()
             .data
             ?.getAnimePages

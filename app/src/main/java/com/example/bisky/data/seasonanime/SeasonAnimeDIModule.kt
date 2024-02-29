@@ -1,12 +1,14 @@
 package com.example.bisky.data.seasonanime
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.example.bisky.data.seasonanime.remote.ApolloSeasonAnimeClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.hilt.migration.DisableInstallInCheck
+import okhttp3.Interceptor
+import okhttp3.OkHttp
 import javax.inject.Singleton
 
 
