@@ -1,10 +1,7 @@
-package com.example.bisky.ui.screen.homescreen
+package com.example.bisky.ui.screen.homescreen.seasonAnimeScreen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,9 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -28,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -43,85 +37,76 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.bisky.R
-import com.example.bisky.ui.screen.homescreen.model.AnimeSeasonUI
+import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeasonUI
 
 @Composable
-fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel()
+fun SeasonAnimeScreen(
+    homeViewModel: SeasonAnimeViewModel = viewModel()
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
-    HomeScreen(
+    SeasonAnimeScreen(
         uiState = uiState
     )
 }
 
 @Composable
-fun HomeScreen(
-    uiState: HomeScreenView.State
+fun SeasonAnimeScreen(
+    uiState: SeasonAnimeScreenView.State
 ) {
     val listAnime = uiState.itemsAnime
-    ConstraintLayout(
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(start = 0.dp, top = 45.dp,0.dp,0.dp),
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .background(colorResource(R.color.bisky_dark_400))
     ) {
-        val (img, title, box, list) = createRefs()
+        item{
+            ConstraintLayout(
+                modifier = Modifier.height(200.dp)
+            ) {
+                val (img, title, box) = createRefs()
 
-        Image(
-            painter = painterResource(id = uiState.seasonImg),
-            modifier = Modifier
-                .constrainAs(img) {
-                    top.linkTo(parent.top)
-                }
-                .height(200.dp)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Crop,
-            contentDescription = null
-        )
-        Box(modifier = Modifier
-            .constrainAs(box) {
-                top.linkTo(parent.top)
+                Image(
+                    painter = painterResource(id = uiState.seasonImg),
+                    modifier = Modifier
+                        .constrainAs(img) {
+                            top.linkTo(parent.top)
+                        }
+                        .height(200.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null
+                )
+                Box(modifier = Modifier
+                    .constrainAs(box) {
+                        top.linkTo(parent.top)
+                    }
+                    .height(200.dp)
+                    .fillMaxWidth()
+                    .alpha(0.3f)
+                    .background(colorResource(R.color.bisky_400))
+                )
+                Text(
+                    text = stringResource(
+                        id = uiState.seasonTitle
+                    ),
+                    fontSize = 48.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.W700,
+                    color = colorResource(R.color.light_100),
+                    modifier = Modifier
+                        .constrainAs(title) {
+                            top.linkTo(img.top)
+                            start.linkTo(img.start)
+                            end.linkTo(img.end)
+                            bottom.linkTo(img.bottom)
+                        }
+                )
             }
-            .height(200.dp)
-            .fillMaxWidth()
-            .alpha(0.3f)
-            .background(colorResource(R.color.bisky_400))
-        )
-        Text(
-            text = stringResource(
-                id = uiState.seasonTitle
-            ),
-            fontSize = 48.sp,
-            fontFamily = FontFamily.Monospace,
-            fontWeight = FontWeight.W700,
-            color = colorResource(R.color.light_100),
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(img.top)
-                    start.linkTo(img.start)
-                    end.linkTo(img.end)
-                    bottom.linkTo(img.bottom)
-                }
-        )
-        LazyColumn(
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            userScrollEnabled = true,
-            modifier = Modifier
-                .fillMaxSize()
-                .constrainAs(list) {
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                    top.linkTo(img.bottom, 8.dp)
-                    start.linkTo(img.start, 8.dp)
-                    end.linkTo(img.end, 8.dp)
-                    bottom.linkTo(parent.bottom)
-                }
-        ) {
-            items(listAnime) { item ->
-                ItemAnimeSeason(item)
-            }
+        }
+        items(listAnime) { item ->
+            ItemAnimeSeason(item)
         }
     }
 }
@@ -129,10 +114,10 @@ fun HomeScreen(
 
 @Composable
 fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
-
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(14.dp, 0.dp, 14.dp, 0.dp)
     ) {
         val (imgBackground, title, box, imgPoster, description, rating, genre) = createRefs()
 
@@ -282,9 +267,9 @@ fun ItemAnimeSeasonPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        HomeScreenView.State(
+fun SeasonAnimePreview() {
+    SeasonAnimeScreen(
+        SeasonAnimeScreenView.State(
             seasonImg = R.drawable.anime_autumn,
             seasonTitle = R.string.anime_autumn_title,
             itemsAnime = listOf(
@@ -301,8 +286,4 @@ fun HomeScreenPreview() {
             )
         )
     )
-}
-
-class Counter {
-    var value = 0
 }

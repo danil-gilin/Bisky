@@ -1,11 +1,11 @@
-package com.example.bisky.ui.screen.homescreen
+package com.example.bisky.ui.screen.homescreen.seasonAnimeScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.R
 import com.example.bisky.data.seasonanime.SeasonAnimeRepository
-import com.example.bisky.ui.screen.homescreen.mapper.SeasonAnimeMapper
-import com.example.bisky.ui.screen.homescreen.model.Season
+import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.mapper.SeasonAnimeMapper
+import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.Season
 import com.example.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,14 +17,13 @@ import java.time.Month
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class SeasonAnimeViewModel @Inject constructor(
     private val seasonAnimeRepository: SeasonAnimeRepository,
     private val seasonAnimeMapper: SeasonAnimeMapper
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeScreenView.State())
-    val uiState: StateFlow<HomeScreenView.State> = _uiState
+    private val _uiState = MutableStateFlow(SeasonAnimeScreenView.State())
+    val uiState: StateFlow<SeasonAnimeScreenView.State> = _uiState
 
 
     init {
@@ -39,8 +38,8 @@ class HomeViewModel @Inject constructor(
         val (title, img) = when(currentSeason) {
             Season.Winter -> R.string.anime_winter_title to R.drawable.anime_winter
             Season.Summer -> R.string.anime_summer_title to R.drawable.anime_summer
-            Season.Autumn -> R.string.anime_spring_title to R.drawable.anime_spring
-            Season.Spring -> R.string.anime_autumn_title to R.drawable.anime_autumn
+            Season.Autumn -> R.string.anime_autumn_title to R.drawable.anime_autumn
+            Season.Spring -> R.string.anime_spring_title to R.drawable.anime_spring
         }
         _uiState.update {
             it.copy(seasonImg = img, seasonTitle = title)

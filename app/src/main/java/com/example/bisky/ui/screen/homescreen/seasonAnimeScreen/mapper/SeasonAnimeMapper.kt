@@ -1,9 +1,9 @@
-package com.example.bisky.ui.screen.homescreen.mapper
+package com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.mapper
 
 import androidx.compose.ui.graphics.Color
 import com.example.bisky.R
 import com.example.bisky.data.seasonanime.remote.model.SeasonAnime
-import com.example.bisky.ui.screen.homescreen.model.AnimeSeasonUI
+import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeasonUI
 import javax.inject.Inject
 
 const val SHKIMORI_URL = "https://shikimori.one"

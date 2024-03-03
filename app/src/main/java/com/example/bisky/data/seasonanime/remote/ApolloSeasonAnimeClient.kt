@@ -21,9 +21,9 @@ class ApolloSeasonAnimeClient @Inject constructor(
             airedOn = AiredOnFilter(
                 params.startDate.toOptional(),
                 params.endDate.toOptional()
-            ).toOptional()
+            ).toOptional(),
         )
-        return apolloClient.query(SeasonAnimeQuery(53, Optional.present(filter)))
+        return apolloClient.query(SeasonAnimeQuery(5, Optional.present(filter)))
             .execute()
             .data
             ?.getAnimePages
