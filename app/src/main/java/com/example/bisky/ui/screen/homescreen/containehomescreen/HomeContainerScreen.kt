@@ -106,7 +106,6 @@ fun SelectedTab(tab: HomeTab, onTabClick: (HomeTabType) -> Unit) {
             .clickable {
                 onTabClick(tab.type)
             }
-            .background(colorResource(id = R.color.bisky_dark_400))
     ) {
         val (title, selected) = createRefs()
         Text(
