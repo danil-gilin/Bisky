@@ -12,15 +12,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -37,24 +41,43 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.bisky.R
+import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeasonUI
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 
 @Composable
 fun SeasonAnimeScreen(
-    homeViewModel: SeasonAnimeViewModel = viewModel()
+    viewModel: SeasonAnimeViewModel = viewModel()
 ) {
-    val uiState by homeViewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     SeasonAnimeScreen(
-        uiState = uiState
+        uiState = uiState,
+        onScrollItem= {
+            viewModel.onEvent(Event.OnScrollItem(it))
+        }
     )
 }
 
 @Composable
 fun SeasonAnimeScreen(
-    uiState: SeasonAnimeScreenView.State
+    uiState: SeasonAnimeScreenView.State,
+    onScrollItem: (Int) -> Unit
 ) {
+    val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = uiState.positionScroll)
     val listAnime = uiState.itemsAnime
+
+    LaunchedEffect(lazyListState) {
+        snapshotFlow {
+            lazyListState.firstVisibleItemIndex
+        }
+            .debounce(500L)
+            .collectLatest {
+                onScrollItem(it)
+            }
+    }
     LazyColumn(
+        state = lazyListState,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(start = 0.dp, top = 45.dp,0.dp,0.dp),
         modifier = Modifier
@@ -272,6 +295,7 @@ fun SeasonAnimePreview() {
         SeasonAnimeScreenView.State(
             seasonImg = R.drawable.anime_autumn,
             seasonTitle = R.string.anime_autumn_title,
+            positionScroll = 0,
             itemsAnime = listOf(
                 AnimeSeasonUI(
                     img = "R.drawable.anime_autumn",
@@ -284,6 +308,7 @@ fun SeasonAnimePreview() {
                     backgroundImg = "R.drawable.anime_autumn"
                 )
             )
-        )
+        ),
+        {}
     )
 }

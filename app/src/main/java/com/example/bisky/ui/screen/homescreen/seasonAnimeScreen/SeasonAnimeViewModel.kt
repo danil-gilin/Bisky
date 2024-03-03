@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.R
 import com.example.bisky.data.seasonanime.SeasonAnimeRepository
+import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.mapper.SeasonAnimeMapper
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.Season
 import com.example.domain.repository.seasonanime.model.RequestSeasonAnimeParams
@@ -30,6 +31,12 @@ class SeasonAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             updateTitle()
             getSeasonAnime()
+        }
+    }
+
+    fun onEvent(event: Event) {
+        when(event) {
+            is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
         }
     }
 
