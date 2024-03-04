@@ -88,4 +88,8 @@ dependencies {
 
     // Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")
+
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    implementation("androidx.navigation:navigation-compose:2.5.3")
 }

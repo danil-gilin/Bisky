@@ -2,7 +2,7 @@ package com.example.bisky.data.seasonanime
 
 import com.example.bisky.data.seasonanime.remote.ApolloSeasonAnimeClient
 import com.example.bisky.data.seasonanime.remote.model.SeasonAnime
-import com.example.domain.repository.seasonanime.model.RequestSeasonAnimeParams
+import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import javax.inject.Inject
 
 class SeasonAnimeRepository @Inject constructor(

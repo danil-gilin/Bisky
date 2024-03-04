@@ -6,7 +6,7 @@ import com.example.SeasonAnimeQuery
 import com.example.bisky.data.seasonanime.mapper.mapToDomain
 import com.example.bisky.data.seasonanime.remote.model.SeasonAnime
 import com.example.bisky.utils.ext.toOptional
-import com.example.domain.repository.seasonanime.model.RequestSeasonAnimeParams
+import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import com.example.type.AiredOnFilter
 import com.example.type.FilterArgs
 import javax.inject.Inject

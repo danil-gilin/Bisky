@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.Bisky" parent="android:Theme.Material.Light.NoActionBar.Fullscreen" />
+
+    <style name="Theme.Bisky.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/bisky_dark_400</item>
+        <item name="windowSplashScreenAnimatedIcon">@color/bisky_dark_400</item>
+        <item name="windowSplashScreenAnimationDuration">200</item>
+        <item name="postSplashScreenTheme">@style/Theme.Bisky</item>
+    </style>
 </resources>

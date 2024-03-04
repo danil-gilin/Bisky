@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.bisky.R
@@ -48,7 +49,7 @@ import kotlinx.coroutines.flow.debounce
 
 @Composable
 fun SeasonAnimeScreen(
-    viewModel: SeasonAnimeViewModel = viewModel()
+    viewModel: SeasonAnimeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     SeasonAnimeScreen(

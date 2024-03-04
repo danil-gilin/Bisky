@@ -7,7 +7,7 @@ import com.example.bisky.data.seasonanime.SeasonAnimeRepository
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.mapper.SeasonAnimeMapper
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.Season
-import com.example.domain.repository.seasonanime.model.RequestSeasonAnimeParams
+import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
