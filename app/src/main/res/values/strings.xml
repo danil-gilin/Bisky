@@ -13,4 +13,9 @@
     <string name="title_new_series">Новые серии</string>
     <string name="title_season">Сезонное</string>
     <string name="title_genre">Жанры</string>
+
+
+    <string name="password_placeholder">Password</string>
+    <string name="email_placeholder">Email</string>
+    <string name="sigIn">Войти</string>
 </resources>
