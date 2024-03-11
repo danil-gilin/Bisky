@@ -1,6 +1,7 @@
 package com.example.bisky.ui.screen.homescreen.containehomescreen.model
 
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -15,7 +16,7 @@ object HomeScreenNav {
 }
 
 fun NavGraphBuilder.addHomeGraph(
-    modifier: Modifier = Modifier
+    navController: NavController
 ) {
     composable(HomeScreenNav.Season) {
         SeasonAnimeScreen()
@@ -28,11 +29,11 @@ fun NavGraphBuilder.addHomeGraph(
     }
 }
 
-fun NavGraphBuilder.navGraphHome() {
+fun NavGraphBuilder.navGraphHome(navController: NavController) {
     navigation(
         route = HomeScreenNav.MAIN_ROUT,
         startDestination = HomeScreenNav.Season
     ) {
-        addHomeGraph()
+        addHomeGraph(navController)
     }
 }

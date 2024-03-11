@@ -52,7 +52,14 @@ fun SigInScreen(
             navController.popBackStack()
         },
         onSigInClicked = {
-            navController.navigate("home")
+            navController.navigate("home") {
+                popUpTo("sigIn") {
+                    inclusive = true
+                }
+                popUpTo("boardingLogin") {
+                    inclusive = true
+                }
+            }
         }
     )
 }
