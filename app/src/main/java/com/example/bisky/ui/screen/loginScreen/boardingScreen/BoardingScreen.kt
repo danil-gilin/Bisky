@@ -1,4 +1,4 @@
-package com.example.bisky.ui.screen.loginScreen.siginscreen
+package com.example.bisky.ui.screen.loginScreen.boardingScreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -39,29 +40,31 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.BaseTextInput
 import com.example.bisky.ui.elements.noRippleClickable
+import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView
+import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInViewModel
 
 @Composable
-fun SigInScreen(
-    viewModel: SigInViewModel = hiltViewModel(),
+fun BoardingScreen(
+    viewModel: BoardingViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    SigInScreen(
+    BoardingScreen(
         uiState = uiState,
-        onBackClicked = {
-            navController.popBackStack()
-        },
         onSigInClicked = {
-            navController.navigate("home")
+            navController.navigate("sigIn")
+        },
+        onSigUpClicked = {
+            navController.navigate("sigUp")
         }
     )
 }
 
 @Composable
-fun SigInScreen(
-    uiState: SigInView.State,
-    onBackClicked: () -> Unit,
+fun BoardingScreen(
+    uiState: BoardingView.State,
     onSigInClicked: () -> Unit,
+    onSigUpClicked: () -> Unit,
 ) {
     val localFocusManager = LocalFocusManager.current
     ConstraintLayout(
@@ -98,19 +101,18 @@ fun SigInScreen(
                 }) {
             SigInInputFields(
                 uiState,
-                onBackClicked = {onBackClicked()},
                 onSigInClicked = {onSigInClicked()},
+                onSigUpClicked = {onSigUpClicked()},
             )
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SigInInputFields(
-    uiState: SigInView.State,
-    onBackClicked: () -> Unit,
+    uiState: BoardingView.State,
     onSigInClicked: () -> Unit,
+    onSigUpClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -120,77 +122,49 @@ fun SigInInputFields(
                     8.dp, 8.dp, 0.dp, 0.dp
                 )
             )
+            .padding(bottom = 24.dp)
     ) {
-        BaseTextInput(
-            uiState.emailTextField,
-            stringResource(id = uiState.email.placeHolder),
+        Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp, 8.dp, 16.dp, 2.dp),
-            colorBorder = uiState.email.borderColor,
-            isClearIconVisible = uiState.email.isClearIconVisible,
-            isPlaceHolderVisible = uiState.email.isPlaceHolderVisible
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            onClick = {
+                onSigInClicked()
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(id = R.color.bisky_dark_300)
+            ),
+            shape = RoundedCornerShape(4.dp,4.dp,4.dp,4.dp)
         )
-        BaseTextInput(
-            uiState.passwordTextField,
-            stringResource(id = uiState.password.placeHolder),
+        {
+            Text(text = stringResource(id = R.string.sigIn))
+        }
+        Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp, 8.dp, 16.dp, 2.dp),
-            colorBorder = uiState.password.borderColor,
-            KeyboardType.Password,
-            isClearIconVisible = uiState.password.isClearIconVisible,
-            isPlaceHolderVisible = uiState.password.isPlaceHolderVisible
+                .fillMaxWidth()
+                .padding(16.dp, 0.dp),
+            onClick = {
+                onSigUpClicked()
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(id = R.color.bisky_dark_300)
+            ),
+            shape = RoundedCornerShape(4.dp,4.dp,4.dp,4.dp)
         )
-        Row {
-            Icon(
-                Icons.Default.ArrowBack,
-                contentDescription = "back",
-                tint = colorResource(id = R.color.bisky_200),
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(16.dp, 0.dp, 0.dp, 0.dp)
-                    .background(Color.Transparent)
-                    .noRippleClickable {
-                        onBackClicked()
-                    }
-            )
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxWidth()
-                    .padding(16.dp, 8.dp),
-                onClick = {
-                    onSigInClicked()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.bisky_dark_400)
-                ),
-                shape = RoundedCornerShape(4.dp,4.dp,4.dp,4.dp)
-            )
-            {
-                Text(text = stringResource(id = R.string.sigIn))
-            }
+        {
+            Text(text = stringResource(id = R.string.sigUp))
         }
     }
 }
 
-@Composable
 @Preview(showBackground = true)
-fun SigInInputPreview() {
-    SigInInputFields(
-        SigInView.State(),
-        onBackClicked = {},
-        onSigInClicked = {}
-    )
-}
-
 @Composable
-@Preview(showBackground = true)
-fun SigInScreenPreview() {
-    SigInScreen(
-        SigInView.State(),
-        onBackClicked = {},
-        onSigInClicked = {}
+fun BoardingScreenPreview() {
+    BoardingScreen(
+        BoardingView.State(),
+        onSigInClicked = {},
+        onSigUpClicked = {}
     )
 }

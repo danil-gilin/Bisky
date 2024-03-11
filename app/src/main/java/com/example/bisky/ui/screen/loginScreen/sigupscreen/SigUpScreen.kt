@@ -1,4 +1,4 @@
-package com.example.bisky.ui.screen.loginScreen.siginscreen
+package com.example.bisky.ui.screen.loginScreen.sigupscreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -7,12 +7,14 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text2.input.TextFieldCharSequence
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -21,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -41,27 +43,27 @@ import com.example.bisky.ui.elements.BaseTextInput
 import com.example.bisky.ui.elements.noRippleClickable
 
 @Composable
-fun SigInScreen(
-    viewModel: SigInViewModel = hiltViewModel(),
+fun SigUpScreen(
+    viewModel: SigUpViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    SigInScreen(
-        uiState = uiState,
+    val uiState = viewModel.uiState.collectAsState().value
+    SigUpScreen(
+        uiState,
         onBackClicked = {
             navController.popBackStack()
         },
-        onSigInClicked = {
+        onSigUpClicked = {
             navController.navigate("home")
         }
     )
 }
 
 @Composable
-fun SigInScreen(
-    uiState: SigInView.State,
+fun SigUpScreen(
+    uiState: SigUpView.State,
     onBackClicked: () -> Unit,
-    onSigInClicked: () -> Unit,
+    onSigUpClicked: () -> Unit,
 ) {
     val localFocusManager = LocalFocusManager.current
     ConstraintLayout(
@@ -96,10 +98,10 @@ fun SigInScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
-            SigInInputFields(
+            SigUpInputFields(
                 uiState,
-                onBackClicked = {onBackClicked()},
-                onSigInClicked = {onSigInClicked()},
+                onBackClicked = { onBackClicked() },
+                onSigUpClicked = { onSigUpClicked() },
             )
         }
     }
@@ -107,10 +109,10 @@ fun SigInScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SigInInputFields(
-    uiState: SigInView.State,
+fun SigUpInputFields(
+    uiState: SigUpView.State,
     onBackClicked: () -> Unit,
-    onSigInClicked: () -> Unit,
+    onSigUpClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -122,6 +124,17 @@ fun SigInInputFields(
             )
     ) {
         BaseTextInput(
+            uiState.loginTextField,
+            stringResource(id = uiState.login.placeHolder),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 8.dp, 16.dp, 2.dp),
+            colorBorder = uiState.login.borderColor,
+            isClearIconVisible = uiState.login.isClearIconVisible,
+            isPlaceHolderVisible = uiState.login.isPlaceHolderVisible
+        )
+        ValidateMsg(uiState.login.validateMsg, uiState.login.validateColor)
+        BaseTextInput(
             uiState.emailTextField,
             stringResource(id = uiState.email.placeHolder),
             modifier = Modifier
@@ -131,6 +144,7 @@ fun SigInInputFields(
             isClearIconVisible = uiState.email.isClearIconVisible,
             isPlaceHolderVisible = uiState.email.isPlaceHolderVisible
         )
+        ValidateMsg(uiState.email.validateMsg, uiState.email.validateColor)
         BaseTextInput(
             uiState.passwordTextField,
             stringResource(id = uiState.password.placeHolder),
@@ -142,6 +156,7 @@ fun SigInInputFields(
             isClearIconVisible = uiState.password.isClearIconVisible,
             isPlaceHolderVisible = uiState.password.isPlaceHolderVisible
         )
+        ValidateMsg(uiState.password.validateMsg, uiState.password.validateColor)
         Row {
             Icon(
                 Icons.Default.ArrowBack,
@@ -161,36 +176,42 @@ fun SigInInputFields(
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 onClick = {
-                    onSigInClicked()
+                    onSigUpClicked()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.bisky_dark_400)
                 ),
-                shape = RoundedCornerShape(4.dp,4.dp,4.dp,4.dp)
+                shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp)
             )
             {
-                Text(text = stringResource(id = R.string.sigIn))
+                Text(text = stringResource(id = R.string.sigUp))
             }
         }
     }
 }
 
 @Composable
-@Preview(showBackground = true)
-fun SigInInputPreview() {
-    SigInInputFields(
-        SigInView.State(),
-        onBackClicked = {},
-        onSigInClicked = {}
-    )
+fun ValidateMsg(text: Int?, color: Int) {
+    if (text != null) {
+        val str = stringResource(id = text)
+        Text(
+            text = str,
+            color = colorResource(id = color),
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+    } else {
+        Spacer(modifier = Modifier.height(6.dp))
+    }
 }
 
-@Composable
+
 @Preview(showBackground = true)
-fun SigInScreenPreview() {
-    SigInScreen(
-        SigInView.State(),
-        onBackClicked = {},
-        onSigInClicked = {}
+@Composable
+fun SigUpScreenPreview() {
+    SigUpScreen(
+        SigUpView.State(),
+        onSigUpClicked = {},
+        onBackClicked = {}
     )
 }

@@ -1,34 +1,32 @@
-package com.example.bisky.ui.screen.loginScreen.siginscreen
+package com.example.bisky.ui.screen.loginScreen.sigupscreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text2.input.TextFieldCharSequence
 import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView.Event
-import com.example.bisky.ui.screen.loginScreen.siginscreen.mapper.TextSigInUIMapper
+import com.example.bisky.R
+import com.example.bisky.ui.screen.loginScreen.sigupscreen.mapper.TextUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel
-class SigInViewModel @Inject constructor(
-    private val textUIMapper: TextSigInUIMapper
-) : ViewModel() {
+class SigUpViewModel @Inject constructor(private val textUIMapper: TextUIMapper) : ViewModel() {
     companion object{
         const val DEBOUNCE = 1000L
     }
-    private val _uiState = MutableStateFlow(SigInView.State())
-    val uiState: StateFlow<SigInView.State> = _uiState
 
-    fun onEvent(event: Event) {
+    private val _uiState = MutableStateFlow(SigUpView.State())
+    val uiState: StateFlow<SigUpView.State> = _uiState
 
-    }
 
     init {
         viewModelScope.launch {
@@ -37,6 +35,9 @@ class SigInViewModel @Inject constructor(
             }
             launch {
                 onEmailTextUpdate()
+            }
+            launch {
+                onLoginTextUpdate()
             }
         }
     }
@@ -50,6 +51,18 @@ class SigInViewModel @Inject constructor(
                 delay(DEBOUNCE)
                 val item = textUIMapper.passwordToTextUI(it.toString())
                 _uiState.update { it.copy(password = item) }
+            }
+    }
+
+    private suspend fun onLoginTextUpdate() {
+        _uiState.value.loginTextField
+            .textAsFlow()
+            .collectLatest {
+                val itemAssistants = textUIMapper.mapTextAssistants(uiState.value.login, it.toString())
+                _uiState.update { it.copy(login = itemAssistants) }
+                delay(DEBOUNCE)
+                val item = textUIMapper.loginToTextUI(it.toString())
+                _uiState.update { it.copy(login = item) }
             }
     }
 

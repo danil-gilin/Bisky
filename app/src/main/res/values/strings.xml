@@ -7,6 +7,8 @@
     <string name="anime_autumn_title">Осень</string>
     <string name="anime_spring_title">Весна</string>
 
+    <string name="empty"></string>
+
     <string name="long_text">seasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeseasonUI.titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasddeeeeeeeeeeeeeeeeeeeeeeeeeeeee</string>
 
 
@@ -17,5 +19,12 @@
 
     <string name="password_placeholder">Password</string>
     <string name="email_placeholder">Email</string>
+    <string name="login_placeholder">Login</string>
+
     <string name="sigIn">Войти</string>
+    <string name="sigUp">Регистрация</string>
+
+    <string name="validMail">Неправильная почта</string>
+    <string name="validPassword">Пароль слишком легкий</string>
+    <string name="validLogin">Логин уже занят</string>
 </resources>
