@@ -7,27 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView.Event
 import com.example.bisky.ui.screen.loginScreen.siginscreen.mapper.TextSigInUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel
 class SigInViewModel @Inject constructor(
     private val textUIMapper: TextSigInUIMapper
 ) : ViewModel() {
-    companion object{
+    companion object {
         const val DEBOUNCE = 1000L
     }
+
     private val _uiState = MutableStateFlow(SigInView.State())
     val uiState: StateFlow<SigInView.State> = _uiState
 
     fun onEvent(event: Event) {
-
     }
 
     init {
@@ -45,7 +45,8 @@ class SigInViewModel @Inject constructor(
         _uiState.value.passwordTextField
             .textAsFlow()
             .collectLatest {
-                val itemAssistants = textUIMapper.mapTextAssistants(uiState.value.password, it.toString())
+                val itemAssistants =
+                    textUIMapper.mapTextAssistants(uiState.value.password, it.toString())
                 _uiState.update { it.copy(password = itemAssistants) }
                 delay(DEBOUNCE)
                 val item = textUIMapper.passwordToTextUI(it.toString())
@@ -57,7 +58,8 @@ class SigInViewModel @Inject constructor(
         _uiState.value.emailTextField
             .textAsFlow()
             .collectLatest {
-                val itemAssistants = textUIMapper.mapTextAssistants(uiState.value.email, it.toString())
+                val itemAssistants =
+                    textUIMapper.mapTextAssistants(uiState.value.email, it.toString())
                 _uiState.update { it.copy(email = itemAssistants) }
                 delay(DEBOUNCE)
                 val item = textUIMapper.mailToTextUI(it.toString())

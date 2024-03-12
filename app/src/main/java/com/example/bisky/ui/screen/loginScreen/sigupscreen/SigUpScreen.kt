@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text2.input.TextFieldCharSequence
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -70,7 +69,7 @@ fun SigUpScreen(
 fun SigUpScreen(
     uiState: SigUpView.State,
     onBackClicked: () -> Unit,
-    onSigUpClicked: () -> Unit,
+    onSigUpClicked: () -> Unit
 ) {
     val localFocusManager = LocalFocusManager.current
     ConstraintLayout(
@@ -104,11 +103,12 @@ fun SigUpScreen(
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }) {
+                }
+        ) {
             SigUpInputFields(
                 uiState,
                 onBackClicked = { onBackClicked() },
-                onSigUpClicked = { onSigUpClicked() },
+                onSigUpClicked = { onSigUpClicked() }
             )
         }
     }
@@ -119,14 +119,17 @@ fun SigUpScreen(
 fun SigUpInputFields(
     uiState: SigUpView.State,
     onBackClicked: () -> Unit,
-    onSigUpClicked: () -> Unit,
+    onSigUpClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .background(
                 colorResource(id = R.color.light_100),
                 shape = RoundedCornerShape(
-                    8.dp, 8.dp, 0.dp, 0.dp
+                    8.dp,
+                    8.dp,
+                    0.dp,
+                    0.dp
                 )
             )
     ) {
@@ -189,8 +192,7 @@ fun SigUpInputFields(
                     containerColor = colorResource(id = R.color.bisky_dark_400)
                 ),
                 shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp)
-            )
-            {
+            ) {
                 Text(text = stringResource(id = R.string.sigUp))
             }
         }
@@ -211,7 +213,6 @@ fun ValidateMsg(text: Int?, color: Int) {
         Spacer(modifier = Modifier.height(6.dp))
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

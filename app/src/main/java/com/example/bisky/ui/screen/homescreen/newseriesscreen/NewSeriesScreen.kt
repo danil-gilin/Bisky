@@ -13,14 +13,17 @@ import com.example.bisky.R
 
 @Composable
 fun NewSeriesScreen() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(colorResource(id = R.color.bisky_dark_400))) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.bisky_dark_400))
+    ) {
         Text(
             text = "In Progress Develop",
             color = colorResource(id = R.color.light_100),
             modifier = Modifier
-            .align(alignment = Alignment.Center))
+                .align(alignment = Alignment.Center)
+        )
     }
 }
 

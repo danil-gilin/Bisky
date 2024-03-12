@@ -1,6 +1,5 @@
 package com.example.bisky.ui.screen.homescreen.containehomescreen.model
 
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -9,10 +8,10 @@ import com.example.bisky.ui.screen.homescreen.newseriesscreen.NewSeriesScreen
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreen
 
 object HomeScreenNav {
-    val Season ="Season"
-    val Genre ="Genre"
-    val New ="New"
-    val MAIN_ROUT ="Home_rout"
+    val Season = "Season"
+    val Genre = "Genre"
+    val New = "New"
+    val MAIN_ROUT = "Home_rout"
 }
 
 fun NavGraphBuilder.addHomeGraph(

@@ -6,7 +6,7 @@ data class SeasonAnime(
     val genres: List<Genre>,
     val description: String?,
     val screenshots: List<String>,
-    val scores: Double,
+    val scores: Double
 )
 
 data class Genre(

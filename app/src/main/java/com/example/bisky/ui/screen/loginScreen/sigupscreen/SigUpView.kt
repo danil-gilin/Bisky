@@ -13,6 +13,6 @@ interface SigUpView {
         val password: TextUI = TextUI(placeHolder = R.string.password_placeholder),
         val emailTextField: TextFieldState = TextFieldState(),
         val passwordTextField: TextFieldState = TextFieldState(),
-        val loginTextField: TextFieldState = TextFieldState(),
+        val loginTextField: TextFieldState = TextFieldState()
     )
 }

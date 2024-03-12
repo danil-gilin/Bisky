@@ -109,15 +109,16 @@ fun SelectedTab(tab: HomeTab, onTabClick: (HomeTabType) -> Unit) {
             fontSize = 16.sp,
             color = colorResource(id = R.color.light_100)
         )
-        Box(modifier = Modifier
-            .background(colorResource(id = R.color.bisky_100))
-            .constrainAs(selected) {
-                width = Dimension.fillToConstraints
-                height = Dimension.value(2.dp)
-                top.linkTo(title.bottom, 2.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
+        Box(
+            modifier = Modifier
+                .background(colorResource(id = R.color.bisky_100))
+                .constrainAs(selected) {
+                    width = Dimension.fillToConstraints
+                    height = Dimension.value(2.dp)
+                    top.linkTo(title.bottom, 2.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
         )
     }
 }

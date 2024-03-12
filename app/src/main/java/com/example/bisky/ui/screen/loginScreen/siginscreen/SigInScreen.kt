@@ -68,7 +68,7 @@ fun SigInScreen(
 fun SigInScreen(
     uiState: SigInView.State,
     onBackClicked: () -> Unit,
-    onSigInClicked: () -> Unit,
+    onSigInClicked: () -> Unit
 ) {
     val localFocusManager = LocalFocusManager.current
     ConstraintLayout(
@@ -102,11 +102,12 @@ fun SigInScreen(
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }) {
+                }
+        ) {
             SigInInputFields(
                 uiState,
-                onBackClicked = {onBackClicked()},
-                onSigInClicked = {onSigInClicked()},
+                onBackClicked = { onBackClicked() },
+                onSigInClicked = { onSigInClicked() }
             )
         }
     }
@@ -117,14 +118,17 @@ fun SigInScreen(
 fun SigInInputFields(
     uiState: SigInView.State,
     onBackClicked: () -> Unit,
-    onSigInClicked: () -> Unit,
+    onSigInClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .background(
                 colorResource(id = R.color.light_100),
                 shape = RoundedCornerShape(
-                    8.dp, 8.dp, 0.dp, 0.dp
+                    8.dp,
+                    8.dp,
+                    0.dp,
+                    0.dp
                 )
             )
     ) {
@@ -173,9 +177,8 @@ fun SigInInputFields(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.bisky_dark_400)
                 ),
-                shape = RoundedCornerShape(4.dp,4.dp,4.dp,4.dp)
-            )
-            {
+                shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp)
+            ) {
                 Text(text = stringResource(id = R.string.sigIn))
             }
         }

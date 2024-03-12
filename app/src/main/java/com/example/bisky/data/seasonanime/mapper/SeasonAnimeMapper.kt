@@ -12,7 +12,7 @@ fun SeasonAnimeQuery.GetAnimePage.mapToDomain(): SeasonAnime =
         genres = this.genres.mapToDomain(),
         description = description,
         screenshots = screenshots,
-        scores = scores,
+        scores = scores
     )
 
 fun List<SeasonAnimeQuery.Genre>.mapToDomain() = map {

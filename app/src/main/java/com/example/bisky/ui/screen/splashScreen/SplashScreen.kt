@@ -1,6 +1,5 @@
 package com.example.bisky.ui.screen.splashScreen
 
-
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -52,7 +51,11 @@ fun SplashScreen(navController: NavHostController) {
                 )
             }
             delay(1000L)
-            navController.navigate("home")
+            navController.navigate("boardingLogin") {
+                popUpTo("splash") {
+                    inclusive = true
+                }
+            }
         }
     }
 
@@ -75,7 +78,7 @@ fun SplashScreen(navController: NavHostController) {
                     shape = CircleShape
                 )
                 .size(200.dp) // Set your desired size
-                .padding(50.dp,25.dp,50.dp,25.dp)
+                .padding(50.dp, 25.dp, 50.dp, 25.dp)
 
         )
     }

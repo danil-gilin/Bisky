@@ -12,19 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -54,7 +53,7 @@ fun SeasonAnimeScreen(
     val uiState by viewModel.uiState.collectAsState()
     SeasonAnimeScreen(
         uiState = uiState,
-        onScrollItem= {
+        onScrollItem = {
             viewModel.onEvent(Event.OnScrollItem(it))
         }
     )
@@ -80,12 +79,12 @@ fun SeasonAnimeScreen(
     LazyColumn(
         state = lazyListState,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(start = 0.dp, top = 45.dp,0.dp,0.dp),
+        contentPadding = PaddingValues(start = 0.dp, top = 45.dp, 0.dp, 0.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(R.color.bisky_dark_400))
     ) {
-        item{
+        item {
             ConstraintLayout(
                 modifier = Modifier.height(200.dp)
             ) {
@@ -102,14 +101,15 @@ fun SeasonAnimeScreen(
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
-                Box(modifier = Modifier
-                    .constrainAs(box) {
-                        top.linkTo(parent.top)
-                    }
-                    .height(200.dp)
-                    .fillMaxWidth()
-                    .alpha(0.3f)
-                    .background(colorResource(R.color.bisky_400))
+                Box(
+                    modifier = Modifier
+                        .constrainAs(box) {
+                            top.linkTo(parent.top)
+                        }
+                        .height(200.dp)
+                        .fillMaxWidth()
+                        .alpha(0.3f)
+                        .background(colorResource(R.color.bisky_400))
                 )
                 Text(
                     text = stringResource(
@@ -135,7 +135,6 @@ fun SeasonAnimeScreen(
     }
 }
 
-
 @Composable
 fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
     ConstraintLayout(
@@ -157,14 +156,15 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
-        Box(modifier = Modifier
-            .constrainAs(box) {
-                top.linkTo(parent.top)
-            }
-            .height(200.dp)
-            .fillMaxWidth()
-            .alpha(0.6f)
-            .background(colorResource(R.color.bisky_dark_400))
+        Box(
+            modifier = Modifier
+                .constrainAs(box) {
+                    top.linkTo(parent.top)
+                }
+                .height(200.dp)
+                .fillMaxWidth()
+                .alpha(0.6f)
+                .background(colorResource(R.color.bisky_dark_400))
         )
         AsyncImage(
             model = seasonUI.img,
@@ -219,7 +219,7 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
                 }
                 .alpha(0.8f)
         )
-        if(seasonUI.isRatingVisible) {
+        if (seasonUI.isRatingVisible) {
             Row(
                 verticalAlignment = CenterVertically,
                 modifier = Modifier
@@ -248,7 +248,7 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
                         .padding(2.dp, 4.dp, 6.dp, 4.dp),
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.W700,
-                    color = colorResource(R.color.light_100),
+                    color = colorResource(R.color.light_100)
                 )
             }
         }
@@ -261,13 +261,13 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
                     start.linkTo(imgPoster.start)
                     end.linkTo(imgBackground.end, 8.dp)
                     bottom.linkTo(imgBackground.bottom, 8.dp)
-                }
-            ,
+                },
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.W700,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            color = colorResource(R.color.light_100))
+            color = colorResource(R.color.light_100)
+        )
     }
 }
 
@@ -282,12 +282,11 @@ fun ItemAnimeSeasonPreview() {
             rating = "0.0",
             ratingColor = R.color.bisky_200,
             isRatingVisible = true,
-             genre = "anime / anime / anime",
+            genre = "anime / anime / anime",
             backgroundImg = "R.drawable.anime_autumn"
         )
     )
 }
-
 
 @Preview(showBackground = true)
 @Composable

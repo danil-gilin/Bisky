@@ -7,13 +7,12 @@ sealed interface SeasonAnimeScreenView {
         val seasonImg: Int = 0,
         val seasonTitle: Int = 0,
         val positionScroll: Int = 0,
-        val itemsAnime: List<AnimeSeasonUI> = emptyList(),
+        val itemsAnime: List<AnimeSeasonUI> = emptyList()
     )
 
     sealed class Event {
-        data class OnScrollItem(val position: Int): Event()
+        data class OnScrollItem(val position: Int) : Event()
     }
 
-    sealed class UiLabel {
-    }
+    sealed class UiLabel
 }

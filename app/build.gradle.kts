@@ -80,17 +80,17 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation  ("com.google.dagger:hilt-android:2.50")
-    annotationProcessor  ("com.google.dagger:hilt-compiler:2.50")
-    implementation ("com.google.dagger:hilt-android:2.50")
-    kapt ("com.google.dagger:hilt-compiler:2.50")
+    implementation("com.google.dagger:hilt-android:2.50")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.50")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-compiler:2.50")
 
-    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     // Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")
 
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 }

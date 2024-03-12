@@ -6,7 +6,6 @@ import com.example.bisky.R
 import com.example.bisky.ui.screen.loginScreen.siginscreen.model.TextSigInUI
 import javax.inject.Inject
 
-
 class TextSigInUIMapper @Inject constructor() {
     fun passwordToTextUI(text: String): TextSigInUI {
         val isValid = text.isEmpty() || text.length > 6
@@ -36,12 +35,15 @@ class TextSigInUIMapper @Inject constructor() {
         isClearIconVisible = text.isNotEmpty(),
         isPlaceHolderVisible = text.isEmpty(),
         validateMsg = if (text.isEmpty()) null else textUI.validateMsg,
-        borderColor =  if (text.isEmpty()) R.color.gray else textUI.borderColor
+        borderColor = if (text.isEmpty()) R.color.gray else textUI.borderColor
     )
 
     fun mapToBorderColor(isValid: Boolean) =
-        if (isValid) R.color.gray
-        else R.color.red
+        if (isValid) {
+            R.color.gray
+        } else {
+            R.color.red
+        }
 
     fun isValidEmail(mail: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(mail)) {

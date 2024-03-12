@@ -1,6 +1,6 @@
 package com.example.bisky.ui.screen.homescreen.containehomescreen.model
 
-enum class HomeTabType{
+enum class HomeTabType {
     Season,
     Genre,
     New

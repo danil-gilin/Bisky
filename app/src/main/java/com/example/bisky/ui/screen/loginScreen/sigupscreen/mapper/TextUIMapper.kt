@@ -6,7 +6,6 @@ import com.example.bisky.R
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.model.TextUI
 import javax.inject.Inject
 
-
 class TextUIMapper @Inject constructor() {
 
     fun loginToTextUI(text: String): TextUI {
@@ -53,8 +52,11 @@ class TextUIMapper @Inject constructor() {
     )
 
     fun mapToBorderColor(isValid: Boolean) =
-        if (isValid) R.color.gray
-        else R.color.red
+        if (isValid) {
+            R.color.gray
+        } else {
+            R.color.red
+        }
 
     fun isValidEmail(mail: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(mail)) {

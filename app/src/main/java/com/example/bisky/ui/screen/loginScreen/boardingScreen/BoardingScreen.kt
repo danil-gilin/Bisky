@@ -1,5 +1,6 @@
 package com.example.bisky.ui.screen.loginScreen.boardingScreen
 
+import androidx.compose.animation.EnterTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

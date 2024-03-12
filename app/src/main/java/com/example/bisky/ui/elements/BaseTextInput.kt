@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,6 +15,7 @@ import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
@@ -40,7 +40,9 @@ fun BaseTextInput(
     isPlaceHolderVisible: Boolean,
     isClearIconVisible: Boolean
 ) {
+    val isKeyboardOpen by keyboardAsState()
     val focusManager = LocalFocusManager.current
+    if (!isKeyboardOpen) focusManager.clearFocus()
 
     ConstraintLayout(
         modifier = modifier
