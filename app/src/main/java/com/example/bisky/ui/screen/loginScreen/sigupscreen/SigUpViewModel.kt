@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bisky.data.login.LoginRepositoryImpl
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.mapper.TextUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,7 +17,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel
-class SigUpViewModel @Inject constructor(private val textUIMapper: TextUIMapper) : ViewModel() {
+class SigUpViewModel @Inject constructor(
+    private val textUIMapper: TextUIMapper,
+    private val loginRepositoryImpl: LoginRepositoryImpl
+) : ViewModel() {
     companion object {
         const val DEBOUNCE = 1000L
     }

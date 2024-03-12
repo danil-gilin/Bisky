@@ -4,6 +4,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bisky.data.login.LoginRepositoryImpl
+import com.example.bisky.data.network.resultwrapper.onError
+import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView.Event
 import com.example.bisky.ui.screen.loginScreen.siginscreen.mapper.TextSigInUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +21,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel
 class SigInViewModel @Inject constructor(
-    private val textUIMapper: TextSigInUIMapper
+    private val textUIMapper: TextSigInUIMapper,
+    private val loginRepositoryImpl: LoginRepositoryImpl
 ) : ViewModel() {
     companion object {
         const val DEBOUNCE = 1000L
@@ -28,6 +32,19 @@ class SigInViewModel @Inject constructor(
     val uiState: StateFlow<SigInView.State> = _uiState
 
     fun onEvent(event: Event) {
+        when (event) {
+            Event.OnSigInBtnClick -> onSigInBtnClick()
+        }
+    }
+
+    private fun onSigInBtnClick() = viewModelScope.launch {
+        val name = _uiState.value.emailTextField.text.toString()
+        val password = _uiState.value.emailTextField.text.toString()
+        loginRepositoryImpl.sigIn(name, password).onSuccess {
+            it
+        }.onError {
+            it
+        }
     }
 
     init {

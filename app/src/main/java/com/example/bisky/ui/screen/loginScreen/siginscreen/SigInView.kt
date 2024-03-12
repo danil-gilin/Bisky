@@ -15,5 +15,7 @@ interface SigInView {
         val password: TextSigInUI = TextSigInUI(placeHolder = R.string.password_placeholder)
     )
 
-    sealed class Event
+    sealed class Event {
+        object OnSigInBtnClick : Event()
+    }
 }
