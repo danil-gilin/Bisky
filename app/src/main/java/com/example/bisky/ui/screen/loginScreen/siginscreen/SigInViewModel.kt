@@ -4,14 +4,15 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.bisky.data.login.LoginRepositoryImpl
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView.Event
 import com.example.bisky.ui.screen.loginScreen.siginscreen.mapper.TextSigInUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -33,17 +34,41 @@ class SigInViewModel @Inject constructor(
 
     fun onEvent(event: Event) {
         when (event) {
-            Event.OnSigInBtnClick -> onSigInBtnClick()
+           is Event.OnSigInBtnClick -> onSigInBtnClick(event.navController)
         }
     }
 
-    private fun onSigInBtnClick() = viewModelScope.launch {
-        val name = _uiState.value.emailTextField.text.toString()
+    private fun onSigInBtnClick(navController: NavController) = viewModelScope.launch {
+        _uiState.update {
+            it.copy(
+                isLoading = true,
+                isErrorLogin = false
+            )
+        }
+        val name = _uiState.value.loginTextField.text.toString()
         val password = _uiState.value.passwordTextField.text.toString()
         loginRepositoryImpl.sigIn(name, password).onSuccess {
-            it
+            navController.navigate(NavigationRoute.Home.route) {
+                popUpTo(NavigationRoute.SigIn.route) {
+                    inclusive = true
+                }
+                popUpTo(NavigationRoute.SigUp.route) {
+                    inclusive = true
+                }
+            }
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    isErrorLogin = false
+                )
+            }
         }.onError {
-            it
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    isErrorLogin = true
+                )
+            }
         }
     }
 
@@ -53,7 +78,7 @@ class SigInViewModel @Inject constructor(
                 onPasswordTextUpdate()
             }
             launch {
-                onEmailTextUpdate()
+                onLoginTextUpdate()
             }
         }
     }
@@ -65,22 +90,16 @@ class SigInViewModel @Inject constructor(
                 val itemAssistants =
                     textUIMapper.mapTextAssistants(uiState.value.password, it.toString())
                 _uiState.update { it.copy(password = itemAssistants) }
-                delay(DEBOUNCE)
-                val item = textUIMapper.passwordToTextUI(it.toString())
-                _uiState.update { it.copy(password = item) }
             }
     }
 
-    private suspend fun onEmailTextUpdate() {
-        _uiState.value.emailTextField
+    private suspend fun onLoginTextUpdate() {
+        _uiState.value.loginTextField
             .textAsFlow()
             .collectLatest {
                 val itemAssistants =
-                    textUIMapper.mapTextAssistants(uiState.value.email, it.toString())
-                _uiState.update { it.copy(email = itemAssistants) }
-                delay(DEBOUNCE)
-                val item = textUIMapper.mailToTextUI(it.toString())
-                _uiState.update { it.copy(email = item) }
+                    textUIMapper.mapTextAssistants(uiState.value.login, it.toString())
+                _uiState.update { it.copy(login = itemAssistants) }
             }
     }
 }

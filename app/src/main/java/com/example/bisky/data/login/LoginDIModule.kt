@@ -1,5 +1,7 @@
 package com.example.bisky.data.login
 
+import android.content.SharedPreferences
+import com.example.bisky.data.login.local.TokenPreference
 import com.example.bisky.data.login.remote.LoginApi
 import com.example.bisky.data.login.remote.LoginRemoteSourceImpl
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
@@ -22,13 +24,22 @@ object LoginDIModule {
     fun provideLoginRemoteSource(loginApi: LoginApi) = LoginRemoteSourceImpl(
         loginApi
     )
+
+    @Singleton
+    @Provides
+    fun provideLoginLocalSource(sharedPreferences: SharedPreferences) = TokenPreference(
+        sharedPreferences
+    )
+
     @Singleton
     @Provides
     fun provideLoginRepository(
         loginRemoteSource: LoginRemoteSourceImpl,
+        localSourceImpl: TokenPreference,
         resultWrapper: ResultWrapper
     ) = LoginRepositoryImpl(
         loginRemoteSource = loginRemoteSource,
+        tokenPreference = localSourceImpl,
         resultWrapper = resultWrapper
     )
 }

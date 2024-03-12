@@ -13,4 +13,7 @@ class LoginRemoteSourceImpl(
                 password = password
             )
         )
+
+    suspend fun checkSigIn() = loginApi.checkSigIn()
+    suspend fun refreshToken() = loginApi.refreshToken()
 }
