@@ -16,7 +16,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -29,7 +31,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
 import com.example.bisky.R
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun BaseTextInput(
     text: TextFieldState,
@@ -42,7 +44,7 @@ fun BaseTextInput(
 ) {
     val isKeyboardOpen by keyboardAsState()
     val focusManager = LocalFocusManager.current
-    if (!isKeyboardOpen) focusManager.clearFocus()
+    if (!isKeyboardOpen) focusManager.clearFocus() else focusManager.moveFocus(FocusDirection.Enter)
 
     ConstraintLayout(
         modifier = modifier

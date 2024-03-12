@@ -19,14 +19,19 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.bisky.R
+import com.example.bisky.ui.screen.splashScreen.SplashView.Action
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(
+    viewModel: SplashViewModel = hiltViewModel(),
+    navController: NavHostController
+) {
     val shadow = remember { Animatable(450f) }
     val scale = remember { Animatable(1.2f) }
 
@@ -51,11 +56,7 @@ fun SplashScreen(navController: NavHostController) {
                 )
             }
             delay(1000L)
-            navController.navigate("boardingLogin") {
-                popUpTo("splash") {
-                    inclusive = true
-                }
-            }
+            viewModel.onAction(Action.CheckSigIn(navController))
         }
     }
 

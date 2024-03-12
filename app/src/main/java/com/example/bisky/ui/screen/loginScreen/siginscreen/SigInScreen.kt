@@ -7,6 +7,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -52,15 +55,7 @@ fun SigInScreen(
             navController.popBackStack()
         },
         onSigInClicked = {
-            viewModel.onEvent(SigInView.Event.OnSigInBtnClick)
-           /* navController.navigate("home") {
-                popUpTo("sigIn") {
-                    inclusive = true
-                }
-                popUpTo("boardingLogin") {
-                    inclusive = true
-                }
-            } */
+            viewModel.onEvent(SigInView.Event.OnSigInBtnClick(navController))
         }
     )
 }
@@ -134,14 +129,14 @@ fun SigInInputFields(
             )
     ) {
         BaseTextInput(
-            uiState.emailTextField,
-            stringResource(id = uiState.email.placeHolder),
+            uiState.loginTextField,
+            stringResource(id = uiState.login.placeHolder),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp, 8.dp, 16.dp, 2.dp),
-            colorBorder = uiState.email.borderColor,
-            isClearIconVisible = uiState.email.isClearIconVisible,
-            isPlaceHolderVisible = uiState.email.isPlaceHolderVisible
+            colorBorder = uiState.login.borderColor,
+            isClearIconVisible = uiState.login.isClearIconVisible,
+            isPlaceHolderVisible = uiState.login.isPlaceHolderVisible
         )
         BaseTextInput(
             uiState.passwordTextField,
@@ -154,6 +149,14 @@ fun SigInInputFields(
             isClearIconVisible = uiState.password.isClearIconVisible,
             isPlaceHolderVisible = uiState.password.isPlaceHolderVisible
         )
+        if (uiState.isErrorLogin) {
+            Text(
+                text = stringResource(id = R.string.validSigIn),
+                color = colorResource(id = R.color.red),
+                fontSize = 12.sp,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
         Row {
             Icon(
                 Icons.Default.ArrowBack,
@@ -170,7 +173,6 @@ fun SigInInputFields(
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 onClick = {
                     onSigInClicked()
@@ -180,7 +182,15 @@ fun SigInInputFields(
                 ),
                 shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp)
             ) {
-                Text(text = stringResource(id = R.string.sigIn))
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .height(20.dp)
+                            .aspectRatio(1f)
+                    )
+                } else {
+                    Text(text = stringResource(id = R.string.sigIn))
+                }
             }
         }
     }

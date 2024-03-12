@@ -1,6 +1,7 @@
 package com.example.bisky.data.network
 
 import com.apollographql.apollo3.ApolloClient
+import com.example.bisky.data.login.local.TokenPreference
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -31,9 +32,11 @@ object NetworkDIModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpBuilder() = OkHttpClient.Builder()
+    fun provideOkHttpBuilder(
+        loginLocalSourceImpl: TokenPreference
+    ) = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor())
-        .addInterceptor(HeaderInterceptor())
+        .addInterceptor(HeaderInterceptor(loginLocalSourceImpl))
         .build()
 
     @Singleton
