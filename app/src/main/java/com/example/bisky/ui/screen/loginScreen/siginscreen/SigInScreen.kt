@@ -52,14 +52,15 @@ fun SigInScreen(
             navController.popBackStack()
         },
         onSigInClicked = {
-            navController.navigate("home") {
+            viewModel.onEvent(SigInView.Event.OnSigInBtnClick)
+           /* navController.navigate("home") {
                 popUpTo("sigIn") {
                     inclusive = true
                 }
                 popUpTo("boardingLogin") {
                     inclusive = true
                 }
-            }
+            } */
         }
     )
 }

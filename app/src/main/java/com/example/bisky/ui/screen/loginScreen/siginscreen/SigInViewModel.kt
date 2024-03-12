@@ -39,7 +39,7 @@ class SigInViewModel @Inject constructor(
 
     private fun onSigInBtnClick() = viewModelScope.launch {
         val name = _uiState.value.emailTextField.text.toString()
-        val password = _uiState.value.emailTextField.text.toString()
+        val password = _uiState.value.passwordTextField.text.toString()
         loginRepositoryImpl.sigIn(name, password).onSuccess {
             it
         }.onError {
