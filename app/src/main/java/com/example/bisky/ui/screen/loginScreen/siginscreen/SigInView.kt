@@ -9,8 +9,8 @@ import com.example.bisky.ui.screen.loginScreen.siginscreen.model.TextSigInUI
 interface SigInView {
     @OptIn(ExperimentalFoundationApi::class)
     data class State(
-        val loginTextField: TextFieldState = TextFieldState("zoxione"),
-        val passwordTextField: TextFieldState = TextFieldState("123123"),
+        val loginTextField: TextFieldState = TextFieldState(),
+        val passwordTextField: TextFieldState = TextFieldState(),
         val login: TextSigInUI = TextSigInUI(placeHolder = R.string.login_placeholder),
         val password: TextSigInUI = TextSigInUI(placeHolder = R.string.password_placeholder),
         val isLoading: Boolean = false,
