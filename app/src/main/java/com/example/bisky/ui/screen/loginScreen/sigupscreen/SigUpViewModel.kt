@@ -4,7 +4,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.bisky.data.login.LoginRepositoryImpl
+import com.example.bisky.data.network.resultwrapper.onError
+import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.ui.navigation.NavigationRoute
+import com.example.bisky.ui.screen.loginScreen.sigupscreen.SigUpView.Event
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.mapper.TextUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -28,6 +33,46 @@ class SigUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SigUpView.State())
     val uiState: StateFlow<SigUpView.State> = _uiState
 
+
+    fun onEvent(event: Event) {
+        when (event) {
+            is Event.OnSigUpBtnClick -> onSigUpBtnClick(event.navController)
+        }
+    }
+
+    fun onSigUpBtnClick(navController: NavController) = viewModelScope.launch {
+        _uiState.update { it.copy(
+            isLoading = true,
+            isBtnSigUpEnabled = false
+        ) }
+        val name = _uiState.value.loginTextField.text.toString()
+        val password = _uiState.value.passwordTextField.text.toString()
+        val email = _uiState.value.emailTextField.text.toString()
+        if (checkValidData()) {
+            loginRepositoryImpl.sigUp(name, password, email).onSuccess {
+                navController.navigate(NavigationRoute.Home.route) {
+                    popUpTo(NavigationRoute.SigIn.route) {
+                        inclusive = true
+                    }
+                    popUpTo(NavigationRoute.SigUp.route) {
+                        inclusive = true
+                    }
+                }
+            }.onError {
+                it
+            }
+            _uiState.update { it.copy(
+                isLoading = false,
+                isBtnSigUpEnabled = true
+            ) }
+        }
+    }
+
+    fun checkValidData() : Boolean {
+        with(uiState.value) {
+            return login.validateMsg == null && email.validateMsg == null && password.validateMsg == null
+        }
+    }
     init {
         viewModelScope.launch {
             launch {

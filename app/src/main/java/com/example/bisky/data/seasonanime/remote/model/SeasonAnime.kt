@@ -2,7 +2,7 @@ package com.example.bisky.data.seasonanime.remote.model
 
 data class SeasonAnime(
     val poster: String?,
-    val labels: List<String>,
+    val labels: String?,
     val genres: List<Genre>,
     val description: String?,
     val screenshots: List<String>,

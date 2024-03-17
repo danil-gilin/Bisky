@@ -1,23 +1,24 @@
 package com.example.bisky.data.login.remote
 
 import com.example.bisky.data.login.remote.model.SigInParams
-import com.example.bisky.data.login.remote.model.SigInResponse
+import com.example.bisky.data.login.remote.model.SigUpParams
+import com.example.bisky.data.login.remote.model.TokenResponse
 import com.example.bisky.data.login.remote.model.UserResponse
-import org.json.JSONObject
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface LoginApi {
 
     @POST("auth/login")
-    suspend fun sigIn(@Body params: SigInParams): SigInResponse
+    suspend fun sigIn(@Body params: SigInParams): TokenResponse
 
-    @GET("users/whoami")
+    @POST("auth/register")
+    suspend fun sigUp(@Body params: SigUpParams): TokenResponse
+
+    @GET("user/whoami")
     suspend fun checkSigIn(): UserResponse
 
     @GET("auth/refresh")
-    suspend fun refreshToken(): SigInResponse
+    suspend fun refreshToken(): TokenResponse
 }

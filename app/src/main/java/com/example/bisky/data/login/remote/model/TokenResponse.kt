@@ -1,6 +1,6 @@
 package com.example.bisky.data.login.remote.model
 
-data class SigInResponse(
+data class TokenResponse(
     val accessToken: String,
     val refreshToken: String
 )

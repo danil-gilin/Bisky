@@ -1,5 +1,6 @@
 package com.example.bisky.data.network.resultwrapper
 
+import android.util.Log
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.SocketTimeoutException
@@ -11,7 +12,7 @@ class ResultWrapper @Inject constructor() {
         val result = try {
             Result.Success(request.invoke().also { Timber.i(it.toString()) })
         } catch (e: Throwable) {
-            Timber.e(e)
+            Log.e(e.message, e.toString(), e)
             Result.Error(wrapError(e))
         }
         return result

@@ -7,26 +7,32 @@ import com.example.bisky.data.seasonanime.mapper.mapToDomain
 import com.example.bisky.data.seasonanime.remote.model.SeasonAnime
 import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import com.example.bisky.utils.ext.toOptional
-import com.example.type.AiredOnFilter
-import com.example.type.FilterArgs
+import com.example.type.DateBetweenQuery
+import com.example.type.FilterAnimeQuery
+import com.example.type.GeneralAnimeQuery
+import com.example.type.SortAnimeQuery
 import javax.inject.Inject
 
 class ApolloSeasonAnimeClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : SeasonAnimeClient {
     override suspend fun getAnimeSeason(params: RequestSeasonAnimeParams): List<SeasonAnime> {
-        val filter = FilterArgs(
-            screenshotsCount = 5.toOptional(),
-            labelCount = 1.toOptional(),
-            airedOn = AiredOnFilter(
-                params.startDate.toOptional(),
-                params.endDate.toOptional()
+        val filter = GeneralAnimeQuery(
+            count = 100.toOptional(),
+            filter = FilterAnimeQuery(
+                dates_airedOn = DateBetweenQuery(
+                    from = params.startDate.toOptional(),
+                    to = params.endDate.toOptional()
+                ).toOptional()
+            ).toOptional(),
+            sort = SortAnimeQuery(
+                dates_airedOn = true.toOptional()
             ).toOptional()
         )
-        return apolloClient.query(SeasonAnimeQuery(5, Optional.present(filter)))
+        return apolloClient.query(SeasonAnimeQuery(filter))
             .execute()
             .data
-            ?.getAnimePages
+            ?.getAnimes
             ?.map { it.mapToDomain() } ?: emptyList()
     }
 }

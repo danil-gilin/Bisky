@@ -1,15 +1,23 @@
-query SeasonAnimeQuery ($count: Int!, $filter: FilterArgs){
-    getAnimePages(count: $count, filter: $filter) {
+query SeasonAnimeQuery ($animeQuery: GeneralAnimeQuery!){
+    getAnimes(animeQuery: $animeQuery) {
         poster
-        labels
+        labels {
+            ru
+            en
+        }
         genres {
             name {
                 en
                 ru
             }
         }
-        description
+        description {
+            ru
+            en
+        }
         screenshots
-        scores
+        score {
+            averageScore
+        }
     }
 }

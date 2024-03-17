@@ -16,6 +16,11 @@ class LoginRepositoryImpl(
         tokenPreference.saveToken(result.accessToken, result.refreshToken)
     }
 
+    suspend fun sigUp(name: String, password: String, email: String) = resultWrapper.wrap {
+        val result = loginRemoteSource.sigUp(name, password, email)
+        tokenPreference.saveToken(result.accessToken, result.refreshToken)
+    }
+
     suspend fun checkSigIn() = resultWrapper.wrap {
         try {
             loginRemoteSource.checkSigIn()

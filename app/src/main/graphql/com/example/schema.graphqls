@@ -1,39 +1,145 @@
-type Language {
-  en: String!
+"""
+Anime Full Data
+"""
+type AnimeFullModel {
+  _id: String!
 
-  ru: String!
+  dates: DatesModel!
+
+  """
+  Description of the anime
+  """
+  description: LanguageModel!
+
+  episodes: EpisodesModel!
+
+  """
+  Related other projects with this anime
+  """
+  franchise: FranchiseSimpleModel
+
+  """
+  Genres of this anime
+  """
+  genres: [GenreSimpleModel!]!
+
+  kind: KindEnum!
+
+  labels: LabelsModel!
+
+  otherPlatforms: [OtherPlatformFullModel!]!
+
+  """
+  Anime cover
+  """
+  poster: String
+
+  rating: RatingEnum!
+
+  related: [RelatedAnimeFullModel!]!
+
+  score: ScoreModel!
+
+  """
+  Anime screenshots
+  """
+  screenshots: [String!]!
+
+  shikiId: Int!
+
+  status: StatusEnum!
+
+  """
+  The studios that developed this anime
+  """
+  studios: [StudioSimpleModel!]!
+
+  """
+  Anime last update date
+  """
+  updateDate: DateTime!
+
+  usersList: UserListModel!
+
+  """
+  Trailers, teasers, announcements and other videos related to anime
+  """
+  videos: [VideModel!]!
 }
 
-type LinkGenres {
-  anime: Int
+"""
+Anime Data
+"""
+type AnimeSimpleModel {
+  _id: String!
 
-  manga: Int!
+  dates: DatesModel!
+
+  """
+  Description of the anime
+  """
+  description: LanguageModel!
+
+  episodes: EpisodesModel!
+
+  """
+  Related other projects with this anime (ID)
+  """
+  franchise: String
+
+  """
+  Genres of this anime (ID)
+  """
+  genres: [String!]!
+
+  kind: KindEnum!
+
+  labels: LabelsModel!
+
+  otherPlatforms: [OtherPlatformSimpleModel!]!
+
+  """
+  Anime cover
+  """
+  poster: String
+
+  rating: RatingEnum!
+
+  related: [RelatedAnimeSimpleModel!]!
+
+  score: ScoreModel!
+
+  """
+  Anime screenshots
+  """
+  screenshots: [String!]!
+
+  shikiId: Int!
+
+  status: StatusEnum!
+
+  """
+  The studios that developed this anime (ID)
+  """
+  studios: [String!]!
+
+  """
+  Anime last update date
+  """
+  updateDate: DateTime!
+
+  usersList: UserListModel!
+
+  """
+  Trailers, teasers, announcements and other videos related to anime
+  """
+  videos: [VideModel!]!
 }
 
-type GenresModel {
-  linkId: LinkGenres!
+input DateBetweenQuery {
+  from: DateTime = null
 
-  name: Language!
-
-  hentai: Boolean!
-}
-
-type StudiosModel {
-  id: Int!
-
-  name: String!
-
-  img: String
-}
-
-type Episodes {
-  count: Int
-
-  aired: Int
-
-  duration: Int
-
-  nextEpisodeAt: DateTime
+  to: DateTime = null
 }
 
 """
@@ -41,98 +147,464 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Dates {
+"""
+Date information
+"""
+type DatesModel {
+  """
+  Anime release date
+  """
   airedOn: DateTime
 
+  """
+  Anime release date
+  """
   releasedOn: DateTime
 }
 
-type RelationInfo {
-  name: String
+"""
+General information about anime series
+"""
+type EpisodesModel {
+  airedCount: Int!
 
-  animes: [RelationInfoAnime!]!
+  averageDuration: Int!
+
+  """
+  Number of episodes/Episodes planned (if null, then the number of series is unlimited)
+  """
+  count: Int
+
+  lastEpisodeAiredDate: DateTime
+
+  nextEpisodeAiredDate: DateTime
+
+  singleEpisodes: [SingleEpisodeModel!]!
 }
 
-type RelationInfoAnime {
-  relation: Language!
+"""
+Facts about anime/manga/Japan, etc.
+"""
+type FactModel {
+  _id: String!
 
-  id: Int!
+  en: String
 
-  labels: [String!]!
-
-  poster: String
-
-  kind: KindEnum!
-
-  scores: Float!
-
-  anotherScores: [Float!]
-
-  status: StatusEnum!
+  ru: String
 }
 
+"""
+Limit documents by these parameters
+"""
+input FilterAnimeQuery {
+  _id_ID: [String!] = null
+
+  dates_airedOn: DateBetweenQuery = null
+
+  dates_releasedOn: DateBetweenQuery = null
+
+  episodes_airedCount: IntBetweenQuery = null
+
+  episodes_averageDuration: DateBetweenQuery = null
+
+  episodes_lastEpisodeAiredDate: DateBetweenQuery = null
+
+  episodes_nextEpisodeAiredDate: DateBetweenQuery = null
+
+  franchises_ID: [String!] = null
+
+  genres_ID: [String!] = null
+
+  kind: [KindEnum!] = null
+
+  rating: [RatingEnum!] = null
+
+  score_averageScore: FloatBetweenQuery = null
+
+  shikiId: [Float!] = null
+
+  status: [StatusEnum!] = null
+
+  studios_ID: [String!] = null
+}
+
+"""
+Filter values
+"""
+input FilterFactQuery {
+  _id: [String!] = null
+}
+
+"""
+Filter values
+"""
+input FilterFranchiseQuery {
+  _id: [String!] = null
+
+  name_en: [String!] = null
+
+  name_ru: [String!] = null
+
+  shikiId: [String!] = null
+}
+
+"""
+Filter values
+"""
+input FilterGenreQuery {
+  _id: [String!] = null
+
+  name_en: [String!] = null
+
+  name_ru: [String!] = null
+}
+
+"""
+Filter values
+"""
+input FilterPlatformQuery {
+  _id: [String!] = null
+
+  name_en: [String!] = null
+
+  name_ru: [String!] = null
+
+  shikiId: [String!] = null
+}
+
+"""
+Filter values
+"""
+input FilterStudioQuery {
+  _id: [String!] = null
+
+  name: [String!] = null
+}
+
+input FloatBetweenQuery {
+  from: Float = null
+
+  to: Float = null
+}
+
+"""
+Related projects
+"""
+type FranchiseFullModel {
+  _id: String!
+
+  description: LanguageModel!
+
+  name: LanguageModel!
+
+  relatedWorks: [AnimeSimpleModel!]!
+
+  shikiId: String!
+}
+
+"""
+Related projects
+"""
+type FranchiseSimpleModel {
+  _id: String!
+
+  description: LanguageModel!
+
+  name: LanguageModel!
+
+  relatedWorks: [String!]!
+
+  shikiId: String!
+}
+
+"""
+Anime arguments
+"""
+input GeneralAnimeQuery {
+  """
+  Number of output items
+  """
+  count: Int! = 10
+
+  filter: FilterAnimeQuery = null
+
+  limit: LimitQuantityAnimeQuery = null
+
+  """
+  Page when paginated
+  """
+  page: Int! = 1
+
+  sort: SortAnimeQuery = null
+}
+
+"""
+Franchise arguments
+"""
+input GeneralFranchiseQuery {
+  """
+  Number of output items
+  """
+  count: Int! = 10
+
+  filter: FilterFranchiseQuery = null
+
+  """
+  Page when paginated
+  """
+  page: Int! = 1
+}
+
+"""
+Genre arguments
+"""
+input GeneralGenreQuery {
+  """
+  Number of output items
+  """
+  count: Int! = 10
+
+  filter: FilterGenreQuery = null
+
+  """
+  Page when paginated
+  """
+  page: Int! = 1
+}
+
+"""
+Platform arguments
+"""
+input GeneralPlatformQuery {
+  """
+  Number of output items
+  """
+  count: Int! = 10
+
+  filter: FilterPlatformQuery = null
+
+  """
+  Page when paginated
+  """
+  page: Int! = 1
+}
+
+"""
+Studio arguments
+"""
+input GeneralStudioQuery {
+  """
+  Number of output items
+  """
+  count: Int! = 10
+
+  filter: FilterStudioQuery = null
+
+  """
+  Page when paginated
+  """
+  page: Int! = 1
+}
+
+"""
+Data on anime genres
+"""
+type GenreFullModel {
+  _id: String!
+
+  description: LanguageModel!
+
+  name: LanguageModel!
+
+  relatedWorks: [AnimeSimpleModel!]!
+}
+
+"""
+Data on anime genres
+"""
+type GenreSimpleModel {
+  _id: String!
+
+  description: LanguageModel!
+
+  name: LanguageModel!
+
+  relatedWorks: [String!]!
+}
+
+input IntBetweenQuery {
+  from: Int = null
+
+  to: Int = null
+}
+
+"""
+Anime type
+"""
 enum KindEnum {
-  tv
-
   movie
 
-  ova
+  music
+
+  none
 
   ona
 
+  ova
+
   special
 
-  music
+  tv
+
+  tv_special
 }
 
-enum StatusEnum {
-  anons
+"""
+Names in different languages
+"""
+type LabelsModel {
+  en: String
 
-  ongoing
+  ru: String
 
-  released
+  """
+  Titles in other languages or synonymous with the original
+  """
+  synonyms: [String!]!
 }
 
-type AnimeInfoModel {
-  id: Int!
+type LanguageModel {
+  en: String
 
-  labels: [String!]!
-
-  poster: String
-
-  kind: KindEnum!
-
-  scores: Float!
-
-  anotherScores: [Float!]
-
-  status: StatusEnum!
-
-  episodes: Episodes!
-
-  dates: Dates!
-
-  rating: RatingEnum!
-
-  description: String
-
-  screenshots: [String!]!
-
-  videos: [String!]!
-
-  genres: [GenresModel!]!
-
-  studios: [StudiosModel!]!
-
-  franchise: RelationInfo
-
-  updateDate: DateTime!
+  ru: String
 }
 
+"""
+Limitations on the number of a particular field
+"""
+input LimitQuantityAnimeQuery {
+  """
+  Number of related
+  """
+  relatedCount: Int! = 100
+
+  """
+  Number of screenshots
+  """
+  screenshotsCount: Int! = 100
+
+  """
+  Number of video
+  """
+  videosCount: Int! = 100
+}
+
+"""
+This anime is on other platforms
+"""
+type OtherPlatformFullModel {
+  platform: PlatformModel!
+
+  """
+  Link to this anime on this platform
+  """
+  url: String!
+}
+
+"""
+This anime is on other platforms
+"""
+type OtherPlatformSimpleModel {
+  platform: String!
+
+  """
+  Link to this anime on this platform
+  """
+  url: String!
+}
+
+"""
+Platforms on which you can view additional information about a particular anime
+"""
+type PlatformModel {
+  _id: String!
+
+  logo: String
+
+  name: LanguageModel!
+
+  shikiId: String!
+}
+
+type Query {
+  getAnimes(animeQuery: GeneralAnimeQuery! = {
+    count: 10
+    page: 1
+  }
+  , franchiseQuery: GeneralFranchiseQuery! = {
+    count: 100
+    page: 1
+  }
+  , genreQuery: GeneralGenreQuery! = {
+    count: 100
+    page: 1
+  }
+  , platformQuery: GeneralPlatformQuery! = {
+    count: 100
+    page: 1
+  }
+  , studioQuery: GeneralStudioQuery! = {
+    count: 10
+    page: 1
+  }
+  ): [AnimeFullModel!]!
+
+  getFacts("Number of output items" count: Int! = 10, filter: FilterFactQuery = null, "Page when paginated" page: Int! = 1): [FactModel!]!
+
+  getFranchises(animeQuery: GeneralAnimeQuery! = {
+    count: 10
+    page: 1
+  }
+  , franchiseQuery: GeneralFranchiseQuery! = {
+    count: 10
+    page: 1
+  }
+  ): [FranchiseFullModel!]!
+
+  getGenres(animeQuery: GeneralAnimeQuery! = {
+    count: 10
+    page: 1
+  }
+  , genreQuery: GeneralGenreQuery! = {
+    count: 10
+    page: 1
+  }
+  ): [GenreFullModel!]!
+
+  getPlatforms(platformQuery: GeneralPlatformQuery! = {
+    count: 10
+    page: 1
+  }
+  ): [PlatformModel!]!
+
+  getStudios(animeQuery: GeneralAnimeQuery! = {
+    count: 10
+    page: 1
+  }
+  , studioQuery: GeneralStudioQuery! = {
+    count: 10
+    page: 1
+  }
+  ): [StudioFullModel!]!
+}
+
+"""
+Anime age rating
+"""
 enum RatingEnum {
-  none
-
   g
+
+  none
 
   pg
 
@@ -145,53 +617,139 @@ enum RatingEnum {
   rx
 }
 
-type Query {
-  getOneAnime(id: Int!): AnimeInfoModel!
-
-  getAnimePages(page: Int! = 1, count: Int! = 10, filter: FilterArgs, sort: SortArgs, value: String): [AnimeInfoModel!]!
-
-  getAllGenres(page: Int! = 1, count: Int! = 10, hentai: Boolean! = false): [GenresModel!]!
-
-  getRandomFact: String!
-}
-
-input FilterArgs {
-  kind: KindEnum
-
-  status: StatusEnum
-
-  rating: RatingEnum
+"""
+Related anime projects
+"""
+type RelatedAnimeFullModel {
+  base: AnimeSimpleModel!
 
   """
-  Format: YYYY.MM.DD
+  Names of the bundle of this anime project
   """
-  airedOn: airedOnFilter
+  relation: LanguageModel!
 
-  genres: [Int!]
-
-  studios: [Int!]
-
-  franchiseName: String
-
-  screenshotsCount: Int
-
-  labelCount: Int
-
-  score: Float
+  shikiId: Int!
 }
 
-input airedOnFilter {
-  from: String
+"""
+Related anime projects
+"""
+type RelatedAnimeSimpleModel {
+  base: String!
 
-  to: String
+  """
+  Names of the bundle of this anime project
+  """
+  relation: LanguageModel!
+
+  shikiId: Int!
 }
 
-input SortArgs {
-  scores: Boolean
+type ScoreModel {
+  averageScore: Float!
 
-  airedOn: Boolean
+  count: Int!
+}
 
-  updateDate: Boolean
+"""
+Information about each series separately
+"""
+type SingleEpisodeModel {
+  """
+  Episode release date
+  """
+  airedOn: DateTime
+
+  """
+  Episode duration
+  """
+  duration: Int!
+
+  """
+  Episode title
+  """
+  name: String
+}
+
+"""
+Sorting documents (false - ascending; true - descending)
+"""
+input SortAnimeQuery {
+  dates_airedOn: Boolean = null
+
+  dates_releasedOn: Boolean = null
+
+  episodes_airedCount: Boolean = null
+
+  episodes_averageDuration: Boolean = null
+
+  episodes_lastEpisodeAiredDate: Boolean = null
+
+  episodes_nextEpisodeAiredDate: Boolean = null
+
+  score_averageScore: Boolean = null
+}
+
+"""
+Release status of this anime
+"""
+enum StatusEnum {
+  anons
+
+  ongoing
+
+  released
+}
+
+"""
+The studios that are developing this or that anime
+"""
+type StudioFullModel {
+  _id: String!
+
+  description: LanguageModel!
+
+  logo: String
+
+  name: String!
+
+  relatedWorks: [AnimeSimpleModel!]!
+}
+
+"""
+The studios that are developing this or that anime
+"""
+type StudioSimpleModel {
+  _id: String!
+
+  description: LanguageModel!
+
+  logo: String
+
+  name: String!
+
+  relatedWorks: [String!]!
+}
+
+type UserListModel {
+  addedCount: Int!
+
+  completedCount: Int!
+
+  droppedCount: Int!
+
+  generalCount: Int!
+
+  watchingCount: Int!
+}
+
+"""
+Project video sources (trailers, teasers, etc.)
+"""
+type VideModel {
+  name: String
+
+  url: String!
 }
 
 schema {

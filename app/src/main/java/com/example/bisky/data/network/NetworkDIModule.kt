@@ -20,7 +20,7 @@ object NetworkDIModule {
     @Provides
     fun provideApolloClient(): ApolloClient =
         ApolloClient.Builder()
-            .serverUrl("https://bisky-back-rgnzzucls-amygrooove.vercel.app/graphql")
+            .serverUrl("https://api.bisky.one/graphql")
             .addInterceptor(LoggingApolloInterceptor())
             .build()
 
@@ -47,7 +47,7 @@ object NetworkDIModule {
     ): Retrofit = Retrofit
         .Builder()
         .client(okHttpClient)
-        .baseUrl("https://bisky-back-rgnzzucls-amygrooove.vercel.app/") // TODO ADD BASE URL
+        .baseUrl("https://api.bisky.one/api/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 }

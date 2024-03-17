@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,14 +55,7 @@ fun SigUpScreen(
             navController.popBackStack()
         },
         onSigUpClicked = {
-            navController.navigate("home") {
-                popUpTo("sigUp") {
-                    inclusive = true
-                }
-                popUpTo("boardingLogin") {
-                    inclusive = true
-                }
-            }
+            viewModel.onEvent(SigUpView.Event.OnSigUpBtnClick(navController))
         }
     )
 }
@@ -181,6 +176,7 @@ fun SigUpInputFields(
                     }
             )
             Button(
+                enabled = uiState.isBtnSigUpEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxWidth()
@@ -193,7 +189,15 @@ fun SigUpInputFields(
                 ),
                 shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp)
             ) {
-                Text(text = stringResource(id = R.string.sigUp))
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .height(20.dp)
+                            .aspectRatio(1f)
+                    )
+                } else {
+                    Text(text = stringResource(id = R.string.sigUp))
+                }
             }
         }
     }

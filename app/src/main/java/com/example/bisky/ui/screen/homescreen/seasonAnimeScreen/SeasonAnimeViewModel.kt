@@ -53,10 +53,16 @@ class SeasonAnimeViewModel @Inject constructor(
     }
 
     private suspend fun getSeasonAnime() {
+        _uiState.update {
+            it.copy(isLoading = true)
+        }
         val result = seasonAnimeRepository.getSeasonAnime(getRequestSeasonAnimeParams())
         val items = seasonAnimeMapper.map(result)
         _uiState.update {
-            it.copy(itemsAnime = items)
+            it.copy(
+                itemsAnime = items,
+                isLoading = false
+            )
         }
     }
 

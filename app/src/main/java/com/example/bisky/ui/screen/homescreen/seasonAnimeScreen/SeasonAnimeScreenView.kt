@@ -7,6 +7,7 @@ sealed interface SeasonAnimeScreenView {
         val seasonImg: Int = 0,
         val seasonTitle: Int = 0,
         val positionScroll: Int = 0,
+        val isLoading: Boolean = false,
         val itemsAnime: List<AnimeSeasonUI> = emptyList()
     )
 
