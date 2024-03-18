@@ -10,6 +10,7 @@ import com.example.type.DateBetweenQuery
 import com.example.type.FilterAnimeQuery
 import com.example.type.GeneralAnimeQuery
 import com.example.type.SortAnimeQuery
+import com.example.type.StatusEnum
 import javax.inject.Inject
 import kotlinx.coroutines.withContext
 
@@ -25,7 +26,8 @@ class SeasonAnimeRemoteSourceImpl @Inject constructor(
                     dates_airedOn = DateBetweenQuery(
                         from = params.startDate.toOptional(),
                         to = params.endDate.toOptional()
-                    ).toOptional()
+                    ).toOptional(),
+                    status = listOf(StatusEnum.released,StatusEnum.ongoing).toOptional()
                 ).toOptional(),
                 sort = SortAnimeQuery(
                     dates_airedOn = true.toOptional()

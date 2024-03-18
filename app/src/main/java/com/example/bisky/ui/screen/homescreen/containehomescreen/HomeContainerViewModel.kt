@@ -1,5 +1,7 @@
 package com.example.bisky.ui.screen.homescreen.containehomescreen
 
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import com.example.bisky.R
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerView.Event
@@ -9,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel

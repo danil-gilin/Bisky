@@ -28,6 +28,7 @@ import com.example.bisky.R
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerView.Event
 import com.example.bisky.ui.screen.homescreen.containehomescreen.model.HomeTab
 import com.example.bisky.ui.screen.homescreen.containehomescreen.model.HomeTabType
+import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.AllGenreScreen
 import com.example.bisky.ui.screen.homescreen.newseriesscreen.NewSeriesScreen
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreen
 
@@ -51,7 +52,7 @@ fun HomeContainerScreen(
 ) {
     when (uiState.currentTabType) {
         HomeTabType.Season -> SeasonAnimeScreen()
-        HomeTabType.Genre -> NewSeriesScreen()
+        HomeTabType.Genre -> AllGenreScreen()
         HomeTabType.New -> NewSeriesScreen()
     }
     TabHomeScreen(uiState, onTabClick)

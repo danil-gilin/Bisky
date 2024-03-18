@@ -1,5 +1,5 @@
-query ExampleQuery {
-    getGenres {
+query GetGenres($genreQuery: GeneralGenreQuery!) {
+    getGenres(genreQuery: $genreQuery) {
         _id
         description {
             ru

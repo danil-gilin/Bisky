@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,9 +44,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.bisky.R
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeasonUI
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 
@@ -69,14 +72,12 @@ fun SeasonAnimeScreen(
 ) {
     val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = uiState.positionScroll)
     val listAnime = uiState.itemsAnime
-    val keyLoader = "loader"
-    val keyHeader = "header"
 
     LaunchedEffect(lazyListState) {
         snapshotFlow {
             lazyListState.firstVisibleItemIndex
         }
-            .debounce(500L)
+            .debounce(200L)
             .collectLatest {
                 onScrollItem(it)
             }
@@ -170,7 +171,11 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
         val (imgBackground, title, box, imgPoster, description, rating, genre) = createRefs()
 
         AsyncImage(
-            model = seasonUI.backgroundImg,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(seasonUI.backgroundImg)
+                .fetcherDispatcher(Dispatchers.IO)
+                .crossfade(true)
+                .build(),
             modifier = Modifier
                 .constrainAs(imgBackground) {
                     top.linkTo(parent.top)
@@ -193,7 +198,11 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
                 .background(colorResource(R.color.bisky_dark_400))
         )
         AsyncImage(
-            model = seasonUI.img,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(seasonUI.img)
+                .fetcherDispatcher(Dispatchers.IO)
+                .crossfade(true)
+                .build(),
             modifier = Modifier
                 .constrainAs(imgPoster) {
                     top.linkTo(imgBackground.top, 8.dp)

@@ -10,4 +10,7 @@ interface SeasonAnimeDao : BaseDao<SeasonAnimeEntity> {
 
     @Query("SELECT * FROM season_anime")
     suspend fun fetchListSeasonAnime(): List<SeasonAnimeEntity>
+
+    @Query("DELETE FROM season_anime")
+    suspend fun clear()
 }

@@ -13,7 +13,13 @@ class SeasonAnimeLocalSourceImpl @Inject constructor(
 
     override suspend fun insetList(list: List<SeasonAnimeEntity>) =
         withContext(dispatchersProvider.io) {
+            clear()
             seasonAnimeDao.insertList(list)
+        }
+
+    override suspend fun clear() =
+        withContext(dispatchersProvider.io) {
+            seasonAnimeDao.clear()
         }
 
     override suspend fun fetchList() =
