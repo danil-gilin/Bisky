@@ -5,6 +5,7 @@ import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.bisky.R
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.login.LoginRepository
@@ -40,17 +41,22 @@ class SigUpViewModel @Inject constructor(
     }
 
     fun onSigUpBtnClick(navController: NavController) = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                isLoading = true,
-                isBtnSigUpEnabled = false
-            )
-        }
         val name = _uiState.value.loginTextField.text.toString()
         val password = _uiState.value.passwordTextField.text.toString()
         val email = _uiState.value.emailTextField.text.toString()
         if (checkValidData()) {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    isBtnSigUpEnabled = false
+                )
+            }
             loginRepositoryImpl.sigUp(name, password, email).onSuccess {
+                _uiState.update {
+                    it.copy(
+                        errorMsg = null
+                    )
+                }
                 navController.navigate(NavigationRoute.Home.route) {
                     popUpTo(NavigationRoute.SigIn.route) {
                         inclusive = true
@@ -60,7 +66,12 @@ class SigUpViewModel @Inject constructor(
                     }
                 }
             }.onError {
-                it
+                // TODO refactor if server send normal error
+                _uiState.update {
+                    it.copy(
+                        errorMsg = R.string.validSigUp
+                    )
+                }
             }
             _uiState.update {
                 it.copy(
@@ -72,6 +83,10 @@ class SigUpViewModel @Inject constructor(
     }
 
     fun checkValidData(): Boolean {
+        val item = textUIMapper.passwordToTextUI(_uiState.value.passwordTextField.text.toString())
+        _uiState.update { it.copy(password = item) }
+        val itemEmail = textUIMapper.mailToTextUI(_uiState.value.emailTextField.text.toString())
+        _uiState.update { it.copy(email = itemEmail) }
         with(uiState.value) {
             return login.validateMsg == null &&
                 email.validateMsg == null &&

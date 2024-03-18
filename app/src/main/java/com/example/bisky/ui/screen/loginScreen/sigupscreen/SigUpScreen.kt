@@ -33,6 +33,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -128,6 +129,14 @@ fun SigUpInputFields(
                 )
             )
     ) {
+        ValidateMsg(
+            uiState.errorMsg,
+            R.color.red,
+            TextAlign.Center,
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        )
         BaseTextInput(
             uiState.loginTextField,
             stringResource(id = uiState.login.placeHolder),
@@ -138,7 +147,6 @@ fun SigUpInputFields(
             isClearIconVisible = uiState.login.isClearIconVisible,
             isPlaceHolderVisible = uiState.login.isPlaceHolderVisible
         )
-        ValidateMsg(uiState.login.validateMsg, uiState.login.validateColor)
         BaseTextInput(
             uiState.emailTextField,
             stringResource(id = uiState.email.placeHolder),
@@ -204,14 +212,20 @@ fun SigUpInputFields(
 }
 
 @Composable
-fun ValidateMsg(text: Int?, color: Int) {
+fun ValidateMsg(
+    text: Int?,
+    color: Int,
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier
+) {
     if (text != null) {
         val str = stringResource(id = text)
         Text(
             text = str,
             color = colorResource(id = color),
             fontSize = 12.sp,
-            modifier = Modifier.padding(start = 16.dp)
+            textAlign = textAlign,
+            modifier = modifier.padding(start = 16.dp)
         )
     } else {
         Spacer(modifier = Modifier.height(6.dp))

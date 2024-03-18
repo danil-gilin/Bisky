@@ -9,6 +9,7 @@ import com.example.bisky.ui.screen.loginScreen.sigupscreen.model.TextUI
 interface SigUpView {
     @OptIn(ExperimentalFoundationApi::class)
     data class State(
+        val errorMsg: Int? = null,
         val email: TextUI = TextUI(placeHolder = R.string.email_placeholder),
         val login: TextUI = TextUI(placeHolder = R.string.login_placeholder),
         val password: TextUI = TextUI(placeHolder = R.string.password_placeholder),

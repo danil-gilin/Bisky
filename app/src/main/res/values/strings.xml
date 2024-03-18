@@ -28,4 +28,5 @@
     <string name="validPassword">Пароль слишком легкий</string>
     <string name="validLogin">Логин уже занят</string>
     <string name="validSigIn">Логин или пароль неправильные</string>
+    <string name="validSigUp">Почта или логин пользователя заняты</string>
 </resources>
