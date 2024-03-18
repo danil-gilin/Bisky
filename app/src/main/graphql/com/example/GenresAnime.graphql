@@ -1,0 +1,16 @@
+query ExampleQuery {
+    getGenres {
+        _id
+        description {
+            ru
+            en
+        }
+        name {
+            en
+            ru
+        }
+        relatedWorks {
+            poster
+        }
+    }
+}

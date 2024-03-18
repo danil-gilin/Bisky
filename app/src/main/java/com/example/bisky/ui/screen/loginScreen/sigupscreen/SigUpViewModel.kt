@@ -5,9 +5,9 @@ import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.bisky.data.login.LoginRepositoryImpl
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.repository.login.LoginRepository
 import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.SigUpView.Event
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.mapper.TextUIMapper
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SigUpViewModel @Inject constructor(
     private val textUIMapper: TextUIMapper,
-    private val loginRepositoryImpl: LoginRepositoryImpl
+    private val loginRepositoryImpl: LoginRepository
 ) : ViewModel() {
     companion object {
         const val DEBOUNCE = 1000L
@@ -33,7 +33,6 @@ class SigUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SigUpView.State())
     val uiState: StateFlow<SigUpView.State> = _uiState
 
-
     fun onEvent(event: Event) {
         when (event) {
             is Event.OnSigUpBtnClick -> onSigUpBtnClick(event.navController)
@@ -41,10 +40,12 @@ class SigUpViewModel @Inject constructor(
     }
 
     fun onSigUpBtnClick(navController: NavController) = viewModelScope.launch {
-        _uiState.update { it.copy(
-            isLoading = true,
-            isBtnSigUpEnabled = false
-        ) }
+        _uiState.update {
+            it.copy(
+                isLoading = true,
+                isBtnSigUpEnabled = false
+            )
+        }
         val name = _uiState.value.loginTextField.text.toString()
         val password = _uiState.value.passwordTextField.text.toString()
         val email = _uiState.value.emailTextField.text.toString()
@@ -61,18 +62,23 @@ class SigUpViewModel @Inject constructor(
             }.onError {
                 it
             }
-            _uiState.update { it.copy(
-                isLoading = false,
-                isBtnSigUpEnabled = true
-            ) }
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    isBtnSigUpEnabled = true
+                )
+            }
         }
     }
 
-    fun checkValidData() : Boolean {
+    fun checkValidData(): Boolean {
         with(uiState.value) {
-            return login.validateMsg == null && email.validateMsg == null && password.validateMsg == null
+            return login.validateMsg == null &&
+                email.validateMsg == null &&
+                password.validateMsg == null
         }
     }
+
     init {
         viewModelScope.launch {
             launch {

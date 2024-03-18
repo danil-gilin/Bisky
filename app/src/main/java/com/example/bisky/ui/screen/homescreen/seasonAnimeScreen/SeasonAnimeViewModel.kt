@@ -3,7 +3,9 @@ package com.example.bisky.ui.screen.homescreen.seasonAnimeScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.R
-import com.example.bisky.data.seasonanime.SeasonAnimeRepository
+import com.example.bisky.data.network.resultwrapper.onError
+import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.repository.seasonanime.SeasonAnimeRepository
 import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.mapper.SeasonAnimeMapper
@@ -56,13 +58,20 @@ class SeasonAnimeViewModel @Inject constructor(
         _uiState.update {
             it.copy(isLoading = true)
         }
-        val result = seasonAnimeRepository.getSeasonAnime(getRequestSeasonAnimeParams())
-        val items = seasonAnimeMapper.map(result)
-        _uiState.update {
-            it.copy(
-                itemsAnime = items,
-                isLoading = false
-            )
+        seasonAnimeRepository.getSeasonAnime(getRequestSeasonAnimeParams()).onSuccess {
+            val items = seasonAnimeMapper.map(it)
+            _uiState.update {
+                it.copy(
+                    itemsAnime = items,
+                    isLoading = false
+                )
+            }
+        }.onError {
+            _uiState.update {
+                it.copy(
+                    isLoading = false
+                )
+            }
         }
     }
 

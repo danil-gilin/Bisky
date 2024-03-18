@@ -5,9 +5,9 @@ import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.bisky.data.login.LoginRepositoryImpl
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.repository.login.LoginRepository
 import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView.Event
 import com.example.bisky.ui.screen.loginScreen.siginscreen.mapper.TextSigInUIMapper
@@ -23,18 +23,15 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SigInViewModel @Inject constructor(
     private val textUIMapper: TextSigInUIMapper,
-    private val loginRepositoryImpl: LoginRepositoryImpl
+    private val loginRepositoryImpl: LoginRepository
 ) : ViewModel() {
-    companion object {
-        const val DEBOUNCE = 1000L
-    }
 
     private val _uiState = MutableStateFlow(SigInView.State())
     val uiState: StateFlow<SigInView.State> = _uiState
 
     fun onEvent(event: Event) {
         when (event) {
-           is Event.OnSigInBtnClick -> onSigInBtnClick(event.navController)
+            is Event.OnSigInBtnClick -> onSigInBtnClick(event.navController)
         }
     }
 

@@ -1,7 +1,7 @@
 package com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.mapper
 
 import com.example.bisky.R
-import com.example.bisky.data.seasonanime.remote.model.SeasonAnime
+import com.example.bisky.domain.repository.seasonanime.model.SeasonAnime
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeasonUI
 import javax.inject.Inject
 

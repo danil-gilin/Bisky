@@ -2,6 +2,8 @@ package com.example.bisky.data.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.example.bisky.data.login.local.TokenPreference
+import com.example.bisky.data.network.dispatcher.DispatchersProvider
+import com.example.bisky.data.network.dispatcher.DispatchersProviderImpl
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -50,4 +52,8 @@ object NetworkDIModule {
         .baseUrl("https://api.bisky.one/api/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
+
+    @Singleton
+    @Provides
+    fun provideDispatcherProvider(): DispatchersProvider = DispatchersProviderImpl
 }

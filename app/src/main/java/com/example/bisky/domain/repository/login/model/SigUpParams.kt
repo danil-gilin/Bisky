@@ -1,4 +1,4 @@
-package com.example.bisky.data.login.remote.model
+package com.example.bisky.domain.repository.login.model
 
 data class SigUpParams(
     val username: String,

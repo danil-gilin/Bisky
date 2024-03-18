@@ -1,5 +1,6 @@
 query SeasonAnimeQuery ($animeQuery: GeneralAnimeQuery!){
     getAnimes(animeQuery: $animeQuery) {
+        _id
         poster
         labels {
             ru

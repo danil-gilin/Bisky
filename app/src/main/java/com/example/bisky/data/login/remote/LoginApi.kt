@@ -1,9 +1,9 @@
 package com.example.bisky.data.login.remote
 
-import com.example.bisky.data.login.remote.model.SigInParams
-import com.example.bisky.data.login.remote.model.SigUpParams
 import com.example.bisky.data.login.remote.model.TokenResponse
 import com.example.bisky.data.login.remote.model.UserResponse
+import com.example.bisky.domain.repository.login.model.SigInParams
+import com.example.bisky.domain.repository.login.model.SigUpParams
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

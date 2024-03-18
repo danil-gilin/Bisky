@@ -4,13 +4,16 @@ import android.content.SharedPreferences
 import com.example.bisky.data.login.local.TokenPreference
 import com.example.bisky.data.login.remote.LoginApi
 import com.example.bisky.data.login.remote.LoginRemoteSourceImpl
+import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
+import com.example.bisky.domain.repository.login.LoginRepository
+import com.example.bisky.domain.repository.login.remote.LoginRemoteSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
 import javax.inject.Singleton
+import retrofit2.Retrofit
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -21,9 +24,14 @@ object LoginDIModule {
 
     @Singleton
     @Provides
-    fun provideLoginRemoteSource(loginApi: LoginApi) = LoginRemoteSourceImpl(
-        loginApi
-    )
+    fun provideLoginRemoteSource(
+        loginApi: LoginApi,
+        dispatchersProvider: DispatchersProvider
+    ): LoginRemoteSource =
+        LoginRemoteSourceImpl(
+            loginApi,
+            dispatchersProvider
+        )
 
     @Singleton
     @Provides
@@ -34,10 +42,10 @@ object LoginDIModule {
     @Singleton
     @Provides
     fun provideLoginRepository(
-        loginRemoteSource: LoginRemoteSourceImpl,
+        loginRemoteSource: LoginRemoteSource,
         localSourceImpl: TokenPreference,
         resultWrapper: ResultWrapper
-    ) = LoginRepositoryImpl(
+    ): LoginRepository = LoginRepositoryImpl(
         loginRemoteSource = loginRemoteSource,
         tokenPreference = localSourceImpl,
         resultWrapper = resultWrapper
