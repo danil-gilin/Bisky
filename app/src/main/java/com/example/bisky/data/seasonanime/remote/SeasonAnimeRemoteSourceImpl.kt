@@ -5,7 +5,7 @@ import com.example.SeasonAnimeQuery
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import com.example.bisky.domain.repository.seasonanime.remote.SeasonAnimeRemoteSource
-import com.example.bisky.utils.ext.toOptional
+import com.example.bisky.common.ext.toOptional
 import com.example.type.DateBetweenQuery
 import com.example.type.FilterAnimeQuery
 import com.example.type.GeneralAnimeQuery

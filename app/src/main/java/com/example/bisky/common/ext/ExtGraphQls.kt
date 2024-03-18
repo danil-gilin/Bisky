@@ -1,4 +1,4 @@
-package com.example.bisky.utils.ext
+package com.example.bisky.common.ext
 
 import com.apollographql.apollo3.api.Optional
 

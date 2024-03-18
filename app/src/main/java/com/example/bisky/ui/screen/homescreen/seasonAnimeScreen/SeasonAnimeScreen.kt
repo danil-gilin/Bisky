@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.bisky.R
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
@@ -70,6 +69,8 @@ fun SeasonAnimeScreen(
 ) {
     val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = uiState.positionScroll)
     val listAnime = uiState.itemsAnime
+    val keyLoader = "loader"
+    val keyHeader = "header"
 
     LaunchedEffect(lazyListState) {
         snapshotFlow {
@@ -133,14 +134,19 @@ fun SeasonAnimeScreen(
                 )
             }
         }
-        items(listAnime) { item ->
+        items(
+            listAnime,
+            key = { it.itemId }
+        )
+        { item ->
             ItemAnimeSeason(item)
         }
         item {
-            if (true) {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
+            if (uiState.isLoading) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -172,6 +178,7 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
                 .clip(RoundedCornerShape(8.dp))
                 .height(200.dp)
                 .fillMaxWidth(),
+            placeholder = painterResource(id = R.drawable.ic_logo),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
@@ -195,6 +202,7 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
                 .clip(RoundedCornerShape(3.dp))
                 .height(110.dp)
                 .width(80.dp),
+            placeholder = painterResource(id = R.drawable.ic_logo),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
@@ -295,6 +303,7 @@ fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
 fun ItemAnimeSeasonPreview() {
     ItemAnimeSeason(
         AnimeSeasonUI(
+            itemId = "2",
             img = "R.drawable.anime_autumn",
             title = "anime anime anime",
             description = "anime anime anime",
@@ -317,6 +326,7 @@ fun SeasonAnimePreview() {
             positionScroll = 0,
             itemsAnime = listOf(
                 AnimeSeasonUI(
+                    itemId = "2",
                     img = "R.drawable.anime_autumn",
                     title = "anime anime anime",
                     description = "anime anime anime",

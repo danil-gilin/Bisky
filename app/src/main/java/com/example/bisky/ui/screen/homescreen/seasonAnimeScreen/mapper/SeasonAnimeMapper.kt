@@ -10,6 +10,7 @@ class SeasonAnimeMapper @Inject constructor() {
     fun map(items: List<SeasonAnime>): List<AnimeSeasonUI> {
         return items.map {
             AnimeSeasonUI(
+                itemId = it._id,
                 img = it.poster.orEmpty(),
                 title = it.labels.orEmpty(),
                 description = it.description.orEmpty(),
