@@ -1,6 +1,11 @@
-package com.example.bisky.data.login.remote.model
+package com.example.bisky.data.login.local.model
 
-data class UserResponse(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "user")
+data class UserEntity(
+    @PrimaryKey
     val _id: String,
     val email: String,
     val image: String?,

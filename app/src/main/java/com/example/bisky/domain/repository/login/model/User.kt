@@ -1,6 +1,6 @@
-package com.example.bisky.data.login.remote.model
+package com.example.bisky.domain.repository.login.model
 
-data class UserResponse(
+data class User(
     val _id: String,
     val email: String,
     val image: String?,
