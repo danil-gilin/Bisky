@@ -8,7 +8,7 @@ import com.example.bisky.data.room.BaseDao
 @Dao
 interface LoginDao : BaseDao<UserEntity> {
     @Query("SELECT * FROM user")
-    suspend fun fetchUser(): UserEntity
+    suspend fun fetchUser(): UserEntity?
 
     @Query("DELETE FROM user")
     suspend fun clearUser()

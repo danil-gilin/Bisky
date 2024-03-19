@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "efac9fbc93dd76e3e5eecba13297973e",
+    "identityHash": "25cfb6532971014ce741002c78880581",
     "entities": [
       {
         "tableName": "season_anime",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` TEXT NOT NULL, `poster` TEXT, `labels` TEXT, `genres` TEXT NOT NULL, `description` TEXT, `screenshots` TEXT NOT NULL, `scores` REAL NOT NULL, PRIMARY KEY(`_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` TEXT NOT NULL, `poster` TEXT, `labels` TEXT, `genres` TEXT, `description` TEXT, `screenshots` TEXT NOT NULL, `scores` REAL NOT NULL, PRIMARY KEY(`_id`))",
         "fields": [
           {
             "fieldPath": "_id",
@@ -30,7 +30,7 @@
             "fieldPath": "genres",
             "columnName": "genres",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "description",
@@ -62,11 +62,11 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` TEXT NOT NULL, `email` TEXT NOT NULL, `image` TEXT, `name` TEXT, `password` TEXT, `refreshToken` TEXT, `role` TEXT, `username` TEXT NOT NULL, PRIMARY KEY(`_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `email` TEXT NOT NULL, `avatar` TEXT, `lastOnlineDate` TEXT, `role` TEXT, PRIMARY KEY(`username`))",
         "fields": [
           {
-            "fieldPath": "_id",
-            "columnName": "_id",
+            "fieldPath": "username",
+            "columnName": "username",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -77,26 +77,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "image",
-            "columnName": "image",
+            "fieldPath": "avatar",
+            "columnName": "avatar",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "password",
-            "columnName": "password",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "refreshToken",
-            "columnName": "refreshToken",
+            "fieldPath": "lastOnlineDate",
+            "columnName": "lastOnlineDate",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -105,18 +93,12 @@
             "columnName": "role",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "username",
-            "columnName": "username",
-            "affinity": "TEXT",
-            "notNull": true
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "_id"
+            "username"
           ]
         },
         "indices": [],
@@ -126,7 +108,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'efac9fbc93dd76e3e5eecba13297973e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '25cfb6532971014ce741002c78880581')"
     ]
   }
 }

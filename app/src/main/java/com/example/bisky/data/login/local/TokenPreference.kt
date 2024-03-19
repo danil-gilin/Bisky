@@ -11,6 +11,7 @@ class TokenPreference @Inject constructor(
         private const val REFRESH_TOKEN_KEY = "refreshToken"
     }
 
+    @Synchronized
     fun saveToken(accessToken: String, refreshToken: String) {
         sharedPreferences
             .edit()
@@ -19,12 +20,15 @@ class TokenPreference @Inject constructor(
             .apply()
     }
 
+    @Synchronized
     fun getAccessToken() =
         sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
 
+    @Synchronized
     fun getRefreshToken() =
         sharedPreferences.getString(REFRESH_TOKEN_KEY, null)
 
+    @Synchronized
     fun clearAccessToken() = sharedPreferences
         .edit()
         .putString(ACCESS_TOKEN_KEY, null)

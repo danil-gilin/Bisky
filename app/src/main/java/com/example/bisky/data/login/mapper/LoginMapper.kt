@@ -5,23 +5,17 @@ import com.example.bisky.data.login.remote.model.UserResponse
 import com.example.bisky.domain.repository.login.model.User
 
 fun UserResponse.mapToEntity() = UserEntity(
-    _id = _id,
+    username = username,
     email = email,
-    image = image,
-    name = name,
-    password = password,
-    refreshToken = refreshToken,
-    role = role,
-    username = username
+    avatar = avatar,
+    lastOnlineDate = lastOnlineDate,
+    role = role
 )
 
 fun UserEntity.mapToDomain() = User(
-    _id = _id,
+    username = username,
     email = email,
-    image = image,
-    name = name,
-    password = password,
-    refreshToken = refreshToken,
-    role = role,
-    username = username
+    avatar = avatar,
+    lastOnlineDate = lastOnlineDate,
+    role = role
 )

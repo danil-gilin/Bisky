@@ -8,12 +8,12 @@ sealed interface SeasonAnimeScreenView {
         val seasonTitle: Int = 0,
         val positionScroll: Int = 0,
         val isLoading: Boolean = false,
+        val isRefreshing: Boolean = false,
         val itemsAnime: List<AnimeSeasonUI> = emptyList()
     )
 
     sealed class Event {
         data class OnScrollItem(val position: Int) : Event()
+        data object OnRefresh : Event()
     }
-
-    sealed class UiLabel
 }

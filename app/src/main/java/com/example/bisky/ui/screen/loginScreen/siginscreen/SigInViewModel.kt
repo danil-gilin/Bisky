@@ -49,7 +49,7 @@ class SigInViewModel @Inject constructor(
                 popUpTo(NavigationRoute.SigIn.route) {
                     inclusive = true
                 }
-                popUpTo(NavigationRoute.SigUp.route) {
+                popUpTo(NavigationRoute.BoardingLogin.route) {
                     inclusive = true
                 }
             }

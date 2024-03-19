@@ -12,13 +12,17 @@ class MapperAllGenre @Inject constructor() {
                 itemId = it._id,
                 description = it.description.orEmpty(),
                 name = it.name.orEmpty(),
-                posters = it.posters.mapToPosters(),
+                posters = it.posters.mapToPosters()
             )
         }
 
     fun List<String>.mapToPosters(): List<Any> {
         return if (this.size < 3) {
-            return listOf(R.drawable.ic_logo, R.drawable.ic_logo, R.drawable.ic_logo)
+            return listOf(
+                R.drawable.background_bisky_100,
+                R.drawable.background_bisky_200,
+                R.drawable.background_bisky_300
+            )
         } else {
             this
         }

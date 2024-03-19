@@ -1,22 +1,18 @@
 package com.example.bisky.ui.screen.homescreen.genre.allgenrescreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bisky.common.model.BaseItem
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.genre.GenreRepository
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.AllGenreView.Event
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.mapper.MapperAllGenre
-import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.model.LoaderUI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class AllGenreViewModel @Inject constructor(
@@ -33,25 +29,30 @@ class AllGenreViewModel @Inject constructor(
     var hasMore: Boolean = true
 
     init {
-        getGenres()
+        viewModelScope.launch {
+            getGenres()
+            _uiState.update { it.copy(positionScroll = 0) }
+        }
     }
 
     fun onEvent(event: Event) {
-        when(event) {
-            is Event.OnScrollItem -> onScrollItem(event.position)
+        when (event) {
+            is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
+            Event.OnGetMore -> onGetMore()
         }
     }
 
-    fun onScrollItem(position: Int) {
-        if (position > uiState.value.items.size - 8  && hasMore) {
-            getGenres()
-        }
-        _uiState.update { it.copy(positionScroll = position) }
+    fun onGetMore() = viewModelScope.launch {
+        getGenres()
     }
-    fun getGenres() = viewModelScope.launch {
-        if (!uiState.value.isLoading) {
+
+    suspend fun getGenres() {
+        if (!uiState.value.isLoading && hasMore) {
             _uiState.update {
-                it.copy(isLoading = true)
+                it.copy(
+                    items = it.items,
+                    isLoading = true
+                )
             }
             genreRepository.getGenres(page).onSuccess { items ->
                 if (items.isEmpty()) {

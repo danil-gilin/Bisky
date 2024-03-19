@@ -2,7 +2,6 @@ package com.example.bisky.data.login
 
 import com.example.bisky.data.login.local.TokenPreference
 import com.example.bisky.data.login.mapper.mapToDomain
-import com.example.bisky.data.login.mapper.mapToEntity
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.login.LoginRepository
 import com.example.bisky.domain.repository.login.local.LoginLocalSource
@@ -20,33 +19,35 @@ class LoginRepositoryImpl(
         val result = loginRemoteSource.sigIn(name, password)
         tokenPreference.saveToken(result.accessToken, result.refreshToken)
         val user = loginRemoteSource.checkSigIn()
-        loginLocalSource.updateUser(user.mapToEntity())
+        // loginLocalSource.updateUser(user.mapToEntity())
+        Unit
     }
 
-    override suspend fun fetchUser() = loginLocalSource.fetchUser().mapToDomain()
+    override suspend fun fetchUser() = loginLocalSource.fetchUser()?.mapToDomain()
 
     override suspend fun sigUp(name: String, password: String, email: String) = resultWrapper.wrap {
         val result = loginRemoteSource.sigUp(name, password, email)
         tokenPreference.saveToken(result.accessToken, result.refreshToken)
         val user = loginRemoteSource.checkSigIn()
-        loginLocalSource.updateUser(user.mapToEntity())
+        // loginLocalSource.updateUser(user.mapToEntity())
+        Unit
     }
 
     override suspend fun checkSigIn() = resultWrapper.wrap {
         try {
             val user = loginRemoteSource.checkSigIn()
-            loginLocalSource.updateUser(user.mapToEntity())
+            // loginLocalSource.updateUser(user.mapToEntity())
         } catch (e: HttpException) {
             if (e.code() == 401) {
                 tokenPreference.clearAccessToken()
                 val refreshResult = loginRemoteSource.refreshToken()
                 tokenPreference.saveToken(refreshResult.accessToken, refreshResult.refreshToken)
                 val user = loginRemoteSource.checkSigIn()
-                loginLocalSource.updateUser(user.mapToEntity())
+                // loginLocalSource.updateUser(user.mapToEntity())
             } else {
                 throw e
             }
         }
-        loginLocalSource.fetchUser().mapToDomain()
+        loginLocalSource.fetchUser()?.mapToDomain()
     }
 }

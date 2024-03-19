@@ -38,7 +38,15 @@ class SeasonAnimeViewModel @Inject constructor(
     fun onEvent(event: Event) {
         when (event) {
             is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
+            Event.OnRefresh -> onRefresh()
         }
+    }
+
+    fun onRefresh() = viewModelScope.launch {
+        _uiState.update { it.copy(isRefreshing = true) }
+        updateTitle()
+        getSeasonAnime()
+        _uiState.update { it.copy(isRefreshing = false) }
     }
 
     private fun updateTitle() {

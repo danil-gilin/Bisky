@@ -11,18 +11,18 @@ import javax.inject.Inject
 class GenreRemoteSourceImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val dispatchersProvider: DispatchersProvider
-): GenreRemoteSource {
+) : GenreRemoteSource {
 
     override suspend fun getGenres(page: Int) = with(dispatchersProvider.io) {
-        apolloClient.query(GetGenresQuery(
-            GeneralGenreQuery(
-                page = page.toOptional()
+        apolloClient.query(
+            GetGenresQuery(
+                GeneralGenreQuery(
+                    page = page.toOptional()
+                )
             )
-        ))
+        )
             .execute()
             .data
             ?.getGenres ?: emptyList()
     }
 }
-
-

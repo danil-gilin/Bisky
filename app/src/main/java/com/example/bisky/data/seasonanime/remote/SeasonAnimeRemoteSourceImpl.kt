@@ -2,10 +2,10 @@ package com.example.bisky.data.seasonanime.remote
 
 import com.apollographql.apollo3.ApolloClient
 import com.example.SeasonAnimeQuery
+import com.example.bisky.common.ext.toOptional
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.domain.repository.seasonanime.model.RequestSeasonAnimeParams
 import com.example.bisky.domain.repository.seasonanime.remote.SeasonAnimeRemoteSource
-import com.example.bisky.common.ext.toOptional
 import com.example.type.DateBetweenQuery
 import com.example.type.FilterAnimeQuery
 import com.example.type.GeneralAnimeQuery
@@ -27,7 +27,7 @@ class SeasonAnimeRemoteSourceImpl @Inject constructor(
                         from = params.startDate.toOptional(),
                         to = params.endDate.toOptional()
                     ).toOptional(),
-                    status = listOf(StatusEnum.released,StatusEnum.ongoing).toOptional()
+                    status = listOf(StatusEnum.released, StatusEnum.ongoing).toOptional()
                 ).toOptional(),
                 sort = SortAnimeQuery(
                     dates_airedOn = true.toOptional()

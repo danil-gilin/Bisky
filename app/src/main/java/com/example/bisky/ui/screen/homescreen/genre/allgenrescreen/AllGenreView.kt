@@ -10,6 +10,7 @@ interface AllGenreView {
     )
 
     sealed class Event {
-       data class OnScrollItem(val position: Int): Event()
+        data class OnScrollItem(val position: Int) : Event()
+        data object OnGetMore : Event()
     }
 }
