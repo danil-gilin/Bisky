@@ -58,18 +58,16 @@ class AllGenreViewModel @Inject constructor(
                 if (items.isEmpty()) {
                     hasMore = false
                     _uiState.update {
-                        val items = it.items
                         it.copy(
-                            items = items,
+                            items = it.items,
                             isLoading = false
                         )
                     }
                 } else {
                     hasMore = true
                     _uiState.update {
-                        val items = it.items.plus(mapperAllGenre.mapToUI(items))
                         it.copy(
-                            items = items,
+                            items = it.items.plus(mapperAllGenre.mapToUI(items)),
                             isLoading = false
                         )
                     }

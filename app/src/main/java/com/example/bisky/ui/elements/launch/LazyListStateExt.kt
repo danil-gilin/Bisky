@@ -29,7 +29,7 @@ inline fun LazyListState.LaunchAtTheEndOfList(
 
 @OptIn(FlowPreview::class)
 @Composable
-inline fun LazyListStateWithListenerScroll(
+inline fun lazyListStateWithListenerScroll(
     positionScroll: Int,
     crossinline onScrollItem: (Int) -> Unit
 ): LazyListState {

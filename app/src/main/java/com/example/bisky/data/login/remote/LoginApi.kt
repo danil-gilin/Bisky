@@ -1,6 +1,7 @@
 package com.example.bisky.data.login.remote
 
 import com.example.bisky.data.login.remote.model.TokenResponse
+import com.example.bisky.data.login.remote.model.UserResponse
 import com.example.bisky.domain.repository.login.model.SigInParams
 import com.example.bisky.domain.repository.login.model.SigUpParams
 import retrofit2.http.Body
@@ -16,7 +17,7 @@ interface LoginApi {
     suspend fun sigUp(@Body params: SigUpParams): TokenResponse
 
     @GET("user/whoami")
-    suspend fun checkSigIn() // : UserResponse
+    suspend fun checkSigIn(): UserResponse
 
     @GET("auth/refresh")
     suspend fun refreshToken(): TokenResponse

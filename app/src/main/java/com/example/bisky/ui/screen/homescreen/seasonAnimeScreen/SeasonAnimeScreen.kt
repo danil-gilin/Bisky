@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
-import com.example.bisky.ui.elements.launch.LazyListStateWithListenerScroll
+import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.items.ItemAnimeSeason
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.items.ItemHeaderSeason
@@ -51,7 +51,7 @@ fun SeasonAnimeScreen(
     onScrollItem: (Int) -> Unit,
     onRefresh: () -> Unit
 ) {
-    val lazyListState = LazyListStateWithListenerScroll(
+    val lazyListState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
         onScrollItem
     )
