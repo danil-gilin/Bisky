@@ -1,10 +1,13 @@
 package com.example.bisky.data.genre.remote
 
 import com.apollographql.apollo3.ApolloClient
+import com.example.GenreAnimeQuery
 import com.example.GetGenresQuery
 import com.example.bisky.common.ext.toOptional
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.domain.repository.genre.remote.GenreRemoteSource
+import com.example.type.FilterAnimeQuery
+import com.example.type.GeneralAnimeQuery
 import com.example.type.GeneralGenreQuery
 import javax.inject.Inject
 
@@ -24,5 +27,22 @@ class GenreRemoteSourceImpl @Inject constructor(
             .execute()
             .data
             ?.getGenres ?: emptyList()
+    }
+
+    override suspend fun getAnimesGenre(genreId: String, page: Int) = with(dispatchersProvider.io) {
+        apolloClient.query(
+            GenreAnimeQuery(
+                GeneralAnimeQuery(
+                    count = 30.toOptional(),
+                    filter = FilterAnimeQuery(
+                        genres_ID = listOf<String>(genreId).toOptional()
+                    ).toOptional(),
+                    page = page.toOptional()
+                )
+            )
+        )
+            .execute()
+            .data
+            ?.getAnimes ?: emptyList()
     }
 }

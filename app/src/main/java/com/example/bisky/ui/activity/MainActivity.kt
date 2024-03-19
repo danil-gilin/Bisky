@@ -5,11 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.bisky.ui.navigation.NavigationRoute.*
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerScreen
+import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
 import com.example.bisky.ui.screen.loginScreen.boardingScreen.BoardingScreen
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInScreen
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.SigUpScreen
@@ -36,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     SplashScreen(navController = navController)
                 }
                 composable(Home.route) {
-                    HomeContainerScreen()
+                    HomeContainerScreen(navController = navController)
                 }
                 composable(SigIn.route) {
                     SigInScreen(navController = navController)
@@ -46,6 +49,14 @@ class MainActivity : ComponentActivity() {
                 }
                 composable(BoardingLogin.route) {
                     BoardingScreen(navController = navController)
+                }
+                composable(
+                    route = "${Genre.route}/{id}/{name}",
+                    arguments = listOf(
+                        navArgument("id") { type = NavType.StringType },
+                        navArgument("name") { type = NavType.StringType },)
+                ) {
+                    GenreScreen(navController = navController)
                 }
             }
         }

@@ -7,4 +7,5 @@ sealed class NavigationRoute(val route: String) {
    object SigUp : NavigationRoute("sigUp")
    object BoardingLogin: NavigationRoute("boardingLogin")
    object AllGenre: NavigationRoute("all_genre")
+   object Genre: NavigationRoute("genre")
 }

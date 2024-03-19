@@ -28,18 +28,23 @@ import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.model.GenreUI
 import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun ItemGenre(
-    genreUI: GenreUI
+    genreUI: GenreUI,
+    onClickGenre: (String, String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
             .clip(RoundedCornerShape(8.dp))
+            .noRippleClickable {
+                onClickGenre(genreUI.itemId, genreUI.name)
+            }
     ) {
         val (imgBackground, title, box, imgBackground1, description, imgBackground2) = createRefs()
 
@@ -172,6 +177,7 @@ fun ItemGenrePreview() {
             description = "description",
             name = "name",
             posters = listOf("dsa", "dsa", "dsa")
-        )
+        ),
+        onClickGenre = {id, name ->}
     )
 }

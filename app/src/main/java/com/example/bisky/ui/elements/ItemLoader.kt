@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +17,7 @@ fun ItemLoader() {
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
+            .padding(bottom = 25.dp)
     ) {
         CircularProgressIndicator(
             modifier = Modifier

@@ -1,6 +1,8 @@
 package com.example.bisky.ui.elements.launch
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +17,20 @@ import kotlinx.coroutines.flow.debounce
 
 @Composable
 inline fun LazyListState.LaunchAtTheEndOfList(
+    crossinline onGetMore: () -> Unit
+) {
+    val isAtTheEndOfList by remember(this) {
+        derivedStateOf {
+            this.isScrolledToEnd()
+        }
+    }
+    LaunchedEffect(isAtTheEndOfList) {
+        if (isAtTheEndOfList) onGetMore()
+    }
+}
+
+@Composable
+inline fun LazyGridState.LaunchAtTheEndOfGrid(
     crossinline onGetMore: () -> Unit
 ) {
     val isAtTheEndOfList by remember(this) {
@@ -45,3 +61,23 @@ inline fun lazyListStateWithListenerScroll(
     }
     return listState
 }
+
+@OptIn(FlowPreview::class)
+@Composable
+inline fun lazyGridStateWithListenerScroll(
+    positionScroll: Int,
+    crossinline onScrollItem: (Int) -> Unit
+): LazyGridState {
+    val gridState = rememberLazyGridState(initialFirstVisibleItemIndex = positionScroll)
+    LaunchedEffect(gridState) {
+        snapshotFlow {
+            gridState.firstVisibleItemIndex
+        }
+            .debounce(500L)
+            .collectLatest {
+                onScrollItem(it)
+            }
+    }
+    return gridState
+}
+

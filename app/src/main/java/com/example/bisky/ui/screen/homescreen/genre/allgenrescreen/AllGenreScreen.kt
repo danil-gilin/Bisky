@@ -16,16 +16,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfList
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
+import com.example.bisky.ui.navigation.NavigationRoute.Genre
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.AllGenreView.Event
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.items.ItemGenre
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.model.GenreUI
 
 @Composable
 fun AllGenreScreen(
+    navController: NavController,
     viewModel: AllGenreViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -36,6 +39,11 @@ fun AllGenreScreen(
         },
         onGetMore = {
             viewModel.onEvent(Event.OnGetMore)
+        },
+        onClickGenre = { id, name ->
+            navController.navigate(
+                "${Genre.route}/$id/$name"
+            )
         }
     )
 }
@@ -44,7 +52,8 @@ fun AllGenreScreen(
 fun AllGenreScreen(
     uiState: AllGenreView.State,
     onScrollItem: (Int) -> Unit,
-    onGetMore: () -> Unit
+    onGetMore: () -> Unit,
+    onClickGenre: (String, String) -> Unit
 ) {
     val listState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
@@ -67,7 +76,10 @@ fun AllGenreScreen(
             key = { it.itemId }
         ) {
             when (it) {
-                is GenreUI -> ItemGenre(genreUI = it)
+                is GenreUI -> ItemGenre(
+                    genreUI = it,
+                    onClickGenre
+                )
             }
         }
         item(uiState.isLoading) {
@@ -83,5 +95,10 @@ fun AllGenreScreen(
 @Composable
 @Preview(showBackground = true)
 fun AllGenreScreenPreview() {
-    AllGenreScreen()
+    AllGenreScreen(
+        AllGenreView.State(),
+        onScrollItem = {},
+        onGetMore = {},
+        onClickGenre = { id, name ->}
+    )
 }

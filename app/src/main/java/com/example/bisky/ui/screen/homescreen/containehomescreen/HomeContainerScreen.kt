@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerView.Event
 import com.example.bisky.ui.screen.homescreen.containehomescreen.model.HomeTab
@@ -34,10 +35,12 @@ import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScree
 
 @Composable
 fun HomeContainerScreen(
+    navController: NavController,
     homeViewModel: HomeContainerViewModel = hiltViewModel()
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
     HomeContainerScreen(
+        navController,
         uiState = uiState,
         onTabClick = {
             homeViewModel.onEvent(Event.OnTabSelected(it))
@@ -47,12 +50,13 @@ fun HomeContainerScreen(
 
 @Composable
 fun HomeContainerScreen(
+    navController: NavController,
     uiState: HomeContainerView.State,
     onTabClick: (HomeTabType) -> Unit
 ) {
     when (uiState.currentTabType) {
         HomeTabType.Season -> SeasonAnimeScreen()
-        HomeTabType.Genre -> AllGenreScreen()
+        HomeTabType.Genre -> AllGenreScreen(navController)
         HomeTabType.New -> NewSeriesScreen()
     }
     TabHomeScreen(uiState, onTabClick)

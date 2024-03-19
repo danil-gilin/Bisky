@@ -14,6 +14,10 @@ class GenreRepositoryImpl @Inject constructor(
     override suspend fun getGenres(page: Int) = resultWrapper.wrap {
         genreRemoteSource.getGenres(page).map { it.mapToDomain() }
     }
+
+    override suspend fun getAnimesGenre(genreId: String, page: Int) = resultWrapper.wrap {
+        genreRemoteSource.getAnimesGenre(genreId, page).map { it.mapToDomain() }
+    }
 }
 
 
