@@ -1,5 +1,6 @@
 package com.example.bisky.data.anime
 
+import com.example.bisky.data.anime.mapper.mapToDomain
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
@@ -12,7 +13,7 @@ class AnimeRepositoryImpl @Inject constructor(
     private val resultWrapper: ResultWrapper
 ) : AnimeRepository {
 
-    suspend fun getAnime(id: String) = resultWrapper.wrap {
-        animeClient.getAnime(id)
+    override suspend fun getAnime(id: String) = resultWrapper.wrap {
+        animeClient.getAnime(id)?.map { it.mapToDomain() }?.firstOrNull()
     }
 }

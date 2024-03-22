@@ -1,3 +1,8 @@
 package com.example.bisky.domain.repository.anime
 
-interface AnimeRepository
+import com.example.bisky.data.network.resultwrapper.Result
+import com.example.bisky.domain.repository.anime.model.Anime
+
+interface AnimeRepository {
+    suspend fun getAnime(id: String): Result<Anime?, Throwable>
+}
