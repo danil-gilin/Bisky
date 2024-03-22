@@ -1,0 +1,56 @@
+query GetAnimeQuery($animeQuery: GeneralAnimeQuery!) {
+    getAnimes(animeQuery: $animeQuery) {
+        poster
+        labels {
+            en
+            ru
+        }
+        _id
+        dates {
+            releasedOn
+        }
+        description {
+            en
+            ru
+        }
+        episodes {
+            averageDuration
+            count
+        }
+        franchise {
+            _id
+            name {
+                en
+                ru
+            }
+        }
+        genres {
+            name {
+                en
+                ru
+            }
+        }
+        status
+        studios {
+            name
+            logo
+        }
+        screenshots
+        kind
+        usersList {
+            addedCount
+            completedCount
+            droppedCount
+            generalCount
+            watchingCount
+        }
+        videos {
+            url
+            name
+        }
+        score {
+            averageScore
+            count
+        }
+    }
+}

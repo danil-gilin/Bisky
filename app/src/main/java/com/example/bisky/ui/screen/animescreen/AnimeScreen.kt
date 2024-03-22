@@ -42,7 +42,7 @@ fun AnimeScreen(
     ) {
         items(
             uiState.items,
-            key = {item -> item.itemId }
+            key = { item -> item.itemId }
         ) {
             when(it) {
                 is HeaderItemUI -> HeaderAnimeItem(it)
