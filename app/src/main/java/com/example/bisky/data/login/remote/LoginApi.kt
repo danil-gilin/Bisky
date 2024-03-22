@@ -16,7 +16,7 @@ interface LoginApi {
     @POST("auth/register")
     suspend fun sigUp(@Body params: SigUpParams): TokenResponse
 
-    @GET("user/whoami")
+    @GET("auth/whoami")
     suspend fun checkSigIn(): UserResponse
 
     @GET("auth/refresh")
