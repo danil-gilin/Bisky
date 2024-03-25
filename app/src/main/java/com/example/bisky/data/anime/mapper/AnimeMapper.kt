@@ -79,5 +79,7 @@ fun GetAnimeQuery.GetAnime.mapToKindDomain() =
         KindEnum.tv -> "Сериал"
         KindEnum.tv_special -> "Сериал"
         KindEnum.UNKNOWN__ -> "Неизвестно"
+        KindEnum.cm -> "Фильм"
+        KindEnum.pv -> "Фильм"
     }
 

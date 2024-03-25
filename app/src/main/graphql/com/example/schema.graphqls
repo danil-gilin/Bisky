@@ -1,3 +1,25 @@
+type AnimeCommentModel {
+  author: UserPublicModel!
+
+  createTime: DateTime!
+
+  likesCount: Int!
+
+  text: String!
+
+  updateTime: DateTime!
+
+  violations: [String!]!
+}
+
+type AnimeEstimateModel {
+  base: AnimeSimpleModel!
+
+  createTime: DateTime!
+
+  score: Float!
+}
+
 """
 Anime Full Data
 """
@@ -38,7 +60,7 @@ type AnimeFullModel {
 
   related: [RelatedAnimeFullModel!]!
 
-  score: ScoreModel!
+  score: UserScoresModel!
 
   """
   Anime screenshots
@@ -59,12 +81,22 @@ type AnimeFullModel {
   """
   updateDate: DateTime!
 
+  userData: AnimeUserDataModel!
+
   usersList: UserListModel!
 
   """
   Trailers, teasers, announcements and other videos related to anime
   """
   videos: [VideModel!]!
+}
+
+type AnimeListModel {
+  base: AnimeSimpleModel!
+
+  createTime: DateTime!
+
+  status: StatusEnum!
 }
 
 """
@@ -83,12 +115,12 @@ type AnimeSimpleModel {
   episodes: EpisodesModel!
 
   """
-  Related other projects with this anime (ID)
+  Related other projects with this anime (_id)
   """
   franchise: String
 
   """
-  Genres of this anime (ID)
+  Genres of this anime (_id)
   """
   genres: [String!]!
 
@@ -107,7 +139,7 @@ type AnimeSimpleModel {
 
   related: [RelatedAnimeSimpleModel!]!
 
-  score: ScoreModel!
+  score: UserScoresModel!
 
   """
   Anime screenshots
@@ -119,7 +151,7 @@ type AnimeSimpleModel {
   status: StatusEnum!
 
   """
-  The studios that developed this anime (ID)
+  The studios that developed this anime (_id)
   """
   studios: [String!]!
 
@@ -128,12 +160,22 @@ type AnimeSimpleModel {
   """
   updateDate: DateTime!
 
+  userData: AnimeUserDataModel!
+
   usersList: UserListModel!
 
   """
   Trailers, teasers, announcements and other videos related to anime
   """
   videos: [VideModel!]!
+}
+
+type AnimeUserDataModel {
+  animeStatus: ListStatusEnum
+
+  score: Int
+
+  watchedSeries: Int
 }
 
 input DateBetweenQuery {
@@ -197,6 +239,9 @@ type FactModel {
 Limit documents by these parameters
 """
 input FilterAnimeQuery {
+  """
+  Anime _ids
+  """
   _id_ID: [String!] = null
 
   dates_airedOn: DateBetweenQuery = null
@@ -211,8 +256,14 @@ input FilterAnimeQuery {
 
   episodes_nextEpisodeAiredDate: DateBetweenQuery = null
 
+  """
+  Franchise _ids
+  """
   franchises_ID: [String!] = null
 
+  """
+  Genre _ids
+  """
   genres_ID: [String!] = null
 
   kind: [KindEnum!] = null
@@ -225,6 +276,9 @@ input FilterAnimeQuery {
 
   status: [StatusEnum!] = null
 
+  """
+  Studio _ids
+  """
   studios_ID: [String!] = null
 }
 
@@ -312,6 +366,9 @@ type FranchiseSimpleModel {
 
   name: LanguageModel!
 
+  """
+  Anime _ids
+  """
   relatedWorks: [String!]!
 
   shikiId: String!
@@ -429,6 +486,9 @@ type GenreSimpleModel {
 
   name: LanguageModel!
 
+  """
+  Anime _ids
+  """
   relatedWorks: [String!]!
 }
 
@@ -442,6 +502,8 @@ input IntBetweenQuery {
 Anime type
 """
 enum KindEnum {
+  cm
+
   movie
 
   music
@@ -451,6 +513,8 @@ enum KindEnum {
   ona
 
   ova
+
+  pv
 
   special
 
@@ -500,6 +564,19 @@ input LimitQuantityAnimeQuery {
 }
 
 """
+The status the user added to
+"""
+enum ListStatusEnum {
+  added
+
+  completed
+
+  dropped
+
+  watching
+}
+
+"""
 This anime is on other platforms
 """
 type OtherPlatformFullModel {
@@ -515,6 +592,9 @@ type OtherPlatformFullModel {
 This anime is on other platforms
 """
 type OtherPlatformSimpleModel {
+  """
+  Platform _id
+  """
   platform: String!
 
   """
@@ -537,6 +617,8 @@ type PlatformModel {
 }
 
 type Query {
+  getAnimeComments("Anime _id" animeId: String!, "Number of output items" count: Int! = 10, "Page when paginated" page: Int! = 1, sort: SortAnimeCommentQuery = null): [AnimeCommentModel!]!
+
   getAnimes(animeQuery: GeneralAnimeQuery! = {
     count: 10
     page: 1
@@ -596,6 +678,8 @@ type Query {
     page: 1
   }
   ): [StudioFullModel!]!
+
+  getUserPublicData(_id: String = null, username: String = null): UserPublicFullModel!
 }
 
 """
@@ -635,6 +719,9 @@ type RelatedAnimeFullModel {
 Related anime projects
 """
 type RelatedAnimeSimpleModel {
+  """
+  Anime _id
+  """
   base: String!
 
   """
@@ -645,10 +732,15 @@ type RelatedAnimeSimpleModel {
   shikiId: Int!
 }
 
-type ScoreModel {
-  averageScore: Float!
+"""
+User's role on the project
+"""
+enum RoleEnum {
+  admin
 
-  count: Int!
+  moderator
+
+  user
 }
 
 """
@@ -674,6 +766,15 @@ type SingleEpisodeModel {
 """
 Sorting documents (false - ascending; true - descending)
 """
+input SortAnimeCommentQuery {
+  createTime: Boolean = null
+
+  likesCount: Boolean = null
+}
+
+"""
+Sorting documents (false - ascending; true - descending)
+"""
 input SortAnimeQuery {
   dates_airedOn: Boolean = null
 
@@ -688,6 +789,10 @@ input SortAnimeQuery {
   episodes_nextEpisodeAiredDate: Boolean = null
 
   score_averageScore: Boolean = null
+
+  score_count: Boolean = null
+
+  usersList_generalCount: Boolean = null
 }
 
 """
@@ -741,6 +846,44 @@ type UserListModel {
   generalCount: Int!
 
   watchingCount: Int!
+}
+
+type UserPublicFullModel {
+  _id: String!
+
+  animeEstimates: [AnimeEstimateModel!]!
+
+  animeLists: [AnimeListModel!]!
+
+  avatar: String
+
+  email: String!
+
+  lastOnlineDate: DateTime!
+
+  role: RoleEnum!
+
+  username: String!
+}
+
+type UserPublicModel {
+  _id: String!
+
+  avatar: String
+
+  email: String!
+
+  lastOnlineDate: DateTime!
+
+  role: RoleEnum!
+
+  username: String!
+}
+
+type UserScoresModel {
+  averageScore: Float!
+
+  count: Int!
 }
 
 """
