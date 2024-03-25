@@ -29,4 +29,11 @@
     <string name="validLogin">Логин уже занят</string>
     <string name="validSigIn">Логин или пароль неправильные</string>
     <string name="validSigUp">Почта или логин пользователя заняты</string>
+
+
+
+    // anime full info
+    <string name="anime_full_description">"Подробнее..."</string>
+    <string name="anime_small_description">"Свернуть"</string>
+    <string name="anime_screenshots_title">"Кадры"</string>
 </resources>

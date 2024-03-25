@@ -2,6 +2,7 @@ package com.example.bisky.ui.screen.animescreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,8 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
+import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
+import com.example.bisky.ui.screen.animescreen.items.body.AnimeDescriptionItems
+import com.example.bisky.ui.screen.animescreen.items.body.AnimeProducerInfoItem
+import com.example.bisky.ui.screen.animescreen.items.body.AnimeScreenshotItem
 import com.example.bisky.ui.screen.animescreen.items.header.HeaderAnimeItem
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
 
 @Composable
@@ -25,14 +33,21 @@ fun AnimeScreen(
     viewModel: AnimeScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    AnimeScreen(uiState)
+    AnimeScreen(
+        uiState,
+        onClickMoreInfo = {
+            viewModel.onEvent(Event.OnClickFullDescription(it))
+        }
+    )
 }
 
 @Composable
 fun AnimeScreen(
-    uiState: State
+    uiState: State,
+    onClickMoreInfo: (Boolean) -> Unit
 ) {
     LazyColumn(
+        contentPadding = PaddingValues(bottom = 40.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
@@ -44,6 +59,9 @@ fun AnimeScreen(
         ) {
             when(it) {
                 is HeaderItemUI -> HeaderAnimeItem(it)
+                is AnimeDescriptionUI -> AnimeDescriptionItems(it, onClickMoreInfo = onClickMoreInfo)
+                is AnimeProducerInfoUI -> AnimeProducerInfoItem(it)
+                is AnimeScreenshotsUI -> AnimeScreenshotItem(it)
             }
         }
     }
@@ -52,5 +70,8 @@ fun AnimeScreen(
 @Composable
 @Preview(showBackground = true)
 fun AnimeScreenPreview() {
-    AnimeScreen(State())
+    AnimeScreen(
+        State(),
+        onClickMoreInfo = {}
+    )
 }

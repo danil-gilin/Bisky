@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.anime.AnimeRepository
+import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.mapper.AnimeFullInfoMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,18 @@ class AnimeScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getAnimeInfo()
+        }
+    }
+
+    fun onEvent(event: Event) {
+        when(event) {
+            is Event.OnClickFullDescription -> onClickFullDescription(event.isFullInfoDescription)
+        }
+    }
+
+    private fun onClickFullDescription(fullInfoDescription: Boolean) {
+        _uiState.update {
+            it.copy(items = animeFullInfoMapper.updateDescriptionItem(it.items, fullInfoDescription))
         }
     }
 

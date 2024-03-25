@@ -6,10 +6,11 @@ interface AnimeScreenView {
 
     data class State(
         val isLoading: Boolean = false,
+        val isFullDescription: Boolean = false,
         val items: List<BaseItem> = emptyList()
     )
 
     sealed class Event {
-        data object OnGetMore : Event()
+        data class OnClickFullDescription(val isFullInfoDescription: Boolean) : Event()
     }
 }
