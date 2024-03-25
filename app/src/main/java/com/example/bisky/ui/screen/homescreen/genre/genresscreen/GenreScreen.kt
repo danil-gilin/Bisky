@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfGrid
+import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreenView.Event
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreenView.State
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.items.AnimeGenre
@@ -39,6 +40,11 @@ fun GenreScreen(
         },
         onBackClick = {
             navController.popBackStack()
+        },
+        onAnimeClick = { id ->
+            navController.navigate(
+                "${NavigationRoute.Anime.route}/$id"
+            )
         }
     )
 }
@@ -48,7 +54,8 @@ fun GenreScreen(
 fun GenreScreen(
     uiState: State,
     onGetMore: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onAnimeClick: (String) -> Unit
 ) {
     val listState = rememberLazyGridState()
     listState.LaunchAtTheEndOfGrid(onGetMore)
@@ -67,7 +74,7 @@ fun GenreScreen(
                 uiState.items.size
             ) { index ->
                 when(val item = uiState.items[index]) {
-                    is AnimeGenreUI -> AnimeGenre(animeGenreUI = item)
+                    is AnimeGenreUI -> AnimeGenre(animeGenreUI = item, onAnimeClick)
                 }
             }
             items(count = 3) { index ->
@@ -122,6 +129,7 @@ fun GenreScreenPreview() {
             )
         ),
         onGetMore = {},
-        onBackClick = {}
+        onBackClick = {},
+        onAnimeClick = {}
     )
 }

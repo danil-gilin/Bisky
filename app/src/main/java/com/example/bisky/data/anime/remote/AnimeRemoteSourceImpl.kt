@@ -7,8 +7,6 @@ import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.type.FilterAnimeQuery
 import com.example.type.GeneralAnimeQuery
-import com.example.type.SortAnimeQuery
-import com.example.type.StatusEnum
 import javax.inject.Inject
 import kotlinx.coroutines.withContext
 
@@ -19,12 +17,9 @@ class AnimeRemoteSourceImpl @Inject constructor(
     override suspend fun getAnime(id: String) =
         withContext(dispatchersProvider.io) {
             val filter = GeneralAnimeQuery(
-                count = 100.toOptional(),
+                count = 1.toOptional(),
                 filter = FilterAnimeQuery(
-                    status = listOf(StatusEnum.released, StatusEnum.ongoing).toOptional()
-                ).toOptional(),
-                sort = SortAnimeQuery(
-                    dates_airedOn = true.toOptional()
+                    _id_ID = listOf(id).toOptional()
                 ).toOptional()
             )
             apolloClient.query(GetAnimeQuery(filter))

@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bisky.ui.navigation.NavigationRoute.*
+import com.example.bisky.ui.screen.animescreen.AnimeScreen
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerScreen
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
 import com.example.bisky.ui.screen.loginScreen.boardingScreen.BoardingScreen
@@ -57,6 +58,12 @@ class MainActivity : ComponentActivity() {
                         navArgument("name") { type = NavType.StringType },)
                 ) {
                     GenreScreen(navController = navController)
+                }
+                composable(
+                    route = "${Anime.route}/{id}",
+                    arguments = listOf(navArgument("id") { type = NavType.StringType })
+                ) {
+                    AnimeScreen(navController = navController)
                 }
             }
         }

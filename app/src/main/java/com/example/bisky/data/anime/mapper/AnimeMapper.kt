@@ -1,11 +1,6 @@
 package com.example.bisky.data.anime.mapper
 
 import com.example.GetAnimeQuery
-import com.example.SeasonAnimeQuery
-import com.example.bisky.data.genre.mapper.mapToDomain
-import com.example.bisky.data.seasonanime.local.model.GenreEntity
-import com.example.bisky.data.seasonanime.local.model.NameEntity
-import com.example.bisky.data.seasonanime.local.model.SeasonAnimeEntity
 import com.example.bisky.domain.repository.anime.model.Anime
 import com.example.bisky.domain.repository.anime.model.Episodes
 import com.example.bisky.domain.repository.anime.model.Franchise
@@ -13,9 +8,6 @@ import com.example.bisky.domain.repository.anime.model.Score
 import com.example.bisky.domain.repository.anime.model.Studio
 import com.example.bisky.domain.repository.anime.model.UsersList
 import com.example.bisky.domain.repository.anime.model.Video
-import com.example.bisky.domain.repository.seasonanime.model.Genre
-import com.example.bisky.domain.repository.seasonanime.model.Name
-import com.example.bisky.domain.repository.seasonanime.model.SeasonAnime
 import com.example.type.KindEnum
 import com.example.type.StatusEnum
 

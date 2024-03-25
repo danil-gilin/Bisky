@@ -8,4 +8,5 @@ sealed class NavigationRoute(val route: String) {
    object BoardingLogin: NavigationRoute("boardingLogin")
    object AllGenre: NavigationRoute("all_genre")
    object Genre: NavigationRoute("genre")
+   object Anime: NavigationRoute("anime")
 }

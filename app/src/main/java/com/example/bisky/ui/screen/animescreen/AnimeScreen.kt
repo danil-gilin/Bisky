@@ -2,7 +2,6 @@ package com.example.bisky.ui.screen.animescreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,7 +34,6 @@ fun AnimeScreen(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(start = 16.dp, top = 50.dp, 16.dp, 0.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(R.color.bisky_dark_400))

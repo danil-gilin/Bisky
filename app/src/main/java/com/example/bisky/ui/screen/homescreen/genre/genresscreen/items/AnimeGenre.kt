@@ -29,17 +29,20 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.model.AnimeGenreUI
 import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun AnimeGenre(
-    animeGenreUI: AnimeGenreUI
+    animeGenreUI: AnimeGenreUI,
+    onClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .wrapContentWidth()
             .background(color = colorResource(id = R.color.bisky_dark_400))
+            .noRippleClickable { onClick(animeGenreUI.itemId) }
     ) {
         Box {
             AsyncImage(
@@ -134,6 +137,7 @@ fun AnimeGenrePreview() {
             score = "8.0",
             scoreColor = R.color.lime,
             isScoreVisible = true
-        )
+        ),
+        {}
     )
 }

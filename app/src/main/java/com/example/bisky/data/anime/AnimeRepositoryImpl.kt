@@ -14,6 +14,6 @@ class AnimeRepositoryImpl @Inject constructor(
 ) : AnimeRepository {
 
     override suspend fun getAnime(id: String) = resultWrapper.wrap {
-        animeClient.getAnime(id)?.map { it.mapToDomain() }?.firstOrNull()
+        animeClient.getAnime(id)?.firstOrNull()?.mapToDomain()
     }
 }

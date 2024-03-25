@@ -6,19 +6,21 @@ import com.example.bisky.domain.repository.login.model.SigInParams
 import com.example.bisky.domain.repository.login.model.SigUpParams
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface LoginApi {
 
     @POST("auth/login")
     suspend fun sigIn(@Body params: SigInParams): TokenResponse
 
-    @POST("auth/register")
+    @PUT("auth/register")
     suspend fun sigUp(@Body params: SigUpParams): TokenResponse
 
     @GET("auth/whoami")
     suspend fun checkSigIn(): UserResponse
 
-    @GET("auth/refresh")
+    @PATCH("auth/refresh")
     suspend fun refreshToken(): TokenResponse
 }

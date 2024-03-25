@@ -68,8 +68,9 @@ private fun TextItem(text: String, icon: Int) {
             fontSize = 14.sp,
             modifier = Modifier
                 .padding(2.dp, 0.dp, 4.dp, 0.dp),
-            fontFamily = FontFamily.Monospace,
+            fontFamily = FontFamily.Default,
             fontWeight = FontWeight.W700,
+            letterSpacing = (-0.02).sp,
             color = colorResource(R.color.light_400)
         )
     }
@@ -101,16 +102,18 @@ private fun TextStatusItem(
             fontSize = 14.sp,
             modifier = Modifier
                 .padding(2.dp, 0.dp, 0.dp, 0.dp),
-            fontFamily = FontFamily.Monospace,
+            fontFamily = FontFamily.Default,
+            letterSpacing = (-0.02).sp,
             fontWeight = FontWeight.W700,
             color = colorResource(R.color.light_400)
         )
         Text(
             text = statusText,
-            fontSize = 13.sp,
+            fontSize = 14.sp,
             modifier = Modifier
-                .padding(0.dp, 0.dp, 4.dp, 0.dp),
-            fontFamily = FontFamily.Cursive,
+                .padding(4.dp, 0.dp, 4.dp, 0.dp),
+            fontFamily = FontFamily.Default,
+            letterSpacing = (-0.02).sp,
             fontWeight = FontWeight.W900,
             color = colorResource(colorStatus)
         )
