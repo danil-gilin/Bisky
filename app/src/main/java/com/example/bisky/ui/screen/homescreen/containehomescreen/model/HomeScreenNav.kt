@@ -18,7 +18,7 @@ fun NavGraphBuilder.addHomeGraph(
     navController: NavController
 ) {
     composable(HomeScreenNav.Season) {
-        SeasonAnimeScreen()
+        SeasonAnimeScreen(navController)
     }
     composable(HomeScreenNav.Genre) {
         NewSeriesScreen()

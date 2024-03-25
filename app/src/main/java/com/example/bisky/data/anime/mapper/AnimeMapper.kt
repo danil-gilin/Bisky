@@ -9,12 +9,13 @@ import com.example.bisky.domain.repository.anime.model.Studio
 import com.example.bisky.domain.repository.anime.model.UsersList
 import com.example.bisky.domain.repository.anime.model.Video
 import com.example.type.KindEnum
+import com.example.type.RatingEnum
 import com.example.type.StatusEnum
 
 fun GetAnimeQuery.GetAnime.mapToDomain() = Anime(
     _id = this._id,
     label = this.labels.ru ?: this.labels.en,
-    dates = this.dates.releasedOn?.toString(),
+    dates = this.dates.airedOn?.toString(),
     description = this.description.ru ?: this.description.en,
     genres = this.genres.mapNotNull { it.mapToDomain() },
     videos = this.videos.map { it.mapToDomain() },
@@ -26,7 +27,8 @@ fun GetAnimeQuery.GetAnime.mapToDomain() = Anime(
     screenshots = this.screenshots,
     studios = this.studios.mapToDomain(),
     status = if (this.status == StatusEnum.UNKNOWN__) null else this.status.name,
-    kind = this.mapToKindDomain()
+    kind = this.mapToKindDomain(),
+    age = this.mapToAge()
 )
 
 fun GetAnimeQuery.Genre.mapToDomain() = this.name.ru ?: this.name.en
@@ -73,13 +75,25 @@ fun GetAnimeQuery.GetAnime.mapToKindDomain() =
         KindEnum.movie -> "Фильм"
         KindEnum.music -> "Музыка"
         KindEnum.none -> "Фильм"
-        KindEnum.ona -> "Фильм"
-        KindEnum.ova -> "Фильм"
+        KindEnum.ona -> "ONA"
+        KindEnum.ova -> "OVA"
         KindEnum.special -> "Спецвыпуск"
         KindEnum.tv -> "Сериал"
         KindEnum.tv_special -> "Сериал"
         KindEnum.UNKNOWN__ -> "Неизвестно"
-        KindEnum.cm -> "Фильм"
-        KindEnum.pv -> "Фильм"
+        KindEnum.cm -> "Промо"
+        KindEnum.pv -> "Промо"
+    }
+
+fun GetAnimeQuery.GetAnime.mapToAge() =
+    when (this.rating) {
+        RatingEnum.g -> "0+"
+        RatingEnum.none -> "0+"
+        RatingEnum.pg -> "6+"
+        RatingEnum.pg_13 -> "14+"
+        RatingEnum.r -> "16+"
+        RatingEnum.r_plus -> "17+"
+        RatingEnum.rx -> "18+"
+        RatingEnum.UNKNOWN__ -> "0+"
     }
 

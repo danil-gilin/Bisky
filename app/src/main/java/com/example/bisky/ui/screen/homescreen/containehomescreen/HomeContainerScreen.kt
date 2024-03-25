@@ -55,7 +55,7 @@ fun HomeContainerScreen(
     onTabClick: (HomeTabType) -> Unit
 ) {
     when (uiState.currentTabType) {
-        HomeTabType.Season -> SeasonAnimeScreen()
+        HomeTabType.Season -> SeasonAnimeScreen(navController)
         HomeTabType.Genre -> AllGenreScreen(navController)
         HomeTabType.New -> NewSeriesScreen()
     }

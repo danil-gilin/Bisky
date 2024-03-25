@@ -20,9 +20,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
+import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.items.ItemAnimeSeason
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.items.ItemHeaderSeason
@@ -30,6 +32,7 @@ import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeaso
 
 @Composable
 fun SeasonAnimeScreen(
+    navController: NavController,
     viewModel: SeasonAnimeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -40,6 +43,11 @@ fun SeasonAnimeScreen(
         },
         onRefresh = {
             viewModel.onEvent(Event.OnRefresh)
+        },
+        onAnimeClick = { id ->
+            navController.navigate(
+                "${NavigationRoute.Anime.route}/$id"
+            )
         }
     )
 }
@@ -49,7 +57,8 @@ fun SeasonAnimeScreen(
 fun SeasonAnimeScreen(
     uiState: SeasonAnimeScreenView.State,
     onScrollItem: (Int) -> Unit,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onAnimeClick: (String) -> Unit
 ) {
     val lazyListState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
@@ -74,7 +83,7 @@ fun SeasonAnimeScreen(
                 listAnime,
                 key = { it.itemId }
             ) { item ->
-                ItemAnimeSeason(item)
+                ItemAnimeSeason(item, onAnimeClick)
             }
             item {
                 if (uiState.isLoading) {
@@ -112,6 +121,7 @@ fun SeasonAnimePreview() {
                 )
             )
         ),
+        {},
         {},
         {}
     )

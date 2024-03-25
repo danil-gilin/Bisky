@@ -22,11 +22,13 @@ import com.example.bisky.ui.screen.animescreen.items.body.AnimeDescriptionItems
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeProducerInfoItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeScreenshotItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeUserListItem
+import com.example.bisky.ui.screen.animescreen.items.body.AnimeVideoItem
 import com.example.bisky.ui.screen.animescreen.items.header.HeaderAnimeItem
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeUserListUI
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeVideoUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
 
 @Composable
@@ -65,6 +67,7 @@ fun AnimeScreen(
                 is AnimeProducerInfoUI -> AnimeProducerInfoItem(it)
                 is AnimeScreenshotsUI -> AnimeScreenshotItem(it)
                 is AnimeUserListUI -> AnimeUserListItem(it)
+                is AnimeVideoUI -> AnimeVideoItem(it)
             }
         }
     }

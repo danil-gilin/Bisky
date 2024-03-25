@@ -7,7 +7,7 @@ query GetAnimeQuery($animeQuery: GeneralAnimeQuery!) {
         }
         _id
         dates {
-            releasedOn
+            airedOn
         }
         description {
             en
@@ -52,5 +52,6 @@ query GetAnimeQuery($animeQuery: GeneralAnimeQuery!) {
             averageScore
             count
         }
+        rating
     }
 }

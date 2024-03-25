@@ -16,6 +16,7 @@ data class Anime(
     val usersList: UsersList,
     val videos: List<Video>,
     val score: Score,
+    val age: String,
 )
 
 data class Episodes(

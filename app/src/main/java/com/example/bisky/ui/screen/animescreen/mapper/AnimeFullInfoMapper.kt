@@ -3,10 +3,12 @@ package com.example.bisky.ui.screen.animescreen.mapper
 import com.example.bisky.R
 import com.example.bisky.common.model.BaseItem
 import com.example.bisky.domain.repository.anime.model.Anime
+import com.example.bisky.domain.repository.anime.model.Video
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeUserListUI
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeVideoUI
 import com.example.bisky.ui.screen.animescreen.model.header.AnimeCardFullInfoUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
 import com.example.bisky.ui.screen.animescreen.model.header.InfoAnimeItemUI
@@ -34,6 +36,9 @@ class AnimeFullInfoMapper @Inject constructor() {
         val screenshotInfo = anime.mapToScreenshots()
         screenshotInfo?.let { listItems.add(it) }
 
+        val videoInfo = anime.mapToVideo()
+        videoInfo?.let { listItems.add(it) }
+
 
         return listItems
     }
@@ -42,14 +47,15 @@ class AnimeFullInfoMapper @Inject constructor() {
         item: List<BaseItem>,
         isFullInfo: Boolean
     ): List<BaseItem> {
-      val descriptionUi = item.find { it.itemId == ANIME_DESCRIPTION_ID } as? AnimeDescriptionUI ?: return item
-      return item.map {
-          if (it.itemId == ANIME_DESCRIPTION_ID) {
-              descriptionUi.copy(isFullInfo = isFullInfo)
-          } else {
-              it
-          }
-      }
+        val descriptionUi =
+            item.find { it.itemId == ANIME_DESCRIPTION_ID } as? AnimeDescriptionUI ?: return item
+        return item.map {
+            if (it.itemId == ANIME_DESCRIPTION_ID) {
+                descriptionUi.copy(isFullInfo = isFullInfo)
+            } else {
+                it
+            }
+        }
     }
 
 
@@ -76,8 +82,8 @@ class AnimeFullInfoMapper @Inject constructor() {
         return AnimeProducerInfoUI(
             itemId = ANIME_PRODUCER_INFO,
             genres = this.genres.joinToString(", "),
-            producer = this.franchise?.name.orEmpty(),
-            isProducerVisible = this.franchise?.name != null
+            producer = this.studios.map { it.name }.joinToString(", "),
+            isProducerVisible = this.studios.isNotEmpty()
         )
     }
 
@@ -103,12 +109,23 @@ class AnimeFullInfoMapper @Inject constructor() {
         }
     }
 
+    fun Anime.mapToVideo(): AnimeVideoUI? {
+        return if (this.videos.isNotEmpty()) {
+            AnimeVideoUI(
+                itemId = ANIME_VIDEO_INFO,
+                list = this.videos.map { it.url }
+            )
+        } else {
+            null
+        }
+    }
+
 
     fun Anime.mapToAnimeCard() = AnimeCardFullInfoUI(
         itemId = this._id + ANIME_CARD_PREFIX,
         poster = this.poster ?: R.drawable.ic_logo,
         score = this.score.averageScore.toString(),
-        age = "14+",
+        age = age,
         ageVisible = true,
         isScoreVisible = this.score.averageScore > 0.0,
         scoreColor = this.mapToScoreColor()
@@ -178,9 +195,8 @@ class AnimeFullInfoMapper @Inject constructor() {
         private const val ANIME_INFO_PREFIX = "anime_info_prefix"
         private const val ANIME_PRODUCER_INFO = "anime_producer_info_prefix"
         private const val ANIME_SCREENSHOTS_INFO = "anime_screenshots_info_prefix"
+        private const val ANIME_VIDEO_INFO = "anime_video_info_prefix"
         private const val ANIME_USER_LIST_INFO = "anime_user_list_info_prefix"
-
-
 
 
         private const val ANONS = "anons"

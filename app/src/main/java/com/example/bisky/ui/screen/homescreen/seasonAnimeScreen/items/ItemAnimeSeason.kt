@@ -30,15 +30,22 @@ import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.model.AnimeSeasonUI
 import kotlinx.coroutines.Dispatchers
 
 @Composable
-fun ItemAnimeSeason(seasonUI: AnimeSeasonUI) {
+fun ItemAnimeSeason(
+    seasonUI: AnimeSeasonUI,
+    onAnimeClick: (String) -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .padding(14.dp, 0.dp, 14.dp, 0.dp)
+            .noRippleClickable {
+                onAnimeClick(seasonUI.itemId)
+            }
     ) {
         val (imgBackground, title, box, imgPoster, description, rating, genre) = createRefs()
 
@@ -193,6 +200,7 @@ fun ItemAnimeSeasonPreview() {
             isRatingVisible = true,
             genre = "anime / anime / anime",
             backgroundImg = "R.drawable.anime_autumn"
-        )
+        ),
+        onAnimeClick = {}
     )
 }
