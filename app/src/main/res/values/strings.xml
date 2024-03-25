@@ -29,11 +29,21 @@
     <string name="validLogin">Логин уже занят</string>
     <string name="validSigIn">Логин или пароль неправильные</string>
     <string name="validSigUp">Почта или логин пользователя заняты</string>
-
+    val watching = animeUserListUI.watchingCount
+    val added = animeUserListUI.addedCount
+    val completed = animeUserListUI.completedCount
+    val dropped = animeUserListUI.droppedCount
 
 
     // anime full info
-    <string name="anime_full_description">"Подробнее..."</string>
-    <string name="anime_small_description">"Свернуть"</string>
-    <string name="anime_screenshots_title">"Кадры"</string>
+    <string name="anime_full_description">Подробнее...</string>
+    <string name="anime_small_description">Свернуть</string>
+    <string name="anime_screenshots_title">Кадры</string>
+    <string name="anime_user_list">В списках</string>
+
+    <string name="watching">Смотрю</string>
+    <string name="added">В планах</string>
+    <string name="completed">Просмотрено</string>
+    <string name="dropped">Брошено</string>
+    <string name="user_list_all_count">Всего</string>
 </resources>
