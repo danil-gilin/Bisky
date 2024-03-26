@@ -39,6 +39,8 @@
     <string name="anime_full_description">Подробнее...</string>
     <string name="anime_small_description">Свернуть</string>
     <string name="anime_screenshots_title">Кадры</string>
+    <string name="anime_rating_title">Рейтинг</string>
+    <string name="anime_user_rating_title">Моя оценка</string>
     <string name="anime_similar_title">Связанное</string>
     <string name="anime_video_title">Видео</string>
     <string name="anime_video">Трейлер</string>
@@ -49,4 +51,6 @@
     <string name="completed">Просмотрено</string>
     <string name="dropped">Брошено</string>
     <string name="user_list_all_count">Всего</string>
+
+    <string name="delete">удалить</string>
 </resources>
