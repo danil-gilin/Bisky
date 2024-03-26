@@ -9,6 +9,8 @@ import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.mapper.AnimeFullInfoMapper
+import com.example.bisky.ui.screen.animescreen.mapper.AnimeFullInfoMapper.Companion.ANIME_RATING_INFO
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeRatingUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,12 +36,38 @@ class AnimeScreenViewModel @Inject constructor(
     fun onEvent(event: Event) {
         when(event) {
             is Event.OnClickFullDescription -> onClickFullDescription(event.isFullInfoDescription)
+            Event.OnCompleteScore -> onCompleteScore()
+            Event.OnDeleteScoreClick -> onDeleteScoreClick()
+            is Event.OnSelectScore -> onSelectScore(event.selectedScore)
         }
     }
 
     private fun onClickFullDescription(fullInfoDescription: Boolean) {
         _uiState.update {
             it.copy(items = animeFullInfoMapper.updateDescriptionItem(it.items, fullInfoDescription))
+        }
+    }
+
+    private fun onCompleteScore() = viewModelScope.launch {
+        val item = uiState.value.items.find { it.itemId == ANIME_RATING_INFO } as? AnimeRatingUI ?: return@launch
+        val animeId = savedState.get<String>("id") ?: return@launch
+        val rating = item.selectedScore + 1
+        animeRepository.updateAnimeApi(rating,animeId).onSuccess {
+            getAnimeInfo()
+        }.onError {
+            it
+        }
+    }
+
+    private fun onDeleteScoreClick() {
+        _uiState.update {
+            it.copy(items = animeFullInfoMapper.updateRatingScore(it.items, -1))
+        }
+    }
+
+    private fun onSelectScore(selectedScore: Int) {
+        _uiState.update {
+            it.copy(items = animeFullInfoMapper.updateRatingScore(it.items, selectedScore))
         }
     }
 

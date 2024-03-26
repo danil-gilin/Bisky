@@ -16,4 +16,8 @@ class AnimeRepositoryImpl @Inject constructor(
     override suspend fun getAnime(id: String) = resultWrapper.wrap {
         animeClient.getAnime(id)?.firstOrNull()?.mapToDomain()
     }
+
+    override suspend fun updateAnimeApi(rating: Int, animeId: String) = resultWrapper.wrap {
+        animeClient.updateRatingAnime(rating, animeId)
+    }
 }

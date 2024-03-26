@@ -96,7 +96,7 @@ fun HeaderAnimeItemPreview() {
                 infoType = "Сериал,",
                 infoStatus = "вышел",
                 statusColor = R.color.lime,
-                collectionIcon = R.drawable.ic_watch_status
+                collectionIcon = R.drawable.ic_none_collection
             ),
             animeCard = AnimeCardFullInfoUI(
                 itemId = "itemId",

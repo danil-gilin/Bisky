@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,17 +35,23 @@ import com.example.bisky.ui.screen.animescreen.model.body.AnimeRatingUI
 fun AnimeRatingItem(
     animeRatingUI: AnimeRatingUI,
     onDeleteScoreClick: () -> Unit,
-    onSelectScore: (Int) -> Unit
+    onSelectScore: (Int) -> Unit,
+    onCompleteScore: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.bisky_dark_400))
     ) {
-        Title(animeRatingUI.ratingCount, animeRatingUI.rating,animeRatingUI.ratingColor, animeRatingUI.isRatingVisible)
+        Title(
+            animeRatingUI.ratingCount,
+            animeRatingUI.rating,
+            animeRatingUI.ratingColor,
+            animeRatingUI.isRatingVisible
+        )
         if (animeRatingUI.isRatingVisibleUser) {
             UserRating(animeRatingUI.ratingUser, animeRatingUI.ratingColorUser, onDeleteScoreClick)
         } else {
-            SelectStart(onSelectScore)
+            SelectStart(onSelectScore, onCompleteScore, animeRatingUI.selectedScore)
         }
     }
 }
@@ -105,8 +113,7 @@ private fun UserRating(
             modifier = Modifier
                 .align(Alignment.Bottom)
                 .padding(bottom = 2.dp, start = 4.dp)
-                .noRippleClickable { onDeleteScoreClick() }
-            ,
+                .noRippleClickable { onDeleteScoreClick() },
             textAlign = TextAlign.Center,
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.W400,
@@ -117,25 +124,55 @@ private fun UserRating(
 
 @Composable
 private fun SelectStart(
-    onSelectScore: (Int) -> Unit
+    onSelectScore: (Int) -> Unit,
+    onCompleteScore: () -> Unit,
+    selectedScore: Int
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+    Column(
+        verticalArrangement = Arrangement.Center
     ) {
-        repeat(10) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_star),
-                modifier = Modifier
-                    .padding(2.dp, 4.dp, 4.dp, 4.dp)
-                    .height(25.dp)
-                    .width(25.dp)
-                    .noRippleClickable {
-                        onSelectScore(it)
-                    }
-                ,
-                tint = colorResource(id = R.color.bisky_dark_100),
-                contentDescription = null
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(10) {
+                val color = if (it <= selectedScore) R.color.bisky_100 else R.color.bisky_dark_100
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_star),
+                    modifier = Modifier
+                        .padding(2.dp, 4.dp, 4.dp, 4.dp)
+                        .height(25.dp)
+                        .width(25.dp)
+                        .noRippleClickable {
+                            onSelectScore(it)
+                        },
+                    tint = colorResource(id = color),
+                    contentDescription = null
+                )
+            }
+        }
+        Button(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 8.dp),
+            enabled = selectedScore >= 0,
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults
+                .buttonColors(
+                    containerColor = colorResource(R.color.bisky_200),
+                    disabledContainerColor = colorResource(R.color.bisky_400)
+                ),
+            onClick = { onCompleteScore() }
+        ) {
+            Text(
+                text = stringResource(id = R.string.select_rating),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W400,
+                color = colorResource(R.color.light_300)
             )
         }
     }
@@ -164,17 +201,17 @@ private fun Title(
             color = colorResource(R.color.light_100)
         )
         if (ratingVisible) {
-        Text(
-            text = scoreCount,
-            fontSize = 14.sp,
-            modifier = Modifier
-                .align(Alignment.Bottom)
-                .padding(bottom = 1.dp, start = 8.dp),
-            textAlign = TextAlign.Center,
-            fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.W400,
-            color = colorResource(R.color.light_300)
-        )
+            Text(
+                text = scoreCount,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .align(Alignment.Bottom)
+                    .padding(bottom = 1.dp, start = 8.dp),
+                textAlign = TextAlign.Center,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W400,
+                color = colorResource(R.color.light_300)
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -220,8 +257,10 @@ fun AnimeRatingItemPreview() {
             isRatingVisible = true,
             ratingUser = "2.0",
             ratingColorUser = R.color.red,
-            isRatingVisibleUser = true
+            isRatingVisibleUser = false,
+            selectedScore = -1
         ),
+        {},
         {},
         {}
     )

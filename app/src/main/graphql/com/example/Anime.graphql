@@ -66,5 +66,10 @@ query GetAnimeQuery($animeQuery: GeneralAnimeQuery!) {
                 _id
             }
         }
+        userData {
+            score
+            animeStatus
+            watchedSeries
+        }
     }
 }

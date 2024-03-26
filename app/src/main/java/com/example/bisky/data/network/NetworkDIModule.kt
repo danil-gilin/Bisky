@@ -20,9 +20,12 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 object NetworkDIModule {
     @Singleton
     @Provides
-    fun provideApolloClient(): ApolloClient =
+    fun provideApolloClient(
+        loginLocalSourceImpl: TokenPreference
+    ): ApolloClient =
         ApolloClient.Builder()
             .serverUrl("https://api.bisky.one/graphql")
+            .addInterceptor(HeaderApolloInterceptor(loginLocalSourceImpl))
             .addInterceptor(LoggingApolloInterceptor())
             .build()
 

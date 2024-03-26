@@ -12,5 +12,8 @@ interface AnimeScreenView {
 
     sealed class Event {
         data class OnClickFullDescription(val isFullInfoDescription: Boolean) : Event()
+        data object OnDeleteScoreClick : Event()
+        data class OnSelectScore(val selectedScore: Int) : Event()
+        data object OnCompleteScore : Event()
     }
 }

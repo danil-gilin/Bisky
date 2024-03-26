@@ -10,5 +10,6 @@ data class AnimeRatingUI(
     val isRatingVisible: Boolean,
     val ratingUser: String,
     val ratingColorUser: Int,
-    val isRatingVisibleUser: Boolean
+    val isRatingVisibleUser: Boolean,
+    val selectedScore: Int
 ) : BaseItem

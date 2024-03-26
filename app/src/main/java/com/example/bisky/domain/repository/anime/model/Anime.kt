@@ -17,8 +17,23 @@ data class Anime(
     val videos: List<Video>,
     val score: Score,
     val age: String,
-    val similarAnime: List<SimilarAnime>
+    val similarAnime: List<SimilarAnime>,
+    val userData: UserData,
 )
+
+data class UserData(
+    val collection: Collection,
+    val score: Int?,
+    val watchedSeries: Int?
+)
+
+enum class Collection {
+    ADDED,
+    COMPLETED,
+    DROPPED,
+    WATCHING,
+    NONE
+}
 
 data class SimilarAnime(
     val id: String,

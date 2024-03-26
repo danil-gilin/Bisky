@@ -1,6 +1,7 @@
 package com.example.bisky.data.seasonanime.mapper
 
 import com.example.SeasonAnimeQuery
+import com.example.bisky.common.ext.toOneNumberAfterDot
 import com.example.bisky.data.seasonanime.local.model.GenreEntity
 import com.example.bisky.data.seasonanime.local.model.NameEntity
 import com.example.bisky.data.seasonanime.local.model.SeasonAnimeEntity
@@ -38,7 +39,7 @@ fun SeasonAnimeQuery.GetAnime.mapToEntity(): SeasonAnimeEntity =
         genres = this.genres.mapToEntity(),
         description = description.ru ?: description.en,
         screenshots = screenshots,
-        scores = score.averageScore
+        scores = score.averageScore.toOneNumberAfterDot()
     )
 
 fun List<SeasonAnimeQuery.Genre>.mapToEntity() = map {

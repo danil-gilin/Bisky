@@ -21,6 +21,7 @@ import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeDescriptionItems
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeProducerInfoItem
+import com.example.bisky.ui.screen.animescreen.items.body.AnimeRatingItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeScreenshotItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeSimilarItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeUserListItem
@@ -28,6 +29,7 @@ import com.example.bisky.ui.screen.animescreen.items.body.AnimeVideoItem
 import com.example.bisky.ui.screen.animescreen.items.header.HeaderAnimeItem
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeRatingUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeUserListUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeVideoUI
@@ -49,6 +51,15 @@ fun AnimeScreen(
             navController.navigate(
                 "${NavigationRoute.Anime.route}/$id"
             )
+        },
+        onDeleteScoreClick = {
+            viewModel.onEvent(Event.OnDeleteScoreClick)
+        },
+        onSelectScore = {
+            viewModel.onEvent(Event.OnSelectScore(it))
+        },
+        onCompleteScore = {
+            viewModel.onEvent(Event.OnCompleteScore)
         }
     )
 }
@@ -57,7 +68,10 @@ fun AnimeScreen(
 fun AnimeScreen(
     uiState: State,
     onClickMoreInfo: (Boolean) -> Unit,
-    onClickAnime: (String) -> Unit
+    onClickAnime: (String) -> Unit,
+    onDeleteScoreClick: () -> Unit,
+    onSelectScore: (Int) -> Unit,
+    onCompleteScore: () -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(bottom = 40.dp),
@@ -78,6 +92,7 @@ fun AnimeScreen(
                 is AnimeUserListUI -> AnimeUserListItem(it)
                 is AnimeVideoUI -> AnimeVideoItem(it)
                 is SimilarAnimeListUI -> AnimeSimilarItem(it, onClickAnime)
+                is AnimeRatingUI -> AnimeRatingItem(it, onDeleteScoreClick, onSelectScore, onCompleteScore)
             }
         }
     }
@@ -89,6 +104,15 @@ fun AnimeScreenPreview() {
     AnimeScreen(
         State(),
         onClickMoreInfo = {},
-        onClickAnime = {}
+        onClickAnime = {},
+        onDeleteScoreClick = {
+
+        },
+        onSelectScore = {
+
+        },
+        onCompleteScore = {
+
+        }
     )
 }

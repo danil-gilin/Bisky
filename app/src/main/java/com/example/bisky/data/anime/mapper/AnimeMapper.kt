@@ -1,15 +1,19 @@
 package com.example.bisky.data.anime.mapper
 
 import com.example.GetAnimeQuery
+import com.example.bisky.common.ext.toOneNumberAfterDot
 import com.example.bisky.domain.repository.anime.model.Anime
 import com.example.bisky.domain.repository.anime.model.Episodes
 import com.example.bisky.domain.repository.anime.model.Franchise
+import com.example.bisky.domain.repository.anime.model.Collection
 import com.example.bisky.domain.repository.anime.model.Score
 import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.domain.repository.anime.model.Studio
+import com.example.bisky.domain.repository.anime.model.UserData
 import com.example.bisky.domain.repository.anime.model.UsersList
 import com.example.bisky.domain.repository.anime.model.Video
 import com.example.type.KindEnum
+import com.example.type.ListStatusEnum
 import com.example.type.RatingEnum
 import com.example.type.StatusEnum
 
@@ -30,7 +34,8 @@ fun GetAnimeQuery.GetAnime.mapToDomain() = Anime(
     status = if (this.status == StatusEnum.UNKNOWN__) null else this.status.name,
     kind = this.mapToKindDomain(),
     age = this.mapToAge(),
-    similarAnime = this.related.map { it.mapToDomain() }
+    similarAnime = this.related.map { it.mapToDomain() },
+    userData = this.userData.mapToDomain()
 )
 
 fun GetAnimeQuery.Related.mapToDomain() = SimilarAnime(
@@ -47,6 +52,21 @@ fun GetAnimeQuery.Video.mapToDomain() =
         name = this.name,
         url = this.url
     )
+
+fun GetAnimeQuery.UserData.mapToDomain() = UserData(
+    score = this.score,
+    watchedSeries = this.watchedSeries,
+    collection = this.mapToStatus()
+)
+
+fun GetAnimeQuery.UserData.mapToStatus() = when(animeStatus) {
+    ListStatusEnum.added -> Collection.ADDED
+    ListStatusEnum.completed -> Collection.COMPLETED
+    ListStatusEnum.dropped -> Collection.DROPPED
+    ListStatusEnum.watching -> Collection.WATCHING
+    ListStatusEnum.UNKNOWN__ -> Collection.NONE
+    null -> Collection.NONE
+}
 
 
 fun List<GetAnimeQuery.Studio>.mapToDomain() = this.map {
@@ -65,7 +85,7 @@ fun GetAnimeQuery.UsersList.mapToDomain() = UsersList(
 )
 
 fun GetAnimeQuery.Score.mapToDomain() = Score(
-    averageScore = averageScore,
+    averageScore = averageScore.toOneNumberAfterDot(),
     count = count
 )
 

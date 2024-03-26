@@ -3,9 +3,11 @@ package com.example.bisky.ui.screen.animescreen.mapper
 import com.example.bisky.R
 import com.example.bisky.common.model.BaseItem
 import com.example.bisky.domain.repository.anime.model.Anime
+import com.example.bisky.domain.repository.anime.model.Collection
 import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
+import com.example.bisky.ui.screen.animescreen.model.body.AnimeRatingUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeUserListUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeVideoUI
@@ -31,6 +33,9 @@ class AnimeFullInfoMapper @Inject constructor() {
 
         val producerInfo = anime.mapToProducerInfo()
         listItems.add(producerInfo)
+
+        val ratingInfo = anime.mapToRatingInfo()
+        listItems.add(ratingInfo)
 
         val userlistInfo = anime.mapToUserList()
         listItems.add(userlistInfo)
@@ -88,6 +93,20 @@ class AnimeFullInfoMapper @Inject constructor() {
             genres = this.genres.joinToString(", "),
             producer = this.studios.map { it.name }.joinToString(", "),
             isProducerVisible = this.studios.isNotEmpty()
+        )
+    }
+
+    fun Anime.mapToRatingInfo(): AnimeRatingUI {
+        return AnimeRatingUI(
+            itemId = ANIME_RATING_INFO,
+            rating = this.score.averageScore.toString(),
+            ratingColor = this.score.averageScore.mapToScoreColor(),
+            isRatingVisible = this.score.averageScore > 0.0,
+            ratingCount = "${this.score.count} оценок",
+            ratingUser = userData.score.toString(),
+            ratingColorUser = userData.score?.toDouble()?.mapToScoreColor() ?: R.color.light_400,
+            isRatingVisibleUser = userData.score != null,
+            selectedScore = -1
         )
     }
 
@@ -163,13 +182,22 @@ class AnimeFullInfoMapper @Inject constructor() {
 
     fun Anime.mapToAnimeInfo() = InfoAnimeItemUI(
         itemId = this._id + ANIME_INFO_PREFIX,
-        collectionIcon = R.drawable.ic_watch_status,
+        collectionIcon = mapToCollectionIcon(userData.collection),
         statusColor = this.mapToStatusColor(),
         infoStatus = this.mapToStatus(),
         infoDate = this.dates.formatDate(),
         infoDuration = this.mapToInfoDuration(),
         infoType = "${this.kind},"
     )
+
+    private fun mapToCollectionIcon(collection: Collection) =
+        when(collection) {
+            Collection.ADDED -> R.drawable.ic_added_collection
+            Collection.COMPLETED -> R.drawable.ic_completed_collection
+            Collection.DROPPED -> R.drawable.ic_delete_collection
+            Collection.WATCHING -> R.drawable.ic_play_collection
+            Collection.NONE -> R.drawable.ic_none_collection
+        }
 
     fun Anime?.mapToInfoDuration(): String {
         val episodesDuration = this?.episodes?.averageDuration?.let {
@@ -211,16 +239,35 @@ class AnimeFullInfoMapper @Inject constructor() {
         else -> R.color.gray
     }
 
+    fun updateRatingScore(
+        items: List<BaseItem>,
+        selectedScore: Int
+    ): List<BaseItem> {
+        val descriptionUi =
+            items.find { it.itemId == ANIME_RATING_INFO } as? AnimeRatingUI ?: return items
+        return items.map {
+            if (it.itemId == ANIME_RATING_INFO) {
+                descriptionUi.copy(
+                    selectedScore = selectedScore,
+                    isRatingVisibleUser = false
+                )
+            } else {
+                it
+            }
+        }
+    }
+
 
     companion object {
-        private const val ANIME_CARD_PREFIX = "anime_card_prefix"
-        private const val ANIME_DESCRIPTION_ID = "anime_description_id"
-        private const val ANIME_INFO_PREFIX = "anime_info_prefix"
-        private const val ANIME_PRODUCER_INFO = "anime_producer_info_prefix"
-        private const val ANIME_SCREENSHOTS_INFO = "anime_screenshots_info_prefix"
-        private const val ANIME_VIDEO_INFO = "anime_video_info_prefix"
-        private const val ANIME_USER_LIST_INFO = "anime_user_list_info_prefix"
-        private const val ANIME_SIMILAR_ANIME_LIST_INFO = "anime_similar_anime_list_info_prefix"
+        const val ANIME_CARD_PREFIX = "anime_card_prefix"
+        const val ANIME_DESCRIPTION_ID = "anime_description_id"
+        const val ANIME_INFO_PREFIX = "anime_info_prefix"
+        const val ANIME_PRODUCER_INFO = "anime_producer_info_prefix"
+        const val ANIME_SCREENSHOTS_INFO = "anime_screenshots_info_prefix"
+        const val ANIME_VIDEO_INFO = "anime_video_info_prefix"
+        const val ANIME_USER_LIST_INFO = "anime_user_list_info_prefix"
+        const val ANIME_SIMILAR_ANIME_LIST_INFO = "anime_similar_anime_list_info_prefix"
+        const val ANIME_RATING_INFO = "anime_rating_info_prefix"
 
 
         private const val ANONS = "anons"

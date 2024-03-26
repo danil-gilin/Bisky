@@ -29,10 +29,6 @@
     <string name="validLogin">Логин уже занят</string>
     <string name="validSigIn">Логин или пароль неправильные</string>
     <string name="validSigUp">Почта или логин пользователя заняты</string>
-    val watching = animeUserListUI.watchingCount
-    val added = animeUserListUI.addedCount
-    val completed = animeUserListUI.completedCount
-    val dropped = animeUserListUI.droppedCount
 
 
     // anime full info
@@ -53,4 +49,5 @@
     <string name="user_list_all_count">Всего</string>
 
     <string name="delete">удалить</string>
+    <string name="select_rating">Оценить</string>
 </resources>
