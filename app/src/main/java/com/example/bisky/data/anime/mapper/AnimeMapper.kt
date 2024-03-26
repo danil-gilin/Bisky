@@ -5,6 +5,7 @@ import com.example.bisky.domain.repository.anime.model.Anime
 import com.example.bisky.domain.repository.anime.model.Episodes
 import com.example.bisky.domain.repository.anime.model.Franchise
 import com.example.bisky.domain.repository.anime.model.Score
+import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.domain.repository.anime.model.Studio
 import com.example.bisky.domain.repository.anime.model.UsersList
 import com.example.bisky.domain.repository.anime.model.Video
@@ -28,7 +29,15 @@ fun GetAnimeQuery.GetAnime.mapToDomain() = Anime(
     studios = this.studios.mapToDomain(),
     status = if (this.status == StatusEnum.UNKNOWN__) null else this.status.name,
     kind = this.mapToKindDomain(),
-    age = this.mapToAge()
+    age = this.mapToAge(),
+    similarAnime = this.related.map { it.mapToDomain() }
+)
+
+fun GetAnimeQuery.Related.mapToDomain() = SimilarAnime(
+    id = this.base._id,
+    name = this.base.labels.ru ?: this.base.labels.en,
+    poster = this.base.poster,
+    rating = this.base.score.averageScore,
 )
 
 fun GetAnimeQuery.Genre.mapToDomain() = this.name.ru ?: this.name.en

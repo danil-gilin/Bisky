@@ -17,6 +17,14 @@ data class Anime(
     val videos: List<Video>,
     val score: Score,
     val age: String,
+    val similarAnime: List<SimilarAnime>
+)
+
+data class SimilarAnime(
+    val id: String,
+    val poster: String?,
+    val name: String?,
+    val rating: Double
 )
 
 data class Episodes(

@@ -3,12 +3,14 @@ package com.example.bisky.ui.screen.animescreen.mapper
 import com.example.bisky.R
 import com.example.bisky.common.model.BaseItem
 import com.example.bisky.domain.repository.anime.model.Anime
-import com.example.bisky.domain.repository.anime.model.Video
+import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeUserListUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeVideoUI
+import com.example.bisky.ui.screen.animescreen.model.body.SimilarAnimeListUI
+import com.example.bisky.ui.screen.animescreen.model.body.SimilarAnimeUI
 import com.example.bisky.ui.screen.animescreen.model.header.AnimeCardFullInfoUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
 import com.example.bisky.ui.screen.animescreen.model.header.InfoAnimeItemUI
@@ -33,12 +35,14 @@ class AnimeFullInfoMapper @Inject constructor() {
         val userlistInfo = anime.mapToUserList()
         listItems.add(userlistInfo)
 
+        val similarAnimeInfo = anime.mapToSimilarAnime()
+        similarAnimeInfo?.let { listItems.add(it) }
+
         val screenshotInfo = anime.mapToScreenshots()
         screenshotInfo?.let { listItems.add(it) }
 
         val videoInfo = anime.mapToVideo()
         videoInfo?.let { listItems.add(it) }
-
 
         return listItems
     }
@@ -120,6 +124,25 @@ class AnimeFullInfoMapper @Inject constructor() {
         }
     }
 
+    fun Anime.mapToSimilarAnime() : SimilarAnimeListUI? {
+        if (this.similarAnime.isEmpty()) return null
+        return SimilarAnimeListUI(
+            itemId = ANIME_SIMILAR_ANIME_LIST_INFO,
+            items = this.similarAnime.mapToUI()
+        )
+    }
+
+    fun List<SimilarAnime>.mapToUI() = this.map{
+        SimilarAnimeUI(
+            itemId = it.id,
+            name = it.name.orEmpty(),
+            poster = it.poster ?: R.drawable.ic_logo,
+            rating = it.rating.toString(),
+            ratingColor = it.rating.mapToScoreColor(),
+            isRatingVisible = it.rating > 0.0
+        )
+    }
+
 
     fun Anime.mapToAnimeCard() = AnimeCardFullInfoUI(
         itemId = this._id + ANIME_CARD_PREFIX,
@@ -128,11 +151,11 @@ class AnimeFullInfoMapper @Inject constructor() {
         age = age,
         ageVisible = true,
         isScoreVisible = this.score.averageScore > 0.0,
-        scoreColor = this.mapToScoreColor()
+        scoreColor = this.score.averageScore.mapToScoreColor()
     )
 
 
-    fun Anime.mapToScoreColor() = when (score.averageScore) {
+    fun Double.mapToScoreColor() = when (this) {
         in 0.0..4.9 -> R.color.red
         in 5.0..7.8 -> R.color.gray
         else -> R.color.lime
@@ -197,6 +220,7 @@ class AnimeFullInfoMapper @Inject constructor() {
         private const val ANIME_SCREENSHOTS_INFO = "anime_screenshots_info_prefix"
         private const val ANIME_VIDEO_INFO = "anime_video_info_prefix"
         private const val ANIME_USER_LIST_INFO = "anime_user_list_info_prefix"
+        private const val ANIME_SIMILAR_ANIME_LIST_INFO = "anime_similar_anime_list_info_prefix"
 
 
         private const val ANONS = "anons"

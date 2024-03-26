@@ -16,11 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
+import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeDescriptionItems
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeProducerInfoItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeScreenshotItem
+import com.example.bisky.ui.screen.animescreen.items.body.AnimeSimilarItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeUserListItem
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeVideoItem
 import com.example.bisky.ui.screen.animescreen.items.header.HeaderAnimeItem
@@ -29,6 +31,7 @@ import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeScreenshotsUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeUserListUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeVideoUI
+import com.example.bisky.ui.screen.animescreen.model.body.SimilarAnimeListUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
 
 @Composable
@@ -41,6 +44,11 @@ fun AnimeScreen(
         uiState,
         onClickMoreInfo = {
             viewModel.onEvent(Event.OnClickFullDescription(it))
+        },
+        onClickAnime = { id ->
+            navController.navigate(
+                "${NavigationRoute.Anime.route}/$id"
+            )
         }
     )
 }
@@ -48,7 +56,8 @@ fun AnimeScreen(
 @Composable
 fun AnimeScreen(
     uiState: State,
-    onClickMoreInfo: (Boolean) -> Unit
+    onClickMoreInfo: (Boolean) -> Unit,
+    onClickAnime: (String) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(bottom = 40.dp),
@@ -68,6 +77,7 @@ fun AnimeScreen(
                 is AnimeScreenshotsUI -> AnimeScreenshotItem(it)
                 is AnimeUserListUI -> AnimeUserListItem(it)
                 is AnimeVideoUI -> AnimeVideoItem(it)
+                is SimilarAnimeListUI -> AnimeSimilarItem(it, onClickAnime)
             }
         }
     }
@@ -78,6 +88,7 @@ fun AnimeScreen(
 fun AnimeScreenPreview() {
     AnimeScreen(
         State(),
-        onClickMoreInfo = {}
+        onClickMoreInfo = {},
+        onClickAnime = {}
     )
 }

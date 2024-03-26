@@ -39,7 +39,9 @@
     <string name="anime_full_description">Подробнее...</string>
     <string name="anime_small_description">Свернуть</string>
     <string name="anime_screenshots_title">Кадры</string>
+    <string name="anime_similar_title">Связанное</string>
     <string name="anime_video_title">Видео</string>
+    <string name="anime_video">Трейлер</string>
     <string name="anime_user_list">В списках</string>
 
     <string name="watching">Смотрю</string>

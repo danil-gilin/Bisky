@@ -34,7 +34,7 @@ import com.example.bisky.R
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun BaseTextInput(
-    text: TextFieldState,
+    state: TextFieldState,
     placeHolder: String,
     modifier: Modifier,
     colorBorder: Int = R.color.gray,
@@ -55,7 +55,7 @@ fun BaseTextInput(
     ) {
         val (tvInput, ivCLose, tvPlaceHolder) = createRefs()
         BasicTextField2(
-            state = text,
+            state = state,
             modifier = Modifier
                 .imePadding()
                 .padding(bottom = 12.dp)
@@ -103,7 +103,7 @@ fun BaseTextInput(
                     }
                 }
                 .noRippleClickable {
-                    text.clearText()
+                    state.clearText()
                 },
             contentDescription = "Clear"
         )
@@ -115,7 +115,7 @@ fun BaseTextInput(
 @Preview(showBackground = true)
 fun BaseTextInputWithPreview() {
     BaseTextInput(
-        text = TextFieldState(""),
+        state = TextFieldState(""),
         placeHolder = "placheHolder",
         modifier = Modifier
             .fillMaxWidth()

@@ -53,5 +53,18 @@ query GetAnimeQuery($animeQuery: GeneralAnimeQuery!) {
             count
         }
         rating
+        related {
+            base {
+                poster
+                labels {
+                    en
+                    ru
+                }
+                score {
+                    averageScore
+                }
+                _id
+            }
+        }
     }
 }
