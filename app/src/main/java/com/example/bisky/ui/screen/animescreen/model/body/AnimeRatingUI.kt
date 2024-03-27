@@ -8,6 +8,7 @@ data class AnimeRatingUI(
     val rating: String,
     val ratingColor: Int,
     val isRatingVisible: Boolean,
+    val isRatingEnabled: Boolean,
     val ratingUser: String,
     val ratingColorUser: Int,
     val isRatingVisibleUser: Boolean,

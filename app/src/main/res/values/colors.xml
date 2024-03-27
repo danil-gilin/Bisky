@@ -21,6 +21,7 @@
     <color name="bisky_dark_300">#231726</color>
     <color name="bisky_dark_400">#170E19</color>
     <color name="bisky_dark_400_alpha_80">#CC170E19</color>
+    <color name="bisky_dark_400_alpha_20">#33170E19</color>
 
     <color name="red">#FF0000</color>
     <color name="lime">#3BB33B</color>

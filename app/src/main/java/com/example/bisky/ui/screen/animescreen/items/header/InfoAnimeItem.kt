@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -19,32 +20,85 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bisky.R
+import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.animescreen.model.header.InfoAnimeItemUI
 
 @Composable
-fun InfoAnimeItem(infoAnimeItemUI: InfoAnimeItemUI) {
+fun InfoAnimeItem(
+    infoAnimeItemUI: InfoAnimeItemUI,
+    onCollectionSelected: (Collection) -> Unit
+) {
     Row(modifier = Modifier.padding(top = 8.dp)) {
-        Column {
-            TextItem(infoAnimeItemUI.infoDuration, R.drawable.ic_player)
-            TextStatusItem(
-                infoAnimeItemUI.infoType,
-                R.drawable.ic_clock,
-                infoAnimeItemUI.infoStatus,
-                infoAnimeItemUI.statusColor
-            )
-            TextItem(infoAnimeItemUI.infoDate, R.drawable.ic_calendar)
+        Column() {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                TextItem(infoAnimeItemUI.infoDuration, R.drawable.ic_player)
+                TextStatusItem(
+                    infoAnimeItemUI.infoType,
+                    R.drawable.ic_clock,
+                    infoAnimeItemUI.infoStatus,
+                    infoAnimeItemUI.statusColor
+                )
+                TextItem(infoAnimeItemUI.infoDate, R.drawable.ic_calendar)
+            }
+            Column(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Row {
+                    Collection(
+                        infoAnimeItemUI.collectionNone,
+                        Collection.NONE,
+                        onCollectionSelected
+                    )
+                    Collection(
+                        infoAnimeItemUI.collectionAdded,
+                        Collection.ADDED,
+                        onCollectionSelected
+                    )
+                    Collection(
+                        infoAnimeItemUI.collectionWatching,
+                        Collection.WATCHING,
+                        onCollectionSelected
+                    )
+                    Collection(
+                        infoAnimeItemUI.collectionCompleted,
+                        Collection.COMPLETED,
+                        onCollectionSelected
+                    )
+                    Collection(
+                        infoAnimeItemUI.collectionDropped,
+                        Collection.DROPPED,
+                        onCollectionSelected
+                    )
+                }
+            }
         }
-        Image(
-            painter = painterResource(id = infoAnimeItemUI.collectionIcon),
-            modifier = Modifier
-                .padding(4.dp, 4.dp, 0.dp, 4.dp)
-                .height(35.dp)
-                .width(35.dp)
-                .align(Alignment.CenterVertically),
-            contentScale = ContentScale.Crop,
-            contentDescription = null
-        )
     }
+}
+
+@Composable
+private fun Collection(
+    collectionIcon: Int,
+    collection: Collection,
+    onCollectionSelected: (Collection) -> Unit
+) {
+    Image(
+        painter = painterResource(id = collectionIcon),
+        modifier = Modifier
+            .padding(4.dp, 4.dp, 0.dp, 4.dp)
+            .height(35.dp)
+            .width(35.dp)
+            .noRippleClickable {
+                onCollectionSelected(collection)
+            },
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
 }
 
 @Composable
@@ -126,12 +180,17 @@ fun InfoAnimeItemPreview() {
     InfoAnimeItem(
         InfoAnimeItemUI(
             itemId = "info",
-            infoDate = "Осень 2012 г.",
             infoDuration = "24 эп. по ~ 24 мин.",
-            infoType = "Сериал,",
             infoStatus = "вышел",
             statusColor = R.color.green,
-            collectionIcon = R.drawable.ic_none_collection
-        )
+            infoType = "Сериал,",
+            infoDate = "Осень 2012 г.",
+            collectionAdded = R.drawable.ic_added_collection,
+            collectionCompleted = R.drawable.ic_completed_collection_disable,
+            collectionDropped = R.drawable.ic_delete_collection_disable,
+            collectionWatching = R.drawable.ic_play_collection_disable,
+            collectionNone = R.drawable.ic_none_collection_disable
+        ),
+        {}
     )
 }

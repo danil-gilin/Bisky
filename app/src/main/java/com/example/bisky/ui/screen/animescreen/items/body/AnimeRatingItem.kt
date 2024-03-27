@@ -48,10 +48,12 @@ fun AnimeRatingItem(
             animeRatingUI.ratingColor,
             animeRatingUI.isRatingVisible
         )
-        if (animeRatingUI.isRatingVisibleUser) {
-            UserRating(animeRatingUI.ratingUser, animeRatingUI.ratingColorUser, onDeleteScoreClick)
-        } else {
-            SelectStart(onSelectScore, onCompleteScore, animeRatingUI.selectedScore)
+        if (animeRatingUI.isRatingEnabled) {
+            if (animeRatingUI.isRatingVisibleUser) {
+                UserRating(animeRatingUI.ratingUser, animeRatingUI.ratingColorUser, onDeleteScoreClick)
+            } else {
+                SelectStart(onSelectScore, onCompleteScore, animeRatingUI.selectedScore)
+            }
         }
     }
 }
@@ -206,7 +208,7 @@ private fun Title(
                 fontSize = 14.sp,
                 modifier = Modifier
                     .align(Alignment.Bottom)
-                    .padding(bottom = 1.dp, start = 8.dp),
+                    .padding(bottom = 2.dp, start = 8.dp),
                 textAlign = TextAlign.Center,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.W400,
@@ -258,6 +260,7 @@ fun AnimeRatingItemPreview() {
             ratingUser = "2.0",
             ratingColorUser = R.color.red,
             isRatingVisibleUser = false,
+            isRatingEnabled = true,
             selectedScore = -1
         ),
         {},

@@ -67,6 +67,7 @@ fun AnimeVideoItem(
                                 uriHandler.openUri(it)
                             }
                             .background(color = colorResource(id = R.color.bisky_dark_200))
+                            .padding(5.dp)
                     )
                     Box(
                         modifier = Modifier

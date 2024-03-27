@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -25,13 +27,19 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
+import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.animescreen.model.header.AnimeCardFullInfoUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
 import com.example.bisky.ui.screen.animescreen.model.header.InfoAnimeItemUI
 import kotlinx.coroutines.Dispatchers
 
 @Composable
-fun HeaderAnimeItem(headerItemUI: HeaderItemUI) {
+fun HeaderAnimeItem(
+    headerItemUI: HeaderItemUI,
+    onCollectionSelected: (Collection) -> Unit,
+    onBackClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .background(colorResource(id = R.color.bisky_dark_400))
@@ -56,10 +64,16 @@ fun HeaderAnimeItem(headerItemUI: HeaderItemUI) {
         )
         Box(
             modifier = Modifier
-                .height(250.dp)
+                .height(270.dp)
                 .fillMaxWidth()
-                .alpha(0.6f)
-                .background(colorResource(R.color.bisky_dark_400))
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            colorResource(id = R.color.bisky_dark_400_alpha_20),
+                            colorResource(id = R.color.bisky_dark_400)
+                        )
+                    )
+                )
         )
         Column(
             modifier = Modifier
@@ -76,8 +90,20 @@ fun HeaderAnimeItem(headerItemUI: HeaderItemUI) {
                 textAlign = TextAlign.Center,
                 color = colorResource(id = R.color.white)
             )
-            InfoAnimeItem(headerItemUI.infoAnimeItemUI)
+            InfoAnimeItem(headerItemUI.infoAnimeItemUI, onCollectionSelected)
         }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_back),
+            contentDescription = "close",
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 16.dp, end = 0.dp, top = 12.dp)
+                .noRippleClickable {
+                    onBackClick()
+                }
+            ,
+            tint = colorResource(id = R.color.white)
+        )
     }
 }
 
@@ -91,12 +117,16 @@ fun HeaderAnimeItemPreview() {
             screenshot = "screnshot",
             infoAnimeItemUI = InfoAnimeItemUI(
                 itemId = "info",
-                infoDate = "Осень 2012 г.",
                 infoDuration = "24 эп. по ~ 24 мин.",
-                infoType = "Сериал,",
                 infoStatus = "вышел",
                 statusColor = R.color.lime,
-                collectionIcon = R.drawable.ic_none_collection
+                infoType = "Сериал,",
+                infoDate = "Осень 2012 г.",
+                collectionAdded = R.drawable.ic_added_collection,
+                collectionCompleted = R.drawable.ic_completed_collection_disable,
+                collectionDropped = R.drawable.ic_delete_collection_disable,
+                collectionWatching = R.drawable.ic_play_collection_disable,
+                collectionNone = R.drawable.ic_none_collection_disable
             ),
             animeCard = AnimeCardFullInfoUI(
                 itemId = "itemId",
@@ -107,6 +137,8 @@ fun HeaderAnimeItemPreview() {
                 age = "16+",
                 ageVisible = true
             )
-        )
+        ),
+        {},
+        {}
     )
 }

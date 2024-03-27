@@ -9,5 +9,9 @@ data class InfoAnimeItemUI(
     val statusColor: Int,
     val infoType: String,
     val infoDate: String,
-    val collectionIcon: Int
+    val collectionAdded: Int,
+    val collectionCompleted: Int,
+    val collectionDropped: Int,
+    val collectionWatching: Int,
+    val collectionNone: Int
 ) : BaseItem

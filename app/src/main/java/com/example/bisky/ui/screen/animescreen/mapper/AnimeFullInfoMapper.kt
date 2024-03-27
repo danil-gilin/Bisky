@@ -106,6 +106,7 @@ class AnimeFullInfoMapper @Inject constructor() {
             ratingUser = userData.score.toString(),
             ratingColorUser = userData.score?.toDouble()?.mapToScoreColor() ?: R.color.light_400,
             isRatingVisibleUser = userData.score != null,
+            isRatingEnabled = userData.collection != Collection.NONE,
             selectedScore = -1
         )
     }
@@ -143,7 +144,7 @@ class AnimeFullInfoMapper @Inject constructor() {
         }
     }
 
-    fun Anime.mapToSimilarAnime() : SimilarAnimeListUI? {
+    fun Anime.mapToSimilarAnime(): SimilarAnimeListUI? {
         if (this.similarAnime.isEmpty()) return null
         return SimilarAnimeListUI(
             itemId = ANIME_SIMILAR_ANIME_LIST_INFO,
@@ -151,7 +152,7 @@ class AnimeFullInfoMapper @Inject constructor() {
         )
     }
 
-    fun List<SimilarAnime>.mapToUI() = this.map{
+    fun List<SimilarAnime>.mapToUI() = this.map {
         SimilarAnimeUI(
             itemId = it.id,
             name = it.name.orEmpty(),
@@ -182,7 +183,11 @@ class AnimeFullInfoMapper @Inject constructor() {
 
     fun Anime.mapToAnimeInfo() = InfoAnimeItemUI(
         itemId = this._id + ANIME_INFO_PREFIX,
-        collectionIcon = mapToCollectionIcon(userData.collection),
+        collectionAdded = mapToCollectionIcon(userData.collection, Collection.ADDED),
+        collectionCompleted = mapToCollectionIcon(userData.collection, Collection.COMPLETED),
+        collectionDropped = mapToCollectionIcon(userData.collection, Collection.DROPPED),
+        collectionWatching = mapToCollectionIcon(userData.collection, Collection.WATCHING),
+        collectionNone = mapToCollectionIcon(userData.collection, Collection.NONE),
         statusColor = this.mapToStatusColor(),
         infoStatus = this.mapToStatus(),
         infoDate = this.dates.formatDate(),
@@ -190,13 +195,27 @@ class AnimeFullInfoMapper @Inject constructor() {
         infoType = "${this.kind},"
     )
 
-    private fun mapToCollectionIcon(collection: Collection) =
-        when(collection) {
-            Collection.ADDED -> R.drawable.ic_added_collection
-            Collection.COMPLETED -> R.drawable.ic_completed_collection
-            Collection.DROPPED -> R.drawable.ic_delete_collection
-            Collection.WATCHING -> R.drawable.ic_play_collection
-            Collection.NONE -> R.drawable.ic_none_collection
+    private fun mapToCollectionIcon(collectionSelect: Collection, collectionType: Collection) =
+        when (collectionType) {
+            Collection.ADDED -> if (collectionSelect == collectionType)
+                R.drawable.ic_added_collection else
+                R.drawable.ic_added_collection_disable
+
+            Collection.COMPLETED -> if (collectionSelect == collectionType)
+                R.drawable.ic_completed_collection else
+                R.drawable.ic_completed_collection_disable
+
+            Collection.DROPPED -> if (collectionSelect == collectionType)
+                R.drawable.ic_delete_collection else
+                R.drawable.ic_delete_collection_disable
+
+            Collection.WATCHING -> if (collectionSelect == collectionType)
+                R.drawable.ic_play_collection else
+                R.drawable.ic_play_collection_disable
+
+            Collection.NONE -> if (collectionSelect == collectionType)
+                R.drawable.ic_none_collection else
+                R.drawable.ic_none_collection_disable
         }
 
     fun Anime?.mapToInfoDuration(): String {

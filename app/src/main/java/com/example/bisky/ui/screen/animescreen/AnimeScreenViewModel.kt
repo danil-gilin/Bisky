@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.anime.AnimeRepository
+import com.example.bisky.domain.repository.anime.model.Collection
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.mapper.AnimeFullInfoMapper
@@ -39,6 +40,7 @@ class AnimeScreenViewModel @Inject constructor(
             Event.OnCompleteScore -> onCompleteScore()
             Event.OnDeleteScoreClick -> onDeleteScoreClick()
             is Event.OnSelectScore -> onSelectScore(event.selectedScore)
+            is Event.OnCollectionSelected -> onCollectionSelected(event.collectionType)
         }
     }
 
@@ -59,15 +61,27 @@ class AnimeScreenViewModel @Inject constructor(
         }
     }
 
-    private fun onDeleteScoreClick() {
-        _uiState.update {
-            it.copy(items = animeFullInfoMapper.updateRatingScore(it.items, -1))
+    private fun onDeleteScoreClick() = viewModelScope.launch {
+        val animeId = savedState.get<String>("id") ?: return@launch
+        animeRepository.updateAnimeApi(null ,animeId).onSuccess {
+            getAnimeInfo()
+        }.onError {
+            it
         }
     }
 
     private fun onSelectScore(selectedScore: Int) {
         _uiState.update {
             it.copy(items = animeFullInfoMapper.updateRatingScore(it.items, selectedScore))
+        }
+    }
+
+    private fun onCollectionSelected(type: Collection) = viewModelScope.launch{
+        val animeId = savedState.get<String>("id") ?: return@launch
+        animeRepository.updateCollection(type,animeId).onSuccess {
+            getAnimeInfo()
+        }.onError {
+            it
         }
     }
 

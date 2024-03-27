@@ -1,10 +1,12 @@
 package com.example.bisky.data.anime
 
 import com.example.bisky.data.anime.mapper.mapToDomain
+import com.example.bisky.data.network.resultwrapper.Result
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.bisky.domain.repository.anime.local.AnimeLocalSource
+import com.example.bisky.domain.repository.anime.model.Collection
 import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
@@ -17,7 +19,11 @@ class AnimeRepositoryImpl @Inject constructor(
         animeClient.getAnime(id)?.firstOrNull()?.mapToDomain()
     }
 
-    override suspend fun updateAnimeApi(rating: Int, animeId: String) = resultWrapper.wrap {
+    override suspend fun updateAnimeApi(rating: Int?, animeId: String) = resultWrapper.wrap {
         animeClient.updateRatingAnime(rating, animeId)
+    }
+
+    override suspend fun updateCollection(collectionType: Collection, animeId: String) = resultWrapper.wrap  {
+        animeClient.updateCollection(collectionType, animeId)
     }
 }

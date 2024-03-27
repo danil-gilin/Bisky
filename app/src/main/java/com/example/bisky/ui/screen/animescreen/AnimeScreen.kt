@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
+import com.example.bisky.domain.repository.anime.model.Collection
 import com.example.bisky.ui.navigation.NavigationRoute
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
@@ -60,6 +61,12 @@ fun AnimeScreen(
         },
         onCompleteScore = {
             viewModel.onEvent(Event.OnCompleteScore)
+        },
+        onCollectionSelected = {
+            viewModel.onEvent(Event.OnCollectionSelected(it))
+        },
+        onBackClicked = {
+            navController.popBackStack()
         }
     )
 }
@@ -71,7 +78,9 @@ fun AnimeScreen(
     onClickAnime: (String) -> Unit,
     onDeleteScoreClick: () -> Unit,
     onSelectScore: (Int) -> Unit,
-    onCompleteScore: () -> Unit
+    onCompleteScore: () -> Unit,
+    onCollectionSelected: (Collection) -> Unit,
+    onBackClicked: () -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(bottom = 40.dp),
@@ -85,7 +94,7 @@ fun AnimeScreen(
             key = { item -> item.itemId }
         ) {
             when(it) {
-                is HeaderItemUI -> HeaderAnimeItem(it)
+                is HeaderItemUI -> HeaderAnimeItem(it, onCollectionSelected, onBackClicked)
                 is AnimeDescriptionUI -> AnimeDescriptionItems(it, onClickMoreInfo = onClickMoreInfo)
                 is AnimeProducerInfoUI -> AnimeProducerInfoItem(it)
                 is AnimeScreenshotsUI -> AnimeScreenshotItem(it)
@@ -113,6 +122,7 @@ fun AnimeScreenPreview() {
         },
         onCompleteScore = {
 
-        }
+        },
+        {},{}
     )
 }

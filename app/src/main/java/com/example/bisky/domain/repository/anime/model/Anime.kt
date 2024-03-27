@@ -27,12 +27,12 @@ data class UserData(
     val watchedSeries: Int?
 )
 
-enum class Collection {
-    ADDED,
-    COMPLETED,
-    DROPPED,
-    WATCHING,
-    NONE
+enum class Collection(val value: String) {
+    ADDED("added"),
+    COMPLETED("completed"),
+    DROPPED("dropped"),
+    WATCHING("watching"),
+    NONE("none")
 }
 
 data class SimilarAnime(

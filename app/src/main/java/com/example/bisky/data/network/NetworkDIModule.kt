@@ -4,7 +4,9 @@ import com.apollographql.apollo3.ApolloClient
 import com.example.bisky.data.login.local.TokenPreference
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.network.dispatcher.DispatchersProviderImpl
+import com.example.bisky.data.network.moshi.AlwaysSerializeNullsFactory
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +35,8 @@ object NetworkDIModule {
     @Provides
     fun provideMoshi(): Moshi = Moshi
         .Builder()
+        .add(AlwaysSerializeNullsFactory())
+        .add(KotlinJsonAdapterFactory())
         .build()
 
     @Singleton
