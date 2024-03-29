@@ -20,7 +20,8 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfGrid
-import com.example.bisky.ui.navigation.NavigationRoute
+import com.example.bisky.ui.navigation.ext.NavigationRoute
+import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreenView.Event
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreenView.State
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.items.AnimeGenre
@@ -43,7 +44,7 @@ fun GenreScreen(
         },
         onAnimeClick = { id ->
             navController.navigate(
-                "${NavigationRoute.Anime.route}/$id"
+                "${Destination.Home.Anime.route}/$id"
             )
         }
     )

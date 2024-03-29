@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
-import com.example.bisky.ui.navigation.NavigationRoute
+import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreenView.Event
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.items.ItemAnimeSeason
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.items.ItemHeaderSeason
@@ -46,7 +46,7 @@ fun SeasonAnimeScreen(
         },
         onAnimeClick = { id ->
             navController.navigate(
-                "${NavigationRoute.Anime.route}/$id"
+                "${Destination.Home.Anime.route}/$id"
             )
         }
     )

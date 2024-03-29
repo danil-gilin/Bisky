@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.login.LoginRepository
-import com.example.bisky.ui.navigation.NavigationRoute
+import com.example.bisky.ui.navigation.ext.NavigationRoute
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInView.Event
 import com.example.bisky.ui.screen.loginScreen.siginscreen.mapper.TextSigInUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel

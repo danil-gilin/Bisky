@@ -9,7 +9,7 @@ import com.example.bisky.R
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.login.LoginRepository
-import com.example.bisky.ui.navigation.NavigationRoute
+import com.example.bisky.ui.navigation.ext.NavigationRoute
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.SigUpView.Event
 import com.example.bisky.ui.screen.loginScreen.sigupscreen.mapper.TextUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel

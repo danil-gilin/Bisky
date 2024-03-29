@@ -21,7 +21,8 @@ import com.example.bisky.R
 import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfList
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
-import com.example.bisky.ui.navigation.NavigationRoute.Genre
+import com.example.bisky.ui.navigation.ext.NavigationRoute.Genre
+import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.AllGenreView.Event
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.items.ItemGenre
 import com.example.bisky.ui.screen.homescreen.genre.allgenrescreen.model.GenreUI
@@ -42,7 +43,7 @@ fun AllGenreScreen(
         },
         onClickGenre = { id, name ->
             navController.navigate(
-                "${Genre.route}/$id/$name"
+                "${Destination.Home.Genre.route}/$id/$name"
             )
         }
     )

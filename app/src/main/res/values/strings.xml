@@ -50,4 +50,9 @@
 
     <string name="delete">удалить</string>
     <string name="select_rating">Оценить</string>
+
+
+    // bottom nav
+    <string name="home">Home</string>
+    <string name="search">Search</string>
 </resources>

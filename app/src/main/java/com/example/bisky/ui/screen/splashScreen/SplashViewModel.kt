@@ -6,9 +6,9 @@ import androidx.navigation.NavHostController
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.login.LoginRepository
-import com.example.bisky.ui.navigation.NavigationRoute.BoardingLogin
-import com.example.bisky.ui.navigation.NavigationRoute.Home
-import com.example.bisky.ui.navigation.NavigationRoute.Splash
+import com.example.bisky.ui.navigation.ext.NavigationRoute.BoardingLogin
+import com.example.bisky.ui.navigation.ext.NavigationRoute.Home
+import com.example.bisky.ui.navigation.ext.NavigationRoute.Splash
 import com.example.bisky.ui.screen.splashScreen.SplashView.Action
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

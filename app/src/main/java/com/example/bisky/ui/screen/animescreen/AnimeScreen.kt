@@ -17,7 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.domain.repository.anime.model.Collection
-import com.example.bisky.ui.navigation.NavigationRoute
+import com.example.bisky.ui.navigation.ext.NavigationRoute
+import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.items.body.AnimeDescriptionItems
@@ -50,7 +51,7 @@ fun AnimeScreen(
         },
         onClickAnime = { id ->
             navController.navigate(
-                "${NavigationRoute.Anime.route}/$id"
+                "${Destination.Home.Anime.route}/$id"
             )
         },
         onDeleteScoreClick = {
