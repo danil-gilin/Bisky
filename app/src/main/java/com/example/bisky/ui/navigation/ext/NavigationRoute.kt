@@ -12,6 +12,8 @@ import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerSc
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
 import com.example.bisky.ui.screen.homescreen.newseriesscreen.NewSeriesScreen
 import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreen
+import com.example.bisky.ui.screen.searchscreen.filterscreen.FilterScreen
+import com.example.bisky.ui.screen.searchscreen.searchrootscreen.SearchScreen
 
 sealed class NavigationRoute(val route: String) {
     object Splash : NavigationRoute("splash")
@@ -61,7 +63,16 @@ fun NavGraphBuilder.searchNavGraph(navController: NavController) {
         startDestination = Destination.Search.SearchScreen.route
     ) {
         composable(route = Destination.Search.SearchScreen.route) {
-            NewSeriesScreen()
+            SearchScreen(navController)
+        }
+        composable(
+            route = "${Destination.Search.Anime.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimeScreen(navController)
+        }
+        composable(route = Destination.Search.Filter.route) {
+            FilterScreen(navController)
         }
     }
 }

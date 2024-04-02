@@ -55,4 +55,22 @@
     // bottom nav
     <string name="home">Home</string>
     <string name="search">Search</string>
+
+    // search
+    <string name="search_title">Просмотр</string>
+    <string name="search_placeholder">Что же посмотреть</string>
+
+    // filter
+    <string name="btn_filter_done">Принят</string>
+
+    <string name="status_filter">Статус</string>
+    <string name="status_filter_announced">Анонсировано</string>
+    <string name="status_filter_now">Сейчас выходит</string>
+    <string name="status_filter_published">Вышедшее</string>
+    <string name="status_filter_released">Недавно вышедшее</string>
+
+    <string name="sort_filter">Сортировка</string>
+    <string name="sort_filter_rating">По рейтингу</string>
+    <string name="sort_filter_popularity">По популярности</string>
+    <string name="sort_filter_words">По алфавиту</string>
 </resources>

@@ -30,6 +30,8 @@ sealed class Destination(
         R.drawable.ic_search
     ) {
         data object SearchScreen : Search("search_screen")
+        data object Anime : Search("anime")
+        data object Filter : Search("filter")
 
         companion object {
             const val route = "search"
