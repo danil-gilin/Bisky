@@ -3,6 +3,8 @@ package com.example.bisky.data.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.bisky.data.genre.local.GenreDao
+import com.example.bisky.data.genre.local.model.GenreEntity
 import com.example.bisky.data.login.local.LoginDao
 import com.example.bisky.data.login.local.model.UserEntity
 import com.example.bisky.data.room.converter.ListGenreTypeConverter
@@ -13,9 +15,10 @@ import com.example.bisky.data.seasonanime.local.model.SeasonAnimeEntity
 @Database(
     entities = [
         SeasonAnimeEntity::class,
-        UserEntity::class
+        UserEntity::class,
+        GenreEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 
@@ -26,4 +29,5 @@ import com.example.bisky.data.seasonanime.local.model.SeasonAnimeEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun seasonAnimeDao(): SeasonAnimeDao
     abstract fun loginDao(): LoginDao
+    abstract fun genreDao(): GenreDao
 }

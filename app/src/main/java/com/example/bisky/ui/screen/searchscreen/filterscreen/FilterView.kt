@@ -1,5 +1,6 @@
 package com.example.bisky.ui.screen.searchscreen.filterscreen
 
+import com.example.bisky.ui.screen.searchscreen.filterscreen.model.GenreFilterUI
 import com.example.bisky.ui.screen.searchscreen.filterscreen.model.SortAnimeFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.model.StatusAnimeFilter
 import java.time.LocalDate
@@ -9,6 +10,7 @@ interface FilterView {
         val selectedStatus: List<StatusAnimeFilter> = emptyList(),
         val selectedSort: SortAnimeFilter = SortAnimeFilter.RATING,
         val currentYear: Int = LocalDate.now().year,
+        val genreFilterUI: List<GenreFilterUI> = emptyList(),
         val isDateDialogShow: Boolean = false
     )
 
@@ -28,6 +30,11 @@ interface FilterView {
 
         data class OnYearSelected(
             val year: Int,
+        ) : Event()
+
+        data class OnGenreSelected(
+            val genreId: String,
+            val isAdd: Boolean
         ) : Event()
     }
 }

@@ -1,0 +1,9 @@
+query GetAllGenreWithSimpleInfo($genreQuery: GeneralGenreQuery!) {
+    getGenres(genreQuery: $genreQuery) {
+        _id
+        name {
+            ru
+            en
+        }
+    }
+}
