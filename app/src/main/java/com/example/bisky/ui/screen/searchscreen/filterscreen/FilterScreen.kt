@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.screen.searchscreen.filterscreen.FilterView.Event
+import com.example.bisky.ui.screen.searchscreen.filterscreen.items.DateFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.items.SortedFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.items.StatusFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.model.SortAnimeFilter
@@ -45,8 +46,14 @@ fun FilterScreen(
         onSelectStatus = { status, isChecked ->
             viewModel.onEvent(Event.OnStatusSelected(status, isChecked))
         },
-        onSelectSort ={
+        onSelectSort = {
             viewModel.onEvent(Event.OnSortSelected(it))
+        },
+        onYearSelected = {
+            viewModel.onEvent(Event.OnYearSelected(it))
+        },
+        onDialogDateShow = {
+            viewModel.onEvent(Event.OnOpenDialogDate(it))
         }
     )
 }
@@ -55,7 +62,9 @@ fun FilterScreen(
     uiState: FilterView.State,
     onDoneClick: () -> Unit,
     onSelectStatus: (StatusAnimeFilter, Boolean) -> Unit,
-    onSelectSort: (SortAnimeFilter) -> Unit
+    onSelectSort: (SortAnimeFilter) -> Unit,
+    onYearSelected: (Int) -> Unit,
+    onDialogDateShow:(Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -79,6 +88,19 @@ fun FilterScreen(
         SortedFilter(
             selectedSort = uiState.selectedSort,
             onSelectSort,
+            modifier = Modifier.padding(top = 12.dp)
+        )
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .padding(start = 45.dp, end = 45.dp)
+            .background(color = colorResource(id = R.color.bisky_dark_200))
+        )
+        DateFilter(
+            onYearSelected,
+            onDialogDateShow,
+            currentYear = uiState.currentYear,
+            dialogVisible = uiState.isDateDialogShow,
             modifier = Modifier.padding(top = 12.dp)
         )
         Button(
@@ -105,6 +127,8 @@ fun FilterScreenPreview() {
         FilterView.State(),
         {},
         {it, sa ->},
+        {},
+        {},
         {}
     )
 }

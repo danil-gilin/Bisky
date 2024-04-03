@@ -73,4 +73,6 @@
     <string name="sort_filter_rating">По рейтингу</string>
     <string name="sort_filter_popularity">По популярности</string>
     <string name="sort_filter_words">По алфавиту</string>
+
+    <string name="date_filter">До какого года</string>
 </resources>

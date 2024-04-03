@@ -21,6 +21,8 @@ class FilterViewModel @Inject constructor(): ViewModel() {
         when(event) {
             is Event.OnStatusSelected -> onStatusSelected(event.status, event.isChecked)
             is Event.OnSortSelected -> onSortSelected(event.sort)
+            is Event.OnOpenDialogDate ->  _uiState.update { it.copy(isDateDialogShow = event.isShow) }
+            is Event.OnYearSelected ->  _uiState.update { it.copy(currentYear = event.year) }
         }
     }
 
