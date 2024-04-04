@@ -77,4 +77,6 @@
     <string name="date_filter">До какого года</string>
 
     <string name="genre_filter">Жанр</string>
+
+    <string name="score_filter">Рейтинг</string>
 </resources>

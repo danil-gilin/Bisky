@@ -1,10 +1,7 @@
 package com.example.bisky.ui.screen.searchscreen.filterscreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,6 +25,7 @@ import com.example.bisky.R
 import com.example.bisky.ui.screen.searchscreen.filterscreen.FilterView.Event
 import com.example.bisky.ui.screen.searchscreen.filterscreen.items.DateFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.items.GenreFilter
+import com.example.bisky.ui.screen.searchscreen.filterscreen.items.ScoreFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.items.SortedFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.items.StatusFilter
 import com.example.bisky.ui.screen.searchscreen.filterscreen.model.SortAnimeFilter
@@ -59,6 +56,9 @@ fun FilterScreen(
         },
         onSelectGenre = { id, isAdd ->
             viewModel.onEvent(Event.OnGenreSelected(id, isAdd))
+        },
+        onScoreSelected = {
+            viewModel.onEvent(Event.OnScoreSelected(it))
         }
     )
 }
@@ -70,7 +70,8 @@ fun FilterScreen(
     onSelectSort: (SortAnimeFilter) -> Unit,
     onYearSelected: (Int) -> Unit,
     onDialogDateShow:(Boolean) -> Unit,
-    onSelectGenre: (String, Boolean) -> Unit
+    onSelectGenre: (String, Boolean) -> Unit,
+    onScoreSelected: (ClosedFloatingPointRange<Float>) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -116,6 +117,19 @@ fun FilterScreen(
             )
         }
         item {
+            ScoreFilter(
+                scoreRange = uiState.scoreRange,
+                onScoreSelected = onScoreSelected,
+                modifier = Modifier.padding(bottom = 12.dp, top = 12.dp)
+            )
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .padding(start = 45.dp, end = 45.dp)
+                .background(color = colorResource(id = R.color.bisky_dark_200))
+            )
+        }
+        item {
             GenreFilter(
                 listGenre = uiState.genreFilterUI,
                 onGenreSelected = onSelectGenre,
@@ -151,6 +165,7 @@ fun FilterScreenPreview() {
         {},
         {},
         {},
-        {it, sa ->}
+        {it, sa ->},
+        {}
     )
 }

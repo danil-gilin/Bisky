@@ -41,7 +41,13 @@ class FilterViewModel @Inject constructor(
             is Event.OnOpenDialogDate -> _uiState.update { it.copy(isDateDialogShow = event.isShow) }
             is Event.OnYearSelected -> _uiState.update { it.copy(currentYear = event.year) }
             is Event.OnGenreSelected -> onGenreSelected(event.genreId, event.isAdd)
+            is Event.OnScoreSelected -> onScoreSelected(event.scoreRange)
         }
+    }
+
+    private fun onScoreSelected(scoreRange: ClosedFloatingPointRange<Float>) {
+        val item = filterMapper.mapScoreToUI(scoreRange)
+        _uiState.update { it.copy(scoreRange = item) }
     }
 
     private fun requestAllGenre() = viewModelScope.launch {

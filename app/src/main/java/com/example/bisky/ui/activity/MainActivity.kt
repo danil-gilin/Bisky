@@ -9,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bisky.ui.navigation.elements.Navigation
-import com.example.bisky.ui.navigation.ext.NavigationRoute
 import com.example.bisky.ui.navigation.ext.NavigationRoute.*
 import com.example.bisky.ui.screen.loginScreen.boardingScreen.BoardingScreen
 import com.example.bisky.ui.screen.loginScreen.siginscreen.SigInScreen
@@ -53,45 +52,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-/*
- NavHost(
-                navController,
-                startDestination = Splash.route,
-                enterTransition = {
-                    EnterTransition.None
-                },
-                exitTransition = {
-                    ExitTransition.None
-                }
-            ) {
-                composable(Splash.route) {
-                    SplashScreen(navController = navController)
-                }
-                composable(Home.route) {
-                    HomeContainerScreen(navController = navController)
-                }
-                composable(SigIn.route) {
-                    SigInScreen(navController = navController)
-                }
-                composable(SigUp.route) {
-                    SigUpScreen(navController = navController)
-                }
-                composable(BoardingLogin.route) {
-                    BoardingScreen(navController = navController)
-                }
-                composable(
-                    route = "${Genre.route}/{id}/{name}",
-                    arguments = listOf(
-                        navArgument("id") { type = NavType.StringType },
-                        navArgument("name") { type = NavType.StringType },)
-                ) {
-                    GenreScreen(navController = navController)
-                }
-                composable(
-                    route = "${Anime.route}/{id}",
-                    arguments = listOf(navArgument("id") { type = NavType.StringType })
-                ) {
-                    AnimeScreen(navController = navController)
-                }
-            }
-*/
