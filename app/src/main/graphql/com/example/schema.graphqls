@@ -395,7 +395,7 @@ input GeneralAnimeQuery {
   """
   Search anime by all titles (including incorrect case)
   """
-  searchInput: String!
+  searchInput: String = null
 
   sort: SortAnimeQuery = null
 }
