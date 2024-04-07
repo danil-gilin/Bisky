@@ -1,5 +1,6 @@
 package com.example.bisky.ui.screen.searchscreen.filterscreen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,6 +41,7 @@ fun FilterScreen(
     FilterScreen(
         uiState,
         onDoneClick = {
+            viewModel.onAction(FilterView.Action.ShowBottomNav)
             navController.popBackStack()
         },
         onSelectStatus = { status, isChecked ->
@@ -73,6 +75,9 @@ fun FilterScreen(
     onSelectGenre: (String, Boolean) -> Unit,
     onScoreSelected: (ClosedFloatingPointRange<Float>) -> Unit
 ) {
+    BackHandler {
+        onDoneClick()
+    }
     LazyColumn(
         modifier = Modifier
             .background(

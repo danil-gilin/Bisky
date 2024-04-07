@@ -1,4 +1,4 @@
-package com.example.bisky.ui.navigation.elements
+package com.example.bisky.ui.navigation.elements.items
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

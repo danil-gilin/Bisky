@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.eventbus.navigation.NavigationEventBus
+import com.example.bisky.domain.eventbus.navigation.NavigationEventBusEvent
 import com.example.bisky.domain.repository.genre.GenreRepository
 import com.example.bisky.domain.repository.genre.model.GenreSimple
+import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository
+import com.example.bisky.ui.screen.searchscreen.filterscreen.FilterView.Action
 import com.example.bisky.ui.screen.searchscreen.filterscreen.FilterView.Event
 import com.example.bisky.ui.screen.searchscreen.filterscreen.mapper.FilterMapper
 import com.example.bisky.ui.screen.searchscreen.filterscreen.model.SortAnimeFilter
@@ -20,17 +24,20 @@ import javax.inject.Inject
 @HiltViewModel
 class FilterViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
-    private val filterMapper: FilterMapper
+    private val searchAnimeRepository: SearchAnimeRepository,
+    private val filterMapper: FilterMapper,
+    private val navigationEventBus: NavigationEventBus
 ): ViewModel() {
     private val _uiState = MutableStateFlow(FilterView.State())
     val uiState: StateFlow<FilterView.State> = _uiState
 
-    var selectedGenreIds = listOf<String>()
     var listGenre = emptyList<GenreSimple>()
 
     init {
         viewModelScope.launch {
+            navigationEventBus.emitEvent(NavigationEventBusEvent.ChangeVisibleBottomNav(false))
             requestAllGenre()
+            updateFilter()
         }
     }
 
@@ -39,48 +46,79 @@ class FilterViewModel @Inject constructor(
             is Event.OnStatusSelected -> onStatusSelected(event.status, event.isChecked)
             is Event.OnSortSelected -> onSortSelected(event.sort)
             is Event.OnOpenDialogDate -> _uiState.update { it.copy(isDateDialogShow = event.isShow) }
-            is Event.OnYearSelected -> _uiState.update { it.copy(currentYear = event.year) }
+            is Event.OnYearSelected -> onYearSelected(event.year)
             is Event.OnGenreSelected -> onGenreSelected(event.genreId, event.isAdd)
             is Event.OnScoreSelected -> onScoreSelected(event.scoreRange)
         }
     }
 
+    fun onAction(action: Action) {
+        when(action) {
+            Action.ShowBottomNav -> navigationEventBus.emitEvent(NavigationEventBusEvent.ChangeVisibleBottomNav(true))
+        }
+    }
+
+    private fun onYearSelected(year: Int) {
+        val filter = searchAnimeRepository.fetchSearchFilter()
+        searchAnimeRepository.updateSearchFilter(filter.copy(year = year))
+        updateFilter()
+    }
     private fun onScoreSelected(scoreRange: ClosedFloatingPointRange<Float>) {
-        val item = filterMapper.mapScoreToUI(scoreRange)
-        _uiState.update { it.copy(scoreRange = item) }
+        val filter = searchAnimeRepository.fetchSearchFilter()
+        searchAnimeRepository.updateSearchFilter(filter.copy(scoreRange =scoreRange))
+        updateFilter()
     }
 
     private fun requestAllGenre() = viewModelScope.launch {
         genreRepository.getAllGenresWithSimpleInfo().onSuccess {
            listGenre = it
-           val items = filterMapper.mapGenreToUI(it, selectedGenreIds)
+            val filter = searchAnimeRepository.fetchSearchFilter()
+           val items = filterMapper.mapGenreToUI(it, filter.genres.orEmpty()).sortedBy { !it.isSelected }
             _uiState.update { it.copy(genreFilterUI = items) }
         }.onError {
             it
         }
     }
 
-    private fun onGenreSelected(genreId: String, isAdd: Boolean) {
-        selectedGenreIds = if (isAdd) {
-            selectedGenreIds.plus(genreId)
-        } else {
-            selectedGenreIds.minus(genreId)
+    private fun updateFilter() = viewModelScope.launch {
+       val filter = searchAnimeRepository.fetchSearchFilter()
+        _uiState.update {
+            it.copy(
+                selectedStatus = filter.status.orEmpty(),
+                selectedSort = filter.sorted ?: SortAnimeFilter.RATING,
+                currentYear = filter.year,
+                genreFilterUI = filterMapper.mapGenreToUI(listGenre, filter.genres.orEmpty()).sortedBy { !it.isSelected },
+                scoreRange = filterMapper.mapScoreToUI(scoreRange = filter.scoreRange)
+            )
         }
-        val items = filterMapper.mapGenreToUI(listGenre, selectedGenreIds).sortedBy { !it.isSelected }
-        _uiState.update { it.copy(genreFilterUI = items) }
+    }
+
+    private fun onGenreSelected(genreId: String, isAdd: Boolean) {
+        val filter = searchAnimeRepository.fetchSearchFilter()
+        val selectedGenreIds = if (isAdd) {
+            filter.genres.orEmpty().plus(genreId)
+        } else {
+            filter.genres.orEmpty().minus(genreId)
+        }
+        searchAnimeRepository.updateSearchFilter(filter.copy(genres =selectedGenreIds))
+        updateFilter()
     }
 
     private fun onStatusSelected(status: StatusAnimeFilter, checked: Boolean) {
+        val filter = searchAnimeRepository.fetchSearchFilter()
         val currentStatus = uiState.value.selectedStatus
         val statusUpdated = if (checked) {
             currentStatus.plus(status)
         } else {
             currentStatus.minus(status)
         }
-        _uiState.update { it.copy(selectedStatus = statusUpdated) }
+        searchAnimeRepository.updateSearchFilter(filter.copy(status =statusUpdated))
+        updateFilter()
     }
 
     private fun onSortSelected(sortAnimeFilter: SortAnimeFilter) {
-        _uiState.update { it.copy(selectedSort = sortAnimeFilter) }
+        val filter = searchAnimeRepository.fetchSearchFilter()
+        searchAnimeRepository.updateSearchFilter(filter.copy(sorted =sortAnimeFilter))
+        updateFilter()
     }
 }

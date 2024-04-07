@@ -1,7 +1,9 @@
 package com.example.bisky.domain.repository.searchanime.remote
 
 import com.example.GetSearchAnimeQuery
+import com.example.bisky.domain.repository.searchanime.model.FilterSearch
+import java.util.concurrent.atomic.AtomicReference
 
 interface SearchAnimeRemoteSource  {
-    suspend fun getAnimes(input: String): List<GetSearchAnimeQuery.GetAnime>
+    suspend fun getAnimes(input: String, filter: FilterSearch): List<GetSearchAnimeQuery.GetAnime>
 }

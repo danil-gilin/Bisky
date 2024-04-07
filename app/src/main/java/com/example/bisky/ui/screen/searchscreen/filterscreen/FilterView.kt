@@ -41,4 +41,8 @@ interface FilterView {
             val isAdd: Boolean
         ) : Event()
     }
+
+    sealed class Action {
+        data object ShowBottomNav: Action()
+    }
 }

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
-import com.example.bisky.ui.navigation.elements.BottomNavigation
+import com.example.bisky.ui.navigation.elements.items.BottomNavigation
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.login.LoginRepository
+import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository
 import com.example.bisky.ui.navigation.ext.NavigationRoute.BoardingLogin
 import com.example.bisky.ui.navigation.ext.NavigationRoute.Home
 import com.example.bisky.ui.navigation.ext.NavigationRoute.Splash
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val loginRepositoryImpl: LoginRepository
+    private val loginRepositoryImpl: LoginRepository,
+    private val searchAnimeRepository: SearchAnimeRepository
 ) : ViewModel() {
 
     fun onAction(action: Action) {
@@ -39,5 +41,6 @@ class SplashViewModel @Inject constructor(
                 }
             }
         }
+        searchAnimeRepository.clearSearchFilter()
     }
 }
