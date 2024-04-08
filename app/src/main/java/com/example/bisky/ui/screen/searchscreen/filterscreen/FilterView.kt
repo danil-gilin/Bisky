@@ -40,6 +40,7 @@ interface FilterView {
             val genreId: String,
             val isAdd: Boolean
         ) : Event()
+        data object OnClearClick: Event()
     }
 
     sealed class Action {

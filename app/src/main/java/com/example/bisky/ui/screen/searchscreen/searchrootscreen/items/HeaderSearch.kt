@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.bisky.R
 import com.example.bisky.ui.elements.BaseTextSearch
 import com.example.bisky.ui.elements.noRippleClickable
@@ -32,6 +36,7 @@ import com.example.bisky.ui.screen.searchscreen.searchrootscreen.model.SearchUI
 @Composable
 fun HeaderSearch(
     onSearchClick: () -> Unit,
+    onQuickSearchClick: () -> Unit,
     onFilterClick: () -> Unit,
     searchInputVisible: Boolean,
     searchTextField: TextFieldState,
@@ -100,17 +105,65 @@ fun HeaderSearch(
                 tint = tintSearch
             )
         }
-        Icon(
-            painter = painterResource(id = R.drawable.ic_filter),
-            contentDescription = "search",
+        ConstraintLayout(
             modifier = Modifier
-                .align(Alignment.End)
-                .wrapContentWidth()
-                .padding(start = 0.dp, end = 16.dp, top = 8.dp)
-                .noRippleClickable { onFilterClick() }
-            ,
-            tint = colorResource(id = R.color.light_200)
-        )
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(top = 4.dp, bottom = 4.dp, start = 16.dp)
+        ) {
+            val (btnQuickSearch, filter) = createRefs()
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(colorResource(id = R.color.bisky_300))
+                    .padding(top = 8.dp, bottom = 8.dp, end = 45.dp, start = 56.dp)
+                    .constrainAs(btnQuickSearch) {
+                        top.linkTo(parent.top)
+                        linkTo(parent.start, filter.start, bias = 0F)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .noRippleClickable {
+                        onQuickSearchClick()
+                    }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.quick_search),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W700,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterVertically)
+                    ,
+                    textAlign = TextAlign.Center,
+                    color = colorResource(id = R.color.white)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_king),
+                    contentDescription = "search",
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterVertically)
+                        .padding(start = 4.dp, end = 16.dp, top = 0.dp)
+                        .noRippleClickable { onFilterClick() }
+                    ,
+                    tint = colorResource(id = R.color.light_200)
+                )
+            }
+            Icon(
+                painter = painterResource(id = R.drawable.ic_filter),
+                contentDescription = "search",
+                modifier = Modifier
+                    .padding(start = 0.dp, end = 16.dp, top = 0.dp)
+                    .constrainAs(filter) {
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .noRippleClickable { onFilterClick() }
+                ,
+                tint = colorResource(id = R.color.light_200)
+            )
+        }
     }
 }
 
@@ -122,6 +175,7 @@ fun HeaderGenrePreview() {
     HeaderSearch(
         onSearchClick = {},
         onFilterClick = {},
+        onQuickSearchClick = {},
         searchInputVisible = false,
         searchTextField = TextFieldState("dfsdf"),
         searchUI = SearchUI()

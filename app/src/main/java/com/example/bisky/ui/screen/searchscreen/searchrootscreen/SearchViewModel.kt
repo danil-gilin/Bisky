@@ -51,9 +51,14 @@ class SearchViewModel @Inject constructor(
         _uiState.value.searchTextField
             .textAsFlow()
             .map {
-                val searchUI =
-                    textSearchUIMapper.map(it.toString())
-                _uiState.update { it.copy(searchUI = searchUI) }
+                val searchUI = textSearchUIMapper.map(it.toString())
+                val isInputNotEmpty = it.isNotEmpty()
+                _uiState.update {
+                    it.copy(
+                        searchUI = searchUI,
+                        isLoading = isInputNotEmpty
+                    )
+                }
                 it
             }
             .debounce(300L)
@@ -65,10 +70,22 @@ class SearchViewModel @Inject constructor(
     private suspend fun getAnime(input: String) {
         searchAnimeRepository.getAnimes(input).onSuccess {
             if (input.isEmpty()) {
-                _uiState.update { it.copy(items = emptyList()) }
+                _uiState.update {
+                    it.copy(
+                        items = emptyList(),
+                        isLoading = false,
+                        isEmptyResult = false
+                    )
+                }
             } else {
                 val items = searchAnimeMapper.mapToUI(it)
-                _uiState.update { it.copy(items = items) }
+                _uiState.update {
+                    it.copy(
+                        items = items,
+                        isLoading = false,
+                        isEmptyResult = items.isEmpty()
+                    )
+                }
             }
         }.onError {
             it

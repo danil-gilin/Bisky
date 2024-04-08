@@ -2,6 +2,7 @@ package com.example.bisky.ui.screen.searchscreen.filterscreen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,6 +45,9 @@ fun FilterScreen(
             viewModel.onAction(FilterView.Action.ShowBottomNav)
             navController.popBackStack()
         },
+        onClearClick = {
+            viewModel.onEvent(Event.OnClearClick)
+        },
         onSelectStatus = { status, isChecked ->
             viewModel.onEvent(Event.OnStatusSelected(status, isChecked))
         },
@@ -68,6 +72,7 @@ fun FilterScreen(
 fun FilterScreen(
     uiState: FilterView.State,
     onDoneClick: () -> Unit,
+    onClearClick: () -> Unit,
     onSelectStatus: (StatusAnimeFilter, Boolean) -> Unit,
     onSelectSort: (SortAnimeFilter) -> Unit,
     onYearSelected: (Int) -> Unit,
@@ -83,12 +88,13 @@ fun FilterScreen(
             .background(
                 color = colorResource(id = R.color.bisky_dark_400)
             )
-            .padding(top = 24.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
+        contentPadding = PaddingValues(top = 24.dp)
     ) {
         item {
             StatusFilter(
                 selectedStatus = uiState.selectedStatus,
+                onClearClick,
                 onSelectStatus,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
@@ -165,6 +171,7 @@ fun FilterScreen(
 fun FilterScreenPreview() {
     FilterScreen(
         FilterView.State(),
+        {},
         {},
         {it, sa ->},
         {},

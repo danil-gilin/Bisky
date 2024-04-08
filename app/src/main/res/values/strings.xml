@@ -58,10 +58,13 @@
 
     // search
     <string name="search_title">Просмотр</string>
+    <string name="quick_search">Быстрый выбор</string>
     <string name="search_placeholder">Что же посмотреть</string>
+    <string name="search_empty">Ничего не найдено</string>
 
     // filter
     <string name="btn_filter_done">Принят</string>
+    <string name="btn_filter_clear">Очистить</string>
 
     <string name="status_filter">Статус</string>
     <string name="status_filter_announced">Анонсировано</string>

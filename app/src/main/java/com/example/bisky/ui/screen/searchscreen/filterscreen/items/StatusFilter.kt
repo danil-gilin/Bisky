@@ -28,6 +28,7 @@ import com.example.bisky.ui.screen.searchscreen.filterscreen.model.StatusAnimeFi
 @Composable
 fun StatusFilter(
     selectedStatus: List<StatusAnimeFilter>,
+    clearFilter: () -> Unit,
     onSelectStatus: (StatusAnimeFilter, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -37,16 +38,39 @@ fun StatusFilter(
             .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth()
     ) {
-        Text(
-            text = stringResource(id = R.string.status_filter),
-            fontSize = 18.sp,
-            modifier = Modifier
-                .padding(0.dp, 0.dp, 4.dp, 16.dp),
-            fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.W700,
-            letterSpacing = (-0.02).sp,
-            color = colorResource(R.color.light_100)
-        )
+        Row {
+            Text(
+                text = stringResource(id = R.string.status_filter),
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 4.dp, 16.dp)
+                    .weight(1.0f)
+                    .fillMaxWidth()
+                ,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W700,
+                letterSpacing = (-0.02).sp,
+                color = colorResource(R.color.light_100)
+            )
+            Text(
+                text = stringResource(id = R.string.btn_filter_clear),
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 4.dp, 16.dp)
+                    .align(Alignment.Bottom)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(colorResource(id = R.color.bisky_400))
+                    .padding(4.dp,2.dp,4.dp,2.dp)
+                    .noRippleClickable {
+                        clearFilter()
+                    }
+                ,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W700,
+                letterSpacing = (-0.02).sp,
+                color = colorResource(R.color.light_100)
+            )
+        }
         Column(
             Modifier
                 .selectableGroup()
@@ -135,6 +159,7 @@ private fun CheckBoxWithText(
 fun StatusFilterPreview() {
     StatusFilter(
         listOf(StatusAnimeFilter.PUBLISHED, StatusAnimeFilter.NOW),
+        {},
         onSelectStatus = {it, ist ->}
     )
 }

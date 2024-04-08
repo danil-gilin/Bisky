@@ -10,6 +10,7 @@ interface SearchView {
     @OptIn(ExperimentalFoundationApi::class)
     data class State(
         val isLoading: Boolean = false,
+        val isEmptyResult: Boolean = false,
         val items: List<BaseItem> = emptyList(),
         val positionScroll: Int = 0,
         val isSearchInputVisible : Boolean = false,

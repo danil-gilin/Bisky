@@ -49,6 +49,7 @@ class FilterViewModel @Inject constructor(
             is Event.OnYearSelected -> onYearSelected(event.year)
             is Event.OnGenreSelected -> onGenreSelected(event.genreId, event.isAdd)
             is Event.OnScoreSelected -> onScoreSelected(event.scoreRange)
+            Event.OnClearClick -> onClearClick()
         }
     }
 
@@ -56,6 +57,11 @@ class FilterViewModel @Inject constructor(
         when(action) {
             Action.ShowBottomNav -> navigationEventBus.emitEvent(NavigationEventBusEvent.ChangeVisibleBottomNav(true))
         }
+    }
+
+    private fun onClearClick() {
+        searchAnimeRepository.clearSearchFilter()
+        updateFilter()
     }
 
     private fun onYearSelected(year: Int) {
