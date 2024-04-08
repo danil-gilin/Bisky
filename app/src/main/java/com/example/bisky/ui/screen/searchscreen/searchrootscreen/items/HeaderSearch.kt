@@ -144,7 +144,6 @@ fun HeaderSearch(
                         .wrapContentWidth()
                         .align(Alignment.CenterVertically)
                         .padding(start = 4.dp, end = 16.dp, top = 0.dp)
-                        .noRippleClickable { onFilterClick() }
                     ,
                     tint = colorResource(id = R.color.light_200)
                 )

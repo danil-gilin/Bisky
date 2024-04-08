@@ -32,6 +32,7 @@ sealed class Destination(
         data object SearchScreen : Search("search_screen")
         data object Anime : Search("anime")
         data object Filter : Search("filter")
+        data object QuickSearch : Search("quick_search")
 
         companion object {
             const val route = "search"

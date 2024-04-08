@@ -56,7 +56,7 @@ fun SearchScreen(
             navController.navigate("${Destination.Search.Anime.route}/$it")
         },
         onQuickSearchClick = {
-
+            navController.navigate(Destination.Search.QuickSearch.route)
         }
     )
 }

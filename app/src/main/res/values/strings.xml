@@ -82,4 +82,7 @@
     <string name="genre_filter">Жанр</string>
 
     <string name="score_filter">Рейтинг</string>
+
+    // quick search
+    <string name="quick_search_title">Быстрый поиск</string>
 </resources>
