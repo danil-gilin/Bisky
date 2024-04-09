@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -51,27 +50,27 @@ fun InfoAnimeItem(
             ) {
                 Row {
                     Collection(
-                        infoAnimeItemUI.collectionNone,
+                        infoAnimeItemUI.imgCollectionNone,
                         Collection.NONE,
                         onCollectionSelected
                     )
                     Collection(
-                        infoAnimeItemUI.collectionAdded,
+                        infoAnimeItemUI.imgCollectionAdded,
                         Collection.ADDED,
                         onCollectionSelected
                     )
                     Collection(
-                        infoAnimeItemUI.collectionWatching,
+                        infoAnimeItemUI.imgCollectionWatching,
                         Collection.WATCHING,
                         onCollectionSelected
                     )
                     Collection(
-                        infoAnimeItemUI.collectionCompleted,
+                        infoAnimeItemUI.imgCollectionCompleted,
                         Collection.COMPLETED,
                         onCollectionSelected
                     )
                     Collection(
-                        infoAnimeItemUI.collectionDropped,
+                        infoAnimeItemUI.imgCollectionDropped,
                         Collection.DROPPED,
                         onCollectionSelected
                     )
@@ -185,11 +184,11 @@ fun InfoAnimeItemPreview() {
             statusColor = R.color.green,
             infoType = "Сериал,",
             infoDate = "Осень 2012 г.",
-            collectionAdded = R.drawable.ic_added_collection,
-            collectionCompleted = R.drawable.ic_completed_collection_disable,
-            collectionDropped = R.drawable.ic_delete_collection_disable,
-            collectionWatching = R.drawable.ic_play_collection_disable,
-            collectionNone = R.drawable.ic_none_collection_disable
+            imgCollectionAdded = R.drawable.ic_added_collection,
+            imgCollectionCompleted = R.drawable.ic_completed_collection_disable,
+            imgCollectionDropped = R.drawable.ic_delete_collection_disable,
+            imgCollectionWatching = R.drawable.ic_play_collection_disable,
+            imgCollectionNone = R.drawable.ic_none_collection_disable
         ),
         {}
     )

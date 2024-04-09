@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,9 +17,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.screen.searchscreen.quicksearch.QuickSearchView.Action
+import com.example.bisky.ui.screen.searchscreen.quicksearch.QuickSearchView.Event
 import com.example.bisky.ui.screen.searchscreen.quicksearch.QuickSearchView.State
 import com.example.bisky.ui.screen.searchscreen.quicksearch.items.ControlButton
 import com.example.bisky.ui.screen.searchscreen.quicksearch.items.HeaderQuickSearch
+import com.example.bisky.ui.screen.searchscreen.quicksearch.items.animeCard.AnimeCard
+import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeBackInfoUI
+import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeFrontInfoUI
 
 @Composable
 fun QuickSearchScreen(
@@ -33,10 +38,16 @@ fun QuickSearchScreen(
             navController.popBackStack()
         },
         onBackAnimeClick = {
+            viewModel.onEvent(Event.OnBackClick)
         },
         onLikeClick = {
+            viewModel.onEvent(Event.OnLikeClick)
         },
         onDislikeClick = {
+            viewModel.onEvent(Event.OnDislikeClick)
+        },
+        onClickMoreInfo = {
+
         }
     )
 }
@@ -48,6 +59,7 @@ fun QuickSearchScreen(
     onBackAnimeClick:() -> Unit,
     onLikeClick:() -> Unit,
     onDislikeClick:() -> Unit,
+    onClickMoreInfo: (Boolean) -> Unit
 ) {
     BackHandler {
         onBackClick()
@@ -61,11 +73,20 @@ fun QuickSearchScreen(
             modifier = Modifier.padding(top = 8.dp),
             onBackClick = onBackClick
         )
+        AnimeCard(
+            uiState.frontAnimeInfo,
+            uiState.backAnimeInfo,
+            onClickMoreInfo,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 24.dp, top = 24.dp)
+        )
         ControlButton(
             onBackAnimeClick,
             onLikeClick,
             onDislikeClick,
-            uiState.count
+            uiState.count,
+            uiState.isBackVisible
         )
     }
 }
@@ -74,13 +95,18 @@ fun QuickSearchScreen(
 @Preview(showBackground = true)
 fun QuickSearchScreenPreview() {
     QuickSearchScreen(
-        State(),
+        State(
+            frontAnimeInfo = AnimeFrontInfoUI.previewItemAnimeFront,
+            backAnimeInfo = AnimeBackInfoUI.previewItemAnimeBackInfo
+        ),
         {},
         onBackAnimeClick = {
         },
         onLikeClick = {
         },
         onDislikeClick = {
+        },
+        onClickMoreInfo = {
         }
     )
 }

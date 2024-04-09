@@ -183,11 +183,11 @@ class AnimeFullInfoMapper @Inject constructor() {
 
     fun Anime.mapToAnimeInfo() = InfoAnimeItemUI(
         itemId = this._id + ANIME_INFO_PREFIX,
-        collectionAdded = mapToCollectionIcon(userData.collection, Collection.ADDED),
-        collectionCompleted = mapToCollectionIcon(userData.collection, Collection.COMPLETED),
-        collectionDropped = mapToCollectionIcon(userData.collection, Collection.DROPPED),
-        collectionWatching = mapToCollectionIcon(userData.collection, Collection.WATCHING),
-        collectionNone = mapToCollectionIcon(userData.collection, Collection.NONE),
+        imgCollectionAdded = mapToCollectionIcon(userData.collection, Collection.ADDED),
+        imgCollectionCompleted = mapToCollectionIcon(userData.collection, Collection.COMPLETED),
+        imgCollectionDropped = mapToCollectionIcon(userData.collection, Collection.DROPPED),
+        imgCollectionWatching = mapToCollectionIcon(userData.collection, Collection.WATCHING),
+        imgCollectionNone = mapToCollectionIcon(userData.collection, Collection.NONE),
         statusColor = this.mapToStatusColor(),
         infoStatus = this.mapToStatus(),
         infoDate = this.dates.formatDate(),
@@ -218,7 +218,7 @@ class AnimeFullInfoMapper @Inject constructor() {
                 R.drawable.ic_none_collection_disable
         }
 
-    fun Anime?.mapToInfoDuration(): String {
+    private fun Anime?.mapToInfoDuration(): String {
         val episodesDuration = this?.episodes?.averageDuration?.let {
             val hour = it / 60
             val minute = it % 60
@@ -236,7 +236,7 @@ class AnimeFullInfoMapper @Inject constructor() {
         }
     }
 
-    fun String?.formatDate(): String {
+    private fun String?.formatDate(): String {
         return try {
             ZonedDateTime.parse(this).format(DateTimeFormatter.ofPattern(DATE_FORMAT))
         } catch (e: Exception) {
@@ -244,14 +244,14 @@ class AnimeFullInfoMapper @Inject constructor() {
         }
     }
 
-    fun Anime.mapToStatus() = when (status) {
+    private fun Anime.mapToStatus() = when (status) {
         RELEASED -> "вышел"
         ONGOING -> "идет"
         ANONS -> "анонс"
         else -> "Неизвестно"
     }
 
-    fun Anime.mapToStatusColor() = when (status) {
+    private fun Anime.mapToStatusColor() = when (status) {
         RELEASED -> R.color.green
         ONGOING -> R.color.blue
         ANONS -> R.color.orange

@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -16,22 +14,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Visibility
 import com.example.bisky.R
 import com.example.bisky.ui.elements.noRippleClickable
 
 @Composable
 fun ControlButton(
-    onBackClick:() -> Unit,
-    onLikeClick:() -> Unit,
-    onDislikeClick:() -> Unit,
-    count: String
+    onBackClick: () -> Unit,
+    onLikeClick: () -> Unit,
+    onDislikeClick: () -> Unit,
+    count: String,
+    isBackVisible: Boolean
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -91,6 +90,7 @@ fun ControlButton(
                 .clip(RoundedCornerShape(12.dp))
                 .background(color = colorResource(id = R.color.bisky_dark_200_alpha_60))
                 .constrainAs(btnBack) {
+                    visibility  = if (isBackVisible) Visibility.Visible else Visibility.Gone
                     start.linkTo(parent.start)
                     end.linkTo(btnLikeDislike.start)
                     top.linkTo(parent.top)
@@ -144,6 +144,7 @@ fun ControlButtonPreview() {
         onBackClick = {},
         onLikeClick = {},
         onDislikeClick = {},
-        count = "5"
+        count = "5",
+        isBackVisible = true,
     )
 }

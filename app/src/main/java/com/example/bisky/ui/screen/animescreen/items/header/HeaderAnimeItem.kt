@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
@@ -122,11 +121,11 @@ fun HeaderAnimeItemPreview() {
                 statusColor = R.color.lime,
                 infoType = "Сериал,",
                 infoDate = "Осень 2012 г.",
-                collectionAdded = R.drawable.ic_added_collection,
-                collectionCompleted = R.drawable.ic_completed_collection_disable,
-                collectionDropped = R.drawable.ic_delete_collection_disable,
-                collectionWatching = R.drawable.ic_play_collection_disable,
-                collectionNone = R.drawable.ic_none_collection_disable
+                imgCollectionAdded = R.drawable.ic_added_collection,
+                imgCollectionCompleted = R.drawable.ic_completed_collection_disable,
+                imgCollectionDropped = R.drawable.ic_delete_collection_disable,
+                imgCollectionWatching = R.drawable.ic_play_collection_disable,
+                imgCollectionNone = R.drawable.ic_none_collection_disable
             ),
             animeCard = AnimeCardFullInfoUI(
                 itemId = "itemId",
