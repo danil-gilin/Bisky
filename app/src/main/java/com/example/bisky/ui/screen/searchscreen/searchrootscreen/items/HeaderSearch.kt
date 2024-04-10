@@ -116,7 +116,6 @@ fun HeaderSearch(
                 modifier = Modifier
                     .clip(RoundedCornerShape(6.dp))
                     .background(colorResource(id = R.color.bisky_300))
-                    .padding(top = 8.dp, bottom = 8.dp, end = 45.dp, start = 56.dp)
                     .constrainAs(btnQuickSearch) {
                         top.linkTo(parent.top)
                         linkTo(parent.start, filter.start, bias = 0F)
@@ -132,6 +131,7 @@ fun HeaderSearch(
                     fontWeight = FontWeight.W700,
                     modifier = Modifier
                         .wrapContentWidth()
+                        .padding(top = 8.dp, bottom = 8.dp, end = 8.dp, start =45.dp)
                         .align(Alignment.CenterVertically)
                     ,
                     textAlign = TextAlign.Center,
@@ -143,7 +143,7 @@ fun HeaderSearch(
                     modifier = Modifier
                         .wrapContentWidth()
                         .align(Alignment.CenterVertically)
-                        .padding(start = 4.dp, end = 16.dp, top = 0.dp)
+                        .padding(start = 4.dp, end = 48.dp, top = 0.dp)
                     ,
                     tint = colorResource(id = R.color.light_200)
                 )
