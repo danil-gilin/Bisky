@@ -50,7 +50,7 @@ fun AnimePreviewCard(
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 12.dp, horizontal = 12.dp)
                 .clip(shape = RoundedCornerShape(30.dp)),
-            placeholder = painterResource(id = R.drawable.anime_winter),
+            placeholder = painterResource(id = R.drawable.ic_logo),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )

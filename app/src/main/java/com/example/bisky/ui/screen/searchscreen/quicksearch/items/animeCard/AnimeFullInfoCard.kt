@@ -42,44 +42,46 @@ fun AnimeFullInfoCard(
     onClickMoreInfo: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
-            .background(colorResource(id = R.color.bisky_dark_400))
+            .background(colorResource(id = R.color.bisky_dark_300))
             .padding(top = 8.dp)
             .width(360.dp)
-            .height(520.dp)
+            .height(520.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row {
-            BaseInfo(
-                anime,
-                modifier = Modifier
+        item {
+            Row {
+                BaseInfo(
+                    anime,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1.0f)
+                    ,
+                )
+                PlusInfo(
+                    anime.age,
+                    anime.score,
+                    anime.scoreColor,
+                    anime.isScoreVisible,
+                    anime.isAgeVisible,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                )
+            }
+            if (anime.descriptionUI != null) {
+                AnimeDescriptionItems(
+                    anime.descriptionUI,
+                    onClickMoreInfo
+                )
+            }
+            ScreenshotItem(
+                anime.screenshotList,
+                Modifier
                     .fillMaxWidth()
-                    .weight(1.0f)
-                ,
-            )
-            PlusInfo(
-                anime.age,
-                anime.score,
-                anime.scoreColor,
-                anime.isScoreVisible,
-                anime.isAgeVisible,
-                modifier = Modifier
-                    .padding(end = 8.dp)
+                    .padding(top = 16.dp)
             )
         }
-        if (anime.descriptionUI != null) {
-            AnimeDescriptionItems(
-                anime.descriptionUI,
-                onClickMoreInfo
-            )
-        }
-        ScreenshotItem(
-            anime.screenshotList,
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-                .align(Alignment.CenterHorizontally)
-        )
     }
 }
 
@@ -310,11 +312,11 @@ fun ScreenshotItem(
     list: List<String>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
+    Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(items = list){
+        list.forEach{
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(it)

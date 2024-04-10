@@ -1,12 +1,14 @@
 package com.example.bisky.ui.screen.searchscreen.quicksearch.mapper
 
 import com.example.bisky.R
-import com.example.bisky.domain.repository.anime.model.Anime
+import com.example.bisky.common.ext.saveSubList
 import com.example.bisky.domain.repository.searchanime.model.AnimeQuickSearch
 import com.example.bisky.ui.screen.animescreen.mapper.AnimeFullInfoMapper
 import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeBackInfoUI
 import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeDescriptionUI
 import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeFrontInfoUI
+import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeStatusSelect
+import com.example.bisky.ui.screen.searchscreen.quicksearch.model.ControlButtonUI
 import java.lang.Exception
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -14,7 +16,38 @@ import javax.inject.Inject
 
 class QuickSearchAnimeMapper @Inject constructor() {
 
-    fun mapToAnimeBackUI(anime: AnimeQuickSearch) =
+    fun mapToControlButtonUI(
+        count: Int,
+        maxCount: Int,
+        animeStatusSelect: AnimeStatusSelect?
+    ) = ControlButtonUI(
+        count = count.toString(),
+        isCountVisible = count != 1,
+        isBackVisible = count < maxCount,
+        backGroundDislikeColor = animeStatusSelect.mapToBtnColorBackground(AnimeStatusSelect.Dislike),
+        backGroundLikeColor = animeStatusSelect.mapToBtnColorBackground(AnimeStatusSelect.Like),
+        likeColor = animeStatusSelect.mapToBtnColorIcon(AnimeStatusSelect.Like),
+        dislikeColor = animeStatusSelect.mapToBtnColorIcon(AnimeStatusSelect.Dislike),
+    )
+
+    private fun AnimeStatusSelect?.mapToBtnColorBackground(compareStatus: AnimeStatusSelect) =
+        if (this == compareStatus) {
+            R.color.bisky_400_alpha_70
+        } else {
+            R.color.bisky_dark_200_alpha_60
+        }
+
+
+    private fun AnimeStatusSelect?.mapToBtnColorIcon(compareStatus: AnimeStatusSelect) =
+        if (this == compareStatus) {
+            R.color.bisky_300
+        } else {
+            R.color.bisky_300
+        }
+
+    fun mapToAnimeBackUI(
+        anime: AnimeQuickSearch
+    ) =
         AnimeBackInfoUI(
             itemId = anime._id,
             statusColor = anime.mapToStatusColor(),
@@ -26,18 +59,27 @@ class QuickSearchAnimeMapper @Inject constructor() {
             infoType = "${anime.kind},",
             isScoreVisible = anime.score.averageScore > 0.0,
             isAgeVisible = true,
-            screenshotList = anime.screenshots,
+            screenshotList = anime.screenshots.saveSubList(0, 3),
             descriptionUI = anime.mapToDescription(),
             score = anime.score.averageScore.toString(),
             scoreColor = anime.score.averageScore.mapToScoreColor(),
             age = anime.age
         )
 
-    fun mapToAnimeFrontUI(animeQuickSearches: AnimeQuickSearch) =
+    fun mapToAnimeFrontUI(
+        animeQuickSearches: AnimeQuickSearch
+    ) =
         AnimeFrontInfoUI(
             itemId = animeQuickSearches._id,
             logo = animeQuickSearches.poster.orEmpty(),
             name = animeQuickSearches.label.orEmpty()
+        )
+
+    fun updateFullDescription(animeBackInfoUI: AnimeBackInfoUI?) =
+        animeBackInfoUI?.copy(
+            descriptionUI = animeBackInfoUI.descriptionUI?.copy(
+                isFullInfo = !animeBackInfoUI.descriptionUI.isFullInfo
+            )
         )
 
     private fun AnimeQuickSearch.mapToDescription(): AnimeDescriptionUI? {

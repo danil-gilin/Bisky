@@ -2,20 +2,24 @@ package com.example.bisky.ui.screen.searchscreen.quicksearch
 
 import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeBackInfoUI
 import com.example.bisky.ui.screen.searchscreen.quicksearch.model.AnimeFrontInfoUI
+import com.example.bisky.ui.screen.searchscreen.quicksearch.model.ControlButtonUI
 
 interface QuickSearchView {
     data class State(
-        val isLoading: Boolean = false,
-        val isBackVisible: Boolean = false,
+        val isAddedLoading: Boolean = false,
+        val isInitLoading: Boolean = true,
+        val isFinishedScreenVisible: Boolean = false,
+        val isAnimeScreenVisible: Boolean = false,
         val frontAnimeInfo: AnimeFrontInfoUI? = null,
         val backAnimeInfo: AnimeBackInfoUI? = null,
-        val count : String = "6"
+        val controlButtonUI: ControlButtonUI = ControlButtonUI.state,
     )
 
     sealed class Event {
-        data object OnLikeClick: Event()
-        data object OnDislikeClick: Event()
+        data class OnLikeClick(val id: String): Event()
+        data class OnDislikeClick(val id: String): Event()
         data object OnBackClick: Event()
+        data object OnMoreInfoClick: Event()
     }
 
     sealed class Action {

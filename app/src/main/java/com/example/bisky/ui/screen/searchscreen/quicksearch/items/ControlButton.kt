@@ -23,15 +23,16 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Visibility
 import com.example.bisky.R
 import com.example.bisky.ui.elements.noRippleClickable
+import com.example.bisky.ui.screen.searchscreen.quicksearch.model.ControlButtonUI
 
 @Composable
 fun ControlButton(
     onBackClick: () -> Unit,
     onLikeClick: () -> Unit,
     onDislikeClick: () -> Unit,
-    count: String,
-    isBackVisible: Boolean
+    controlUi: ControlButtonUI
 ) {
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +50,7 @@ fun ControlButton(
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(color = colorResource(id = R.color.bisky_dark_200_alpha_60))
+                    .background(color = colorResource(id = controlUi.backGroundLikeColor))
                     .noRippleClickable {
                         onLikeClick()
                     }
@@ -61,14 +62,14 @@ fun ControlButton(
                         .padding(24.dp)
                         .align(Alignment.Center)
                     ,
-                    tint = colorResource(id = R.color.bisky_300)
+                    tint = colorResource(id = controlUi.likeColor)
                 )
             }
             Box(
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(color = colorResource(id = R.color.bisky_dark_200_alpha_60))
+                    .background(color = colorResource(id = controlUi.backGroundDislikeColor))
                     .noRippleClickable {
                         onDislikeClick()
                     }
@@ -80,7 +81,7 @@ fun ControlButton(
                         .padding(20.dp)
                         .align(Alignment.Center)
                     ,
-                    tint = colorResource(id = R.color.bisky_300)
+                    tint = colorResource(id = controlUi.dislikeColor)
                 )
             }
         }
@@ -90,7 +91,7 @@ fun ControlButton(
                 .clip(RoundedCornerShape(12.dp))
                 .background(color = colorResource(id = R.color.bisky_dark_200_alpha_60))
                 .constrainAs(btnBack) {
-                    visibility  = if (isBackVisible) Visibility.Visible else Visibility.Gone
+                    visibility  = if (controlUi.isBackVisible) Visibility.Visible else Visibility.Gone
                     start.linkTo(parent.start)
                     end.linkTo(btnLikeDislike.start)
                     top.linkTo(parent.top)
@@ -116,6 +117,7 @@ fun ControlButton(
                 .clip(RoundedCornerShape(12.dp))
                 .background(color = colorResource(id = R.color.bisky_dark_200_alpha_60))
                 .constrainAs(txtCount) {
+                    visibility  = if (controlUi.isCountVisible) Visibility.Visible else Visibility.Gone
                     start.linkTo(btnLikeDislike.end)
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
@@ -124,7 +126,7 @@ fun ControlButton(
         ) {
 
             Text(
-                text = count,
+                text = controlUi.count,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.W700,
                 modifier = Modifier
@@ -144,7 +146,6 @@ fun ControlButtonPreview() {
         onBackClick = {},
         onLikeClick = {},
         onDislikeClick = {},
-        count = "5",
-        isBackVisible = true,
+        ControlButtonUI.preview
     )
 }
