@@ -1,5 +1,6 @@
 package com.example.bisky.ui.navigation.elements.items
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,17 +33,17 @@ fun BottomNavigation(selectedPage: Int, onClick: (Int) -> Unit) {
     ) {
         BottomDestination.entries.forEachIndexed { index, item ->
             val isSelected = index == selectedPage
-            val tint = if (isSelected) R.color.bisky_100 else R.color.light_400
+            val tint = if (isSelected) R.color.bisky_100 else R.color.light_100
             Icon(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1.0f)
                     .align(Alignment.CenterVertically)
                     .noRippleClickable {
-                    if (!isSelected) {
-                        onClick(index)
-                    }    
-                },
+                        if (!isSelected) {
+                            onClick(index)
+                        }
+                    },
                 painter = painterResource(id = item.icon),
                 contentDescription = stringResource(id = item.nameResId),
                 tint = colorResource(id = tint),

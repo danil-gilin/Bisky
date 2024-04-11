@@ -27,7 +27,8 @@
     <color name="bisky_dark_400_alpha_80">#CC170E19</color>
     <color name="bisky_dark_400_alpha_20">#33170E19</color>
 
-    <color name="background_bottom_nav">#CC731750</color>
+    <color name="background_bottom_nav">#CC3A0D2B</color>
+    <color name="bottom_nav_select_icon">#FF5E95</color>
     <color name="transparent">#03FFFFFF</color>
 
     <color name="red">#FF0000</color>
