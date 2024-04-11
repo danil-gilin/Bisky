@@ -7,7 +7,7 @@ import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.eventbus.navigation.NavigationEventBus
 import com.example.bisky.domain.eventbus.navigation.NavigationEventBusEvent
 import com.example.bisky.domain.repository.anime.AnimeRepository
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository
 import com.example.bisky.domain.repository.searchanime.model.AnimeQuickSearch
 import com.example.bisky.ui.screen.searchpage.quicksearch.QuickSearchView.Action
@@ -150,7 +150,7 @@ class QuickSearchViewModel @Inject constructor(
         }
         val request = listAddedAnime.map {
             async {
-                animeRepository.updateCollection(Collection.ADDED, it).onError {
+                animeRepository.updateCollection(CollectionAnime.ADDED, it).onError {
                     it
                 }
             }

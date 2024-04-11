@@ -22,12 +22,12 @@ data class Anime(
 )
 
 data class UserData(
-    val collection: Collection,
+    val collection: CollectionAnime,
     val score: Int?,
     val watchedSeries: Int?
 )
 
-enum class Collection(val value: String) {
+enum class CollectionAnime(val value: String) {
     ADDED("added"),
     COMPLETED("completed"),
     DROPPED("dropped"),

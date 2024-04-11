@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.anime.AnimeRepository
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
 import com.example.bisky.ui.screen.animescreen.mapper.AnimeFullInfoMapper
@@ -76,7 +76,7 @@ class AnimeScreenViewModel @Inject constructor(
         }
     }
 
-    private fun onCollectionSelected(type: Collection) = viewModelScope.launch{
+    private fun onCollectionSelected(type: CollectionAnime) = viewModelScope.launch{
         val animeId = savedState.get<String>("id") ?: return@launch
         animeRepository.updateCollection(type,animeId).onSuccess {
             getAnimeInfo()

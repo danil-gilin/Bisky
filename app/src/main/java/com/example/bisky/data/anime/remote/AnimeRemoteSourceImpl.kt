@@ -6,11 +6,10 @@ import com.example.bisky.common.ext.toOptional
 import com.example.bisky.data.anime.remote.model.RatingUpdateRequest
 import com.example.bisky.data.anime.remote.model.StatusUpdateRequest
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.type.FilterAnimeQuery
 import com.example.type.GeneralAnimeQuery
-import com.squareup.moshi.Moshi
 import javax.inject.Inject
 import kotlinx.coroutines.withContext
 
@@ -37,8 +36,8 @@ class AnimeRemoteSourceImpl @Inject constructor(
         animeAPi.updateAnimeRating(RatingUpdateRequest(rating), animeId)
     }
 
-    override suspend fun updateCollection(collectionType: Collection, animeId: String) = withContext(dispatchersProvider.io) {
-        if (collectionType == Collection.NONE) {
+    override suspend fun updateCollection(collectionType: CollectionAnime, animeId: String) = withContext(dispatchersProvider.io) {
+        if (collectionType == CollectionAnime.NONE) {
             animeAPi.deleteAnimeStatus(animeId)
         } else {
             animeAPi.updateAnimeStatus(StatusUpdateRequest(collectionType.value), animeId)

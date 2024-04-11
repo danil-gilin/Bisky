@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,7 +27,10 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
+import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreen
 import com.example.bisky.ui.screen.archivepage.container.ArchiveContainerView.Event
+import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreen
+import com.example.bisky.ui.screen.archivepage.watchsreen.WatchScreen
 import com.example.bisky.ui.screen.homescreen.containehomescreen.model.ArchiveTab
 import com.example.bisky.ui.screen.homescreen.containehomescreen.model.ArchiveTabType
 import com.example.bisky.ui.screen.homescreen.newseriesscreen.NewSeriesScreen
@@ -52,12 +56,14 @@ fun ArchiveContainerScreen(
     uiState: ArchiveContainerView.State,
     onTabClick: (ArchiveTabType) -> Unit
 ) {
-    when (uiState.currentTabType) {
-        ArchiveTabType.Watch -> NewSeriesScreen()
-        ArchiveTabType.Watched -> NewSeriesScreen()
-        ArchiveTabType.Add-> NewSeriesScreen()
+    Column {
+        TabArchiveScreen(uiState, onTabClick)
+        when (uiState.currentTabType) {
+            ArchiveTabType.Watch -> WatchScreen(navController)
+            ArchiveTabType.Watched -> WatchedScreen(navController)
+            ArchiveTabType.Add-> AddScreen(navController)
+        }
     }
-    TabArchiveScreen(uiState, onTabClick)
 }
 
 @Composable
@@ -68,7 +74,7 @@ fun TabArchiveScreen(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colorResource(id = R.color.bisky_dark_400_alpha_80))
+            .background(colorResource(id = R.color.bisky_dark_400))
             .padding(horizontal = 8.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.Start
     ) {

@@ -5,7 +5,7 @@ import com.example.bisky.common.ext.toOneNumberAfterDot
 import com.example.bisky.domain.repository.anime.model.Anime
 import com.example.bisky.domain.repository.anime.model.Episodes
 import com.example.bisky.domain.repository.anime.model.Franchise
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.anime.model.Score
 import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.domain.repository.anime.model.Studio
@@ -60,12 +60,12 @@ fun GetAnimeQuery.UserData.mapToDomain() = UserData(
 )
 
 fun GetAnimeQuery.UserData.mapToStatus() = when(animeStatus) {
-    ListStatusEnum.added -> Collection.ADDED
-    ListStatusEnum.completed -> Collection.COMPLETED
-    ListStatusEnum.dropped -> Collection.DROPPED
-    ListStatusEnum.watching -> Collection.WATCHING
-    ListStatusEnum.UNKNOWN__ -> Collection.NONE
-    null -> Collection.NONE
+    ListStatusEnum.added -> CollectionAnime.ADDED
+    ListStatusEnum.completed -> CollectionAnime.COMPLETED
+    ListStatusEnum.dropped -> CollectionAnime.DROPPED
+    ListStatusEnum.watching -> CollectionAnime.WATCHING
+    ListStatusEnum.UNKNOWN__ -> CollectionAnime.NONE
+    null -> CollectionAnime.NONE
 }
 
 

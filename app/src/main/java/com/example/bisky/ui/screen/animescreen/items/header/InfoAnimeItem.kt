@@ -19,14 +19,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bisky.R
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.animescreen.model.header.InfoAnimeItemUI
 
 @Composable
 fun InfoAnimeItem(
     infoAnimeItemUI: InfoAnimeItemUI,
-    onCollectionSelected: (Collection) -> Unit
+    onCollectionSelected: (CollectionAnime) -> Unit
 ) {
     Row(modifier = Modifier.padding(top = 8.dp)) {
         Column() {
@@ -51,27 +51,27 @@ fun InfoAnimeItem(
                 Row {
                     Collection(
                         infoAnimeItemUI.imgCollectionNone,
-                        Collection.NONE,
+                        CollectionAnime.NONE,
                         onCollectionSelected
                     )
                     Collection(
                         infoAnimeItemUI.imgCollectionAdded,
-                        Collection.ADDED,
+                        CollectionAnime.ADDED,
                         onCollectionSelected
                     )
                     Collection(
                         infoAnimeItemUI.imgCollectionWatching,
-                        Collection.WATCHING,
+                        CollectionAnime.WATCHING,
                         onCollectionSelected
                     )
                     Collection(
                         infoAnimeItemUI.imgCollectionCompleted,
-                        Collection.COMPLETED,
+                        CollectionAnime.COMPLETED,
                         onCollectionSelected
                     )
                     Collection(
                         infoAnimeItemUI.imgCollectionDropped,
-                        Collection.DROPPED,
+                        CollectionAnime.DROPPED,
                         onCollectionSelected
                     )
                 }
@@ -83,8 +83,8 @@ fun InfoAnimeItem(
 @Composable
 private fun Collection(
     collectionIcon: Int,
-    collection: Collection,
-    onCollectionSelected: (Collection) -> Unit
+    collection: CollectionAnime,
+    onCollectionSelected: (CollectionAnime) -> Unit
 ) {
     Image(
         painter = painterResource(id = collectionIcon),

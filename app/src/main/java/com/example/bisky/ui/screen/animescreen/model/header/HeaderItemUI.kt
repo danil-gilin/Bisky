@@ -19,11 +19,3 @@ data class AnimeCardFullInfoUI(
     val age: String,
     val ageVisible: Boolean
 ) : BaseItem
-
-enum class CollectionAnime {
-    ADD,
-    PLANNED,
-    WATCH,
-    VIEWED,
-    DELETE
-}

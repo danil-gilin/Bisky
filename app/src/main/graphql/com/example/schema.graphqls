@@ -15,9 +15,11 @@ type AnimeCommentModel {
 type AnimeEstimateModel {
   base: AnimeSimpleModel!
 
-  createTime: DateTime!
+  score: Int
 
-  score: Float!
+  status: ListStatusEnum!
+
+  watchedSeries: Int!
 }
 
 """
@@ -89,14 +91,6 @@ type AnimeFullModel {
   Trailers, teasers, announcements and other videos related to anime
   """
   videos: [VideModel!]!
-}
-
-type AnimeListModel {
-  base: AnimeSimpleModel!
-
-  createTime: DateTime!
-
-  status: StatusEnum!
 }
 
 """
@@ -335,6 +329,12 @@ input FilterStudioQuery {
   name: [String!] = null
 }
 
+input FilterUserQuery {
+  _id_ID: String = null
+
+  username: String = null
+}
+
 input FloatBetweenQuery {
   from: Float = null
 
@@ -466,6 +466,15 @@ input GeneralStudioQuery {
   Page when paginated
   """
   page: Int! = 1
+}
+
+"""
+User arguments (If you pass an access-token, it will return the anime of a specific user) 
+"""
+input GeneralUserQuery {
+  animeListStatus: ListStatusEnum = null
+
+  filter: FilterUserQuery = null
 }
 
 """
@@ -684,7 +693,14 @@ type Query {
   }
   ): [StudioFullModel!]!
 
-  getUserPublicData(_id: String = null, username: String = null): UserPublicFullModel!
+  getUserPublicData(animeQuery: GeneralAnimeQuery! = {
+    count: 20
+    page: 1
+  }
+  , userQuery: GeneralUserQuery! = {
+
+  }
+  ): UserPublicFullModel!
 }
 
 """
@@ -857,8 +873,6 @@ type UserPublicFullModel {
   _id: String!
 
   animeEstimates: [AnimeEstimateModel!]!
-
-  animeLists: [AnimeListModel!]!
 
   avatar: String
 

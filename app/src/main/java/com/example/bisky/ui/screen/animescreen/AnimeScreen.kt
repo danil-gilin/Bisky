@@ -16,8 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
-import com.example.bisky.domain.repository.anime.model.Collection
-import com.example.bisky.ui.navigation.ext.NavigationRoute
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
@@ -80,7 +79,7 @@ fun AnimeScreen(
     onDeleteScoreClick: () -> Unit,
     onSelectScore: (Int) -> Unit,
     onCompleteScore: () -> Unit,
-    onCollectionSelected: (Collection) -> Unit,
+    onCollectionSelected: (CollectionAnime) -> Unit,
     onBackClicked: () -> Unit
 ) {
     LazyColumn(

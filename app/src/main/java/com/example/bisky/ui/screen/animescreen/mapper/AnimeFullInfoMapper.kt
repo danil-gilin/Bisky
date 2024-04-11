@@ -3,7 +3,7 @@ package com.example.bisky.ui.screen.animescreen.mapper
 import com.example.bisky.R
 import com.example.bisky.common.model.BaseItem
 import com.example.bisky.domain.repository.anime.model.Anime
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeDescriptionUI
 import com.example.bisky.ui.screen.animescreen.model.body.AnimeProducerInfoUI
@@ -106,7 +106,7 @@ class AnimeFullInfoMapper @Inject constructor() {
             ratingUser = userData.score.toString(),
             ratingColorUser = userData.score?.toDouble()?.mapToScoreColor() ?: R.color.light_400,
             isRatingVisibleUser = userData.score != null,
-            isRatingEnabled = userData.collection != Collection.NONE,
+            isRatingEnabled = userData.collection != CollectionAnime.NONE,
             selectedScore = -1
         )
     }
@@ -183,11 +183,11 @@ class AnimeFullInfoMapper @Inject constructor() {
 
     fun Anime.mapToAnimeInfo() = InfoAnimeItemUI(
         itemId = this._id + ANIME_INFO_PREFIX,
-        imgCollectionAdded = mapToCollectionIcon(userData.collection, Collection.ADDED),
-        imgCollectionCompleted = mapToCollectionIcon(userData.collection, Collection.COMPLETED),
-        imgCollectionDropped = mapToCollectionIcon(userData.collection, Collection.DROPPED),
-        imgCollectionWatching = mapToCollectionIcon(userData.collection, Collection.WATCHING),
-        imgCollectionNone = mapToCollectionIcon(userData.collection, Collection.NONE),
+        imgCollectionAdded = mapToCollectionIcon(userData.collection, CollectionAnime.ADDED),
+        imgCollectionCompleted = mapToCollectionIcon(userData.collection, CollectionAnime.COMPLETED),
+        imgCollectionDropped = mapToCollectionIcon(userData.collection, CollectionAnime.DROPPED),
+        imgCollectionWatching = mapToCollectionIcon(userData.collection, CollectionAnime.WATCHING),
+        imgCollectionNone = mapToCollectionIcon(userData.collection, CollectionAnime.NONE),
         statusColor = this.mapToStatusColor(),
         infoStatus = this.mapToStatus(),
         infoDate = this.dates.formatDate(),
@@ -195,25 +195,25 @@ class AnimeFullInfoMapper @Inject constructor() {
         infoType = "${this.kind},"
     )
 
-    private fun mapToCollectionIcon(collectionSelect: Collection, collectionType: Collection) =
+    private fun mapToCollectionIcon(collectionSelect: CollectionAnime, collectionType: CollectionAnime) =
         when (collectionType) {
-            Collection.ADDED -> if (collectionSelect == collectionType)
+            CollectionAnime.ADDED -> if (collectionSelect == collectionType)
                 R.drawable.ic_added_collection else
                 R.drawable.ic_added_collection_disable
 
-            Collection.COMPLETED -> if (collectionSelect == collectionType)
+            CollectionAnime.COMPLETED -> if (collectionSelect == collectionType)
                 R.drawable.ic_completed_collection else
                 R.drawable.ic_completed_collection_disable
 
-            Collection.DROPPED -> if (collectionSelect == collectionType)
+            CollectionAnime.DROPPED -> if (collectionSelect == collectionType)
                 R.drawable.ic_delete_collection else
                 R.drawable.ic_delete_collection_disable
 
-            Collection.WATCHING -> if (collectionSelect == collectionType)
+            CollectionAnime.WATCHING -> if (collectionSelect == collectionType)
                 R.drawable.ic_play_collection else
                 R.drawable.ic_play_collection_disable
 
-            Collection.NONE -> if (collectionSelect == collectionType)
+            CollectionAnime.NONE -> if (collectionSelect == collectionType)
                 R.drawable.ic_none_collection else
                 R.drawable.ic_none_collection_disable
         }

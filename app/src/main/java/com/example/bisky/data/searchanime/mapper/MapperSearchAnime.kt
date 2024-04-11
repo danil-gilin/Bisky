@@ -1,24 +1,15 @@
 package com.example.bisky.data.searchanime.mapper
 
-import com.example.GetAnimeQuery
 import com.example.GetQuickSearchAnimeQuery
 import com.example.GetSearchAnimeQuery
 import com.example.bisky.common.ext.toOneNumberAfterDot
-import com.example.bisky.data.anime.mapper.mapToDomain
-import com.example.bisky.domain.repository.anime.model.Anime
-import com.example.bisky.domain.repository.anime.model.Collection
 import com.example.bisky.domain.repository.anime.model.Episodes
 import com.example.bisky.domain.repository.anime.model.Franchise
 import com.example.bisky.domain.repository.anime.model.Score
-import com.example.bisky.domain.repository.anime.model.SimilarAnime
 import com.example.bisky.domain.repository.anime.model.Studio
-import com.example.bisky.domain.repository.anime.model.UserData
-import com.example.bisky.domain.repository.anime.model.UsersList
-import com.example.bisky.domain.repository.anime.model.Video
 import com.example.bisky.domain.repository.searchanime.model.AnimeQuickSearch
 import com.example.bisky.domain.repository.searchanime.model.AnimeSearch
 import com.example.type.KindEnum
-import com.example.type.ListStatusEnum
 import com.example.type.RatingEnum
 import com.example.type.StatusEnum
 

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
-import com.example.bisky.domain.repository.anime.model.Collection
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.animescreen.model.header.AnimeCardFullInfoUI
 import com.example.bisky.ui.screen.animescreen.model.header.HeaderItemUI
@@ -36,7 +36,7 @@ import kotlinx.coroutines.Dispatchers
 @Composable
 fun HeaderAnimeItem(
     headerItemUI: HeaderItemUI,
-    onCollectionSelected: (Collection) -> Unit,
+    onCollectionSelected: (CollectionAnime) -> Unit,
     onBackClick: () -> Unit
 ) {
     Box(
