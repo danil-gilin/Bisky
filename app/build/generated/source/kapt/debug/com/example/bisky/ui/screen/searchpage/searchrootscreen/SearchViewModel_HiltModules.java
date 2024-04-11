@@ -29,7 +29,7 @@ public final class SearchViewModel_HiltModules {
 
     @Binds
     @IntoMap
-    @StringKey("com.example.bisky.ui.screen.searchscreen.searchrootscreen.SearchViewModel")
+    @StringKey("com.example.bisky.ui.screen.searchpage.searchrootscreen.SearchViewModel")
     @HiltViewModelMap
     public abstract ViewModel binds(SearchViewModel vm);
   }
@@ -44,7 +44,7 @@ public final class SearchViewModel_HiltModules {
     @IntoSet
     @HiltViewModelMap.KeySet
     public static String provide() {
-      return "com.example.bisky.ui.screen.searchscreen.searchrootscreen.SearchViewModel";
+      return "com.example.bisky.ui.screen.searchpage.searchrootscreen.SearchViewModel";
     }
   }
 }

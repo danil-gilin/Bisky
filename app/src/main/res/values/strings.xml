@@ -55,6 +55,7 @@
     // bottom nav
     <string name="home">Home</string>
     <string name="search">Search</string>
+    <string name="archive">Archive</string>
 
     // search
     <string name="search_title">Просмотр</string>
@@ -89,4 +90,9 @@
     <string name="quick_search_added_loading">Сохраняем ваш выбор</string>
     <string name="quick_search_finished_title">Вы оценили все аниме</string>
     <string name="quick_search_finished_btn">Закончить</string>
+
+    // archive container
+    <string name="title_watch">Смотрю</string>
+    <string name="title_add">Запланировано</string>
+    <string name="title_watched">Просмотрено</string>
 </resources>

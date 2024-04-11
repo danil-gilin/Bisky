@@ -39,11 +39,25 @@ sealed class Destination(
         }
     }
 
+    sealed class Archive(route: String) : Destination(
+        "${Companion.route}/$route",
+        R.string.archive,
+        R.drawable.ic_archive
+    ) {
+        data object Anime : Archive("anime")
+        data object ContainerScreen : Archive("home_screen")
+
+        companion object {
+            const val route = "archive"
+        }
+    }
+
     companion object {
         fun getStartDestinationBy(position: Int): String =
             when (BottomDestination.getBy(position)) {
                 BottomDestination.HOME_FEATURE -> Home.route
                 BottomDestination.SEARCH_FEATURE -> Search.route
+                BottomDestination.ARCHIVE_FEATURE -> Archive.route
             }
     }
 }

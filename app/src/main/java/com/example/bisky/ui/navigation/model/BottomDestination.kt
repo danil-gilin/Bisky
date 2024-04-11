@@ -6,10 +6,11 @@ import com.example.bisky.R
 
 enum class BottomDestination(@DrawableRes val icon: Int, @StringRes val nameResId: Int) {
     HOME_FEATURE(R.drawable.ic_home, R.string.home),
-    SEARCH_FEATURE(R.drawable.ic_search, R.string.search);
+    SEARCH_FEATURE(R.drawable.ic_search, R.string.search),
+    ARCHIVE_FEATURE(R.drawable.ic_archive, R.string.archive);
 
     companion object {
         fun getBy(position: Int) =
-            values().firstOrNull { it.ordinal == position } ?: HOME_FEATURE
+            entries.firstOrNull { it.ordinal == position } ?: HOME_FEATURE
     }
 }

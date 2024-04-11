@@ -29,7 +29,7 @@ public final class QuickSearchViewModel_HiltModules {
 
     @Binds
     @IntoMap
-    @StringKey("com.example.bisky.ui.screen.searchscreen.quicksearch.QuickSearchViewModel")
+    @StringKey("com.example.bisky.ui.screen.searchpage.quicksearch.QuickSearchViewModel")
     @HiltViewModelMap
     public abstract ViewModel binds(QuickSearchViewModel vm);
   }
@@ -44,7 +44,7 @@ public final class QuickSearchViewModel_HiltModules {
     @IntoSet
     @HiltViewModelMap.KeySet
     public static String provide() {
-      return "com.example.bisky.ui.screen.searchscreen.quicksearch.QuickSearchViewModel";
+      return "com.example.bisky.ui.screen.searchpage.quicksearch.QuickSearchViewModel";
     }
   }
 }

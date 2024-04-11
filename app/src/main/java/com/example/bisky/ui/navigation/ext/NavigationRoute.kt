@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.animescreen.AnimeScreen
+import com.example.bisky.ui.screen.archivepage.container.ArchiveContainerScreen
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerScreen
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
 import com.example.bisky.ui.screen.searchpage.filterscreen.FilterScreen
@@ -75,6 +76,23 @@ fun NavGraphBuilder.searchNavGraph(navController: NavController) {
         }
         composable(route = Destination.Search.QuickSearch.route) {
             QuickSearchScreen(navController = navController)
+        }
+    }
+}
+
+fun NavGraphBuilder.archiveNavGraph(navController: NavController) {
+    navigation(
+        route = Destination.Archive.route,
+        startDestination = Destination.Archive.ContainerScreen.route
+    ) {
+        composable(route = Destination.Archive.ContainerScreen.route) {
+            ArchiveContainerScreen(navController)
+        }
+        composable(
+            route = "${Destination.Archive.Anime.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimeScreen(navController)
         }
     }
 }

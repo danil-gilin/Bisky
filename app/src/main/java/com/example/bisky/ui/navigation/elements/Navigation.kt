@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
+import com.example.bisky.ui.navigation.ext.archiveNavGraph
 import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.navigation.ext.homeNavGraph
 import com.example.bisky.ui.navigation.model.BottomDestination
@@ -50,6 +51,7 @@ fun Navigation(
 
                 homeNavGraph(navController = navController)
                 searchNavGraph(navController = navController)
+                archiveNavGraph(navController = navController)
             }
         }
     }

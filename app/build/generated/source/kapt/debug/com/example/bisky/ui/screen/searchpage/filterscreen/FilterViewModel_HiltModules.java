@@ -29,7 +29,7 @@ public final class FilterViewModel_HiltModules {
 
     @Binds
     @IntoMap
-    @StringKey("com.example.bisky.ui.screen.searchscreen.filterscreen.FilterViewModel")
+    @StringKey("com.example.bisky.ui.screen.searchpage.filterscreen.FilterViewModel")
     @HiltViewModelMap
     public abstract ViewModel binds(FilterViewModel vm);
   }
@@ -44,7 +44,7 @@ public final class FilterViewModel_HiltModules {
     @IntoSet
     @HiltViewModelMap.KeySet
     public static String provide() {
-      return "com.example.bisky.ui.screen.searchscreen.filterscreen.FilterViewModel";
+      return "com.example.bisky.ui.screen.searchpage.filterscreen.FilterViewModel";
     }
   }
 }
