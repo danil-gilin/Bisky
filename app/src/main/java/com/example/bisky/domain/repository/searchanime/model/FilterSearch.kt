@@ -1,7 +1,7 @@
 package com.example.bisky.domain.repository.searchanime.model
 
-import com.example.bisky.ui.screen.searchscreen.filterscreen.model.SortAnimeFilter
-import com.example.bisky.ui.screen.searchscreen.filterscreen.model.StatusAnimeFilter
+import com.example.bisky.ui.screen.searchpage.filterscreen.model.SortAnimeFilter
+import com.example.bisky.ui.screen.searchpage.filterscreen.model.StatusAnimeFilter
 import java.time.LocalDate
 
 data class FilterSearch(

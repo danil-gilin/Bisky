@@ -1,6 +1,6 @@
 package com.example.bisky.data.searchanime.mapper
 
-import com.example.bisky.ui.screen.searchscreen.filterscreen.model.StatusAnimeFilter
+import com.example.bisky.ui.screen.searchpage.filterscreen.model.StatusAnimeFilter
 import com.example.type.StatusEnum
 
 

@@ -10,11 +10,9 @@ import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.animescreen.AnimeScreen
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerScreen
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
-import com.example.bisky.ui.screen.homescreen.newseriesscreen.NewSeriesScreen
-import com.example.bisky.ui.screen.homescreen.seasonAnimeScreen.SeasonAnimeScreen
-import com.example.bisky.ui.screen.searchscreen.filterscreen.FilterScreen
-import com.example.bisky.ui.screen.searchscreen.quicksearch.QuickSearchScreen
-import com.example.bisky.ui.screen.searchscreen.searchrootscreen.SearchScreen
+import com.example.bisky.ui.screen.searchpage.filterscreen.FilterScreen
+import com.example.bisky.ui.screen.searchpage.quicksearch.QuickSearchScreen
+import com.example.bisky.ui.screen.searchpage.searchrootscreen.SearchScreen
 
 sealed class NavigationRoute(val route: String) {
     object Splash : NavigationRoute("splash")

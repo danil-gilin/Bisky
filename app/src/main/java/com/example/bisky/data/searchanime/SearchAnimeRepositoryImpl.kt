@@ -28,7 +28,7 @@ class SearchAnimeRepositoryImpl @Inject constructor(
         localFilter.set(FilterSearch())
     }
 
-    override suspend fun getAnimes(input: String)= resultWrapper.wrap {
+    override suspend fun getAnimes(input: String?)= resultWrapper.wrap {
         val filter = localFilter.get()
         searchAnimeRemoteSource.getAnimes(input, filter).map { it.mapToDomain() }
     }

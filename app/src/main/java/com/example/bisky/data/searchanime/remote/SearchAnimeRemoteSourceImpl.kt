@@ -18,7 +18,7 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val dispatchersProvider: DispatchersProvider
 ) : SearchAnimeRemoteSource {
-    override suspend fun getAnimes(input: String, filter: FilterSearch) =
+    override suspend fun getAnimes(input: String?, filter: FilterSearch) =
         withContext(dispatchersProvider.io) {
             apolloClient.query(
                 GetSearchAnimeQuery(
