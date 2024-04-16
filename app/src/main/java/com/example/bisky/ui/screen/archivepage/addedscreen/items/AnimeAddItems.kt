@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.archivepage.addedscreen.model.AnimeAddUI
 import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun AnimeAddItems(
     animeAddUI: AnimeAddUI,
+    onAnimeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -37,6 +39,7 @@ fun AnimeAddItems(
             .clip(shape = RoundedCornerShape(8.dp))
             .background(colorResource(id = R.color.bisky_dark_100_alpha_20))
             .fillMaxWidth()
+            .noRippleClickable { onAnimeClick(animeAddUI.itemId) }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -72,5 +75,5 @@ fun AnimeAddItems(
 @Composable
 @Preview(showBackground = true)
 fun AnimeAddItemsPreview() {
-    AnimeAddItems(AnimeAddUI.preview)
+    AnimeAddItems(AnimeAddUI.preview, {})
 }

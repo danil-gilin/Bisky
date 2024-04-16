@@ -11,5 +11,6 @@ interface AddScreenView {
 
     sealed class Event {
         data class OnScrollItem(val position: Int) : Event()
+        object OnRefresh: Event()
     }
 }

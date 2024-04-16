@@ -30,6 +30,7 @@ class AddScreenViewModel @Inject constructor(
     fun onEvent(event: Event) {
         when(event) {
             is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
+            Event.OnRefresh -> initData()
         }
     }
 

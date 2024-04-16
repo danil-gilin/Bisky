@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bisky.R
+import com.example.bisky.ui.elements.noRippleClickable
 import com.example.bisky.ui.screen.archivepage.watchedscreen.model.AnimeWatchedUI
 import com.example.bisky.ui.screen.archivepage.watchsreen.model.AnimeWatchUI
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 @Composable
 fun AnimeWatchedItems(
     animeWatchedUI: AnimeWatchedUI,
+    onAnimeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -38,6 +40,7 @@ fun AnimeWatchedItems(
             .clip(shape = RoundedCornerShape(8.dp))
             .background(colorResource(id = R.color.bisky_dark_100_alpha_20))
             .fillMaxWidth()
+            .noRippleClickable { onAnimeClick(animeWatchedUI.itemId) }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -73,5 +76,5 @@ fun AnimeWatchedItems(
 @Composable
 @Preview(showBackground = true)
 fun AnimeWatchedItemsPreview() {
-    AnimeWatchedItems(AnimeWatchedUI.preview)
+    AnimeWatchedItems(AnimeWatchedUI.preview, {})
 }
