@@ -22,6 +22,7 @@
     <string name="login_placeholder">Login</string>
 
     <string name="sigIn">Войти</string>
+    <string name="sigOut">Выйти</string>
     <string name="sigUp">Регистрация</string>
 
     <string name="validMail">Неправильная почта</string>
@@ -56,6 +57,7 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="archive">Archive</string>
+    <string name="profile">Profile</string>
 
     // search
     <string name="search_title">Просмотр</string>

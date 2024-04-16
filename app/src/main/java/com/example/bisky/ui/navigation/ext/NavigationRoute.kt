@@ -14,6 +14,7 @@ import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
 import com.example.bisky.ui.screen.searchpage.filterscreen.FilterScreen
 import com.example.bisky.ui.screen.searchpage.quicksearch.QuickSearchScreen
 import com.example.bisky.ui.screen.searchpage.searchrootscreen.SearchScreen
+import com.example.bisky.ui.screen.userspage.userhomesscreen.UserHomeScreen
 
 sealed class NavigationRoute(val route: String) {
     object Splash : NavigationRoute("splash")
@@ -21,9 +22,6 @@ sealed class NavigationRoute(val route: String) {
     object SigIn : NavigationRoute("sigIn")
     object SigUp : NavigationRoute("sigUp")
     object BoardingLogin : NavigationRoute("boardingLogin")
-    object AllGenre : NavigationRoute("all_genre")
-    object SeasonAnime : NavigationRoute("season_anime")
-    object NewSeriesAnime : NavigationRoute("new_series_anime")
     object Genre : NavigationRoute("genre")
     object Anime : NavigationRoute("anime")
 }
@@ -90,6 +88,23 @@ fun NavGraphBuilder.archiveNavGraph(navController: NavController) {
         }
         composable(
             route = "${Destination.Archive.Anime.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimeScreen(navController)
+        }
+    }
+}
+
+fun NavGraphBuilder.profileNavGraph(navController: NavController) {
+    navigation(
+        route = Destination.Profile.route,
+        startDestination = Destination.Profile.HomeScreen.route
+    ) {
+        composable(route = Destination.Profile.HomeScreen.route) {
+            UserHomeScreen(navController)
+        }
+        composable(
+            route = "${Destination.Profile.Anime.route}/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             AnimeScreen(navController)

@@ -52,12 +52,26 @@ sealed class Destination(
         }
     }
 
+    sealed class Profile(route: String) : Destination(
+        "${Companion.route}/$route",
+        R.string.profile,
+        R.drawable.ic_profile
+    ) {
+        data object Anime : Archive("anime")
+        data object HomeScreen : Archive("profile_home_screen")
+
+        companion object {
+            const val route = "profile"
+        }
+    }
+
     companion object {
         fun getStartDestinationBy(position: Int): String =
             when (BottomDestination.getBy(position)) {
                 BottomDestination.HOME_FEATURE -> Home.route
                 BottomDestination.SEARCH_FEATURE -> Search.route
                 BottomDestination.ARCHIVE_FEATURE -> Archive.route
+                BottomDestination.PROFILE_FEATURE -> Profile.route
             }
     }
 }

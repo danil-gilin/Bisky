@@ -35,8 +35,8 @@ class MainActivity : ComponentActivity() {
                 composable(Splash.route) {
                     SplashScreen(navController = navController)
                 }
-                composable("home") {
-                    Navigation()
+                composable(Home.route) {
+                    Navigation(navController = navController)
                 }
                 composable(SigIn.route) {
                     SigInScreen(navController = navController)

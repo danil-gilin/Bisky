@@ -21,6 +21,10 @@ class LoginRemoteSourceImpl(
             )
         }
 
+    override suspend fun sigOut() = withContext(dispatchersProvider.io) {
+        loginApi.sigOut()
+    }
+
     override suspend fun sigUp(name: String, password: String, email: String) =
         withContext(dispatchersProvider.io) {
             loginApi.sigUp(

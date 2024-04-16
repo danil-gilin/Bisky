@@ -3,6 +3,7 @@ package com.example.bisky.data.login
 import com.example.bisky.data.login.local.TokenPreference
 import com.example.bisky.data.login.mapper.mapToDomain
 import com.example.bisky.data.login.mapper.mapToEntity
+import com.example.bisky.data.network.resultwrapper.Result
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.login.LoginRepository
 import com.example.bisky.domain.repository.login.local.LoginLocalSource
@@ -21,6 +22,11 @@ class LoginRepositoryImpl(
         tokenPreference.saveToken(result.accessToken, result.refreshToken)
         val user = loginRemoteSource.checkSigIn()
         loginLocalSource.updateUser(user.mapToEntity())
+    }
+
+    override suspend fun sigOut() = resultWrapper.wrap {
+        tokenPreference.clearTokens()
+        loginRemoteSource.sigOut()
     }
 
     override suspend fun fetchUser() = loginLocalSource.fetchUser()?.mapToDomain()

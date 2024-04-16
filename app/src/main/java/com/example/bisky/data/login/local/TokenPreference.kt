@@ -33,4 +33,11 @@ class TokenPreference @Inject constructor(
         .edit()
         .putString(ACCESS_TOKEN_KEY, null)
         .apply()
+
+    @Synchronized
+    fun clearTokens() = sharedPreferences
+        .edit()
+        .putString(ACCESS_TOKEN_KEY, null)
+        .putString(REFRESH_TOKEN_KEY, null)
+        .apply()
 }

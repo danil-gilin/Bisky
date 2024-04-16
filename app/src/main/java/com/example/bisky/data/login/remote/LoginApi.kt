@@ -18,6 +18,9 @@ interface LoginApi {
     @PUT("auth/register")
     suspend fun sigUp(@Body params: SigUpParams): TokenResponse
 
+    @PATCH("auth/logout")
+    suspend fun sigOut(): Boolean
+
     @GET("auth/whoami")
     suspend fun checkSigIn(): UserResponse
 

@@ -9,4 +9,5 @@ interface NavigationEventBus {
 
 sealed class NavigationEventBusEvent {
     data class ChangeVisibleBottomNav(val isVisible: Boolean) : NavigationEventBusEvent()
+    object LogOut : NavigationEventBusEvent()
 }
