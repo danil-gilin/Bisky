@@ -1,5 +1,5 @@
-query GetAnimeQuery($animeQuery: GeneralAnimeQuery!) {
-    getAnimes(animeQuery: $animeQuery) {
+query GetAnimeQuery($animeQuery: GeneralAnimeQuery!, $isWithoutRelations: Boolean!) {
+    getAnimes(animeQuery: $animeQuery, isWithoutRelations: $isWithoutRelations) {
         poster
         labels {
             en

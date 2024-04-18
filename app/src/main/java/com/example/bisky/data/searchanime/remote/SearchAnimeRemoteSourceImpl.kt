@@ -26,7 +26,7 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
                         count = 30.toOptional(),
                         searchInput = input.toOptional(),
                         filter = FilterAnimeQuery(
-                            genres_ID = filter.genres.toOptional(),
+                            genres_ID_ONLY = filter.genres.toOptional(),
                             status = filter.status?.mapToDto().toOptional(),
                             score_averageScore = FloatBetweenQuery(
                                 from = filter.scoreRange.start.toDouble().toOptional(),
@@ -49,12 +49,12 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
                 GeneralAnimeQuery(
                     count = 10.toOptional(),
                     filter = FilterAnimeQuery(
-                        genres_ID = filter.genres.toOptional(),
+                        genres_ID_ONLY = filter.genres.toOptional(),
                         status = filter.status?.mapToDto().toOptional(),
                         score_averageScore = FloatBetweenQuery(
                             from = filter.scoreRange.start.toDouble().toOptional(),
                             to = filter.scoreRange.endInclusive.toDouble().toOptional()
-                        ).toOptional()
+                        ).toOptional(),
                     ).toOptional()
                 )
             )

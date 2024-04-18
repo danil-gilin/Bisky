@@ -37,7 +37,7 @@ class GenreRemoteSourceImpl @Inject constructor(
                 GeneralAnimeQuery(
                     count = 30.toOptional(),
                     filter = FilterAnimeQuery(
-                        genres_ID = listOf<String>(genreId).toOptional()
+                        genres_ID_ONLY = listOf<String>(genreId).toOptional()
                     ).toOptional(),
                     page = page.toOptional()
                 )

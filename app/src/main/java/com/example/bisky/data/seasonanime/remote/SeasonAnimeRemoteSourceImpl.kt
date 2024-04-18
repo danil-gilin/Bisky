@@ -21,7 +21,8 @@ class SeasonAnimeRemoteSourceImpl @Inject constructor(
     override suspend fun getAnimeSeason(params: RequestSeasonAnimeParams) =
         withContext(dispatchersProvider.io) {
             val filter = GeneralAnimeQuery(
-                count = 100.toOptional(),
+                count = 50.toOptional(),
+                isPaginationOff = true.toOptional(),
                 filter = FilterAnimeQuery(
                     dates_airedOn = DateBetweenQuery(
                         from = params.startDate.toOptional(),

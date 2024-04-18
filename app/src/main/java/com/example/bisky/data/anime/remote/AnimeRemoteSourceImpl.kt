@@ -26,7 +26,7 @@ class AnimeRemoteSourceImpl @Inject constructor(
                     _id_ID = listOf(id).toOptional()
                 ).toOptional()
             )
-            apolloClient.query(GetAnimeQuery(filter))
+            apolloClient.query(GetAnimeQuery(filter, false))
                 .execute()
                 .data
                 ?.getAnimes

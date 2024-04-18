@@ -253,12 +253,12 @@ input FilterAnimeQuery {
   """
   Franchise _ids
   """
-  franchises_ID: [String!] = null
+  franchises_ID_ONLY: [String!] = null
 
   """
   Genre _ids
   """
-  genres_ID: [String!] = null
+  genres_ID_ONLY: [String!] = null
 
   kind: [KindEnum!] = null
 
@@ -273,7 +273,7 @@ input FilterAnimeQuery {
   """
   Studio _ids
   """
-  studios_ID: [String!] = null
+  studios_ID_ONLY: [String!] = null
 }
 
 """
@@ -384,6 +384,8 @@ input GeneralAnimeQuery {
   count: Int! = 10
 
   filter: FilterAnimeQuery = null
+
+  isPaginationOff: Boolean! = false
 
   limit: LimitQuantityAnimeQuery = null
 
@@ -635,6 +637,7 @@ type Query {
 
   getAnimes(animeQuery: GeneralAnimeQuery! = {
     count: 10
+    isPaginationOff: false
     page: 1
   }
   , franchiseQuery: GeneralFranchiseQuery! = {
@@ -645,7 +648,7 @@ type Query {
     count: 100
     page: 1
   }
-  , platformQuery: GeneralPlatformQuery! = {
+  , isWithoutRelations: Boolean! = true, platformQuery: GeneralPlatformQuery! = {
     count: 100
     page: 1
   }
@@ -695,6 +698,7 @@ type Query {
 
   getUserPublicData(animeQuery: GeneralAnimeQuery! = {
     count: 20
+    isPaginationOff: false
     page: 1
   }
   , userQuery: GeneralUserQuery! = {
