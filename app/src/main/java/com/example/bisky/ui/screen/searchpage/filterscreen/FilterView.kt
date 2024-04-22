@@ -45,5 +45,6 @@ interface FilterView {
 
     sealed class Action {
         data object ShowBottomNav: Action()
+        data object UpdateSearchAnime: Action()
     }
 }

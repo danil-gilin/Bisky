@@ -8,10 +8,17 @@ import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.searchanime.mapper.mapToDto
 import com.example.bisky.domain.repository.searchanime.model.FilterSearch
 import com.example.bisky.domain.repository.searchanime.remote.SearchAnimeRemoteSource
+import com.example.bisky.ui.screen.searchpage.filterscreen.model.SortAnimeFilter
+import com.example.type.DateBetweenQuery
 import com.example.type.FilterAnimeQuery
 import com.example.type.FloatBetweenQuery
 import com.example.type.GeneralAnimeQuery
+import com.example.type.SortAnimeQuery
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 class SearchAnimeRemoteSourceImpl @Inject constructor(
@@ -32,6 +39,10 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
                                 from = filter.scoreRange.start.toDouble().toOptional(),
                                 to = filter.scoreRange.endInclusive.toDouble().toOptional()
                             ).toOptional()
+                        ).toOptional(),
+                        sort = SortAnimeQuery(
+                            score_averageScore = (filter.sorted == SortAnimeFilter.RATING).toOptional(),
+                            score_count = (filter.sorted == SortAnimeFilter.POPULATION).toOptional()
                         ).toOptional()
                     )
                 )

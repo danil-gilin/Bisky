@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.eventbus.search.SearchEventBus
+import com.example.bisky.domain.eventbus.search.SearchEventBusEvent
 import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository
 import com.example.bisky.ui.screen.searchpage.searchrootscreen.SearchView.Event
 import com.example.bisky.ui.screen.searchpage.searchrootscreen.mapper.SearchAnimeMapper
@@ -27,7 +29,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val textSearchUIMapper: TextSearchUIMapper,
     private val searchAnimeRepository: SearchAnimeRepository,
-    private val searchAnimeMapper: SearchAnimeMapper
+    private val searchAnimeMapper: SearchAnimeMapper,
+    private val searchEventBus: SearchEventBus
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SearchView.State())
     val uiState: StateFlow<SearchView.State> = _uiState
@@ -46,6 +49,7 @@ class SearchViewModel @Inject constructor(
                 getAnime(null)
             }
         }
+        subscribeSearchEvent()
     }
 
     @OptIn(FlowPreview::class)
@@ -93,6 +97,14 @@ class SearchViewModel @Inject constructor(
 
         }.onError {
             it
+        }
+    }
+
+    private fun subscribeSearchEvent() = viewModelScope.launch {
+        searchEventBus.eventsFlow.collectLatest { event ->
+            when(event) {
+                SearchEventBusEvent.SearchAnime -> getAnime(_uiState.value.searchTextField.text.toString())
+            }
         }
     }
 }

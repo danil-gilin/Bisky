@@ -2,6 +2,7 @@
 package com.example.bisky.ui.screen.searchpage.filterscreen;
 
 import com.example.bisky.domain.eventbus.navigation.NavigationEventBus;
+import com.example.bisky.domain.eventbus.search.SearchEventBus;
 import com.example.bisky.domain.repository.genre.GenreRepository;
 import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository;
 import com.example.bisky.ui.screen.searchpage.filterscreen.mapper.FilterMapper;
@@ -29,31 +30,36 @@ public final class FilterViewModel_Factory implements Factory<FilterViewModel> {
 
   private final Provider<NavigationEventBus> navigationEventBusProvider;
 
+  private final Provider<SearchEventBus> searchEventBusProvider;
+
   public FilterViewModel_Factory(Provider<GenreRepository> genreRepositoryProvider,
       Provider<SearchAnimeRepository> searchAnimeRepositoryProvider,
       Provider<FilterMapper> filterMapperProvider,
-      Provider<NavigationEventBus> navigationEventBusProvider) {
+      Provider<NavigationEventBus> navigationEventBusProvider,
+      Provider<SearchEventBus> searchEventBusProvider) {
     this.genreRepositoryProvider = genreRepositoryProvider;
     this.searchAnimeRepositoryProvider = searchAnimeRepositoryProvider;
     this.filterMapperProvider = filterMapperProvider;
     this.navigationEventBusProvider = navigationEventBusProvider;
+    this.searchEventBusProvider = searchEventBusProvider;
   }
 
   @Override
   public FilterViewModel get() {
-    return newInstance(genreRepositoryProvider.get(), searchAnimeRepositoryProvider.get(), filterMapperProvider.get(), navigationEventBusProvider.get());
+    return newInstance(genreRepositoryProvider.get(), searchAnimeRepositoryProvider.get(), filterMapperProvider.get(), navigationEventBusProvider.get(), searchEventBusProvider.get());
   }
 
   public static FilterViewModel_Factory create(Provider<GenreRepository> genreRepositoryProvider,
       Provider<SearchAnimeRepository> searchAnimeRepositoryProvider,
       Provider<FilterMapper> filterMapperProvider,
-      Provider<NavigationEventBus> navigationEventBusProvider) {
-    return new FilterViewModel_Factory(genreRepositoryProvider, searchAnimeRepositoryProvider, filterMapperProvider, navigationEventBusProvider);
+      Provider<NavigationEventBus> navigationEventBusProvider,
+      Provider<SearchEventBus> searchEventBusProvider) {
+    return new FilterViewModel_Factory(genreRepositoryProvider, searchAnimeRepositoryProvider, filterMapperProvider, navigationEventBusProvider, searchEventBusProvider);
   }
 
   public static FilterViewModel newInstance(GenreRepository genreRepository,
       SearchAnimeRepository searchAnimeRepository, FilterMapper filterMapper,
-      NavigationEventBus navigationEventBus) {
-    return new FilterViewModel(genreRepository, searchAnimeRepository, filterMapper, navigationEventBus);
+      NavigationEventBus navigationEventBus, SearchEventBus searchEventBus) {
+    return new FilterViewModel(genreRepository, searchAnimeRepository, filterMapper, navigationEventBus, searchEventBus);
   }
 }

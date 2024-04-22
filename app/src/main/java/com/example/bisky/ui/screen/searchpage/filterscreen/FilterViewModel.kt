@@ -6,6 +6,8 @@ import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.eventbus.navigation.NavigationEventBus
 import com.example.bisky.domain.eventbus.navigation.NavigationEventBusEvent
+import com.example.bisky.domain.eventbus.search.SearchEventBus
+import com.example.bisky.domain.eventbus.search.SearchEventBusEvent
 import com.example.bisky.domain.repository.genre.GenreRepository
 import com.example.bisky.domain.repository.genre.model.GenreSimple
 import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository
@@ -26,7 +28,8 @@ class FilterViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
     private val searchAnimeRepository: SearchAnimeRepository,
     private val filterMapper: FilterMapper,
-    private val navigationEventBus: NavigationEventBus
+    private val navigationEventBus: NavigationEventBus,
+    private val searchEventBus: SearchEventBus
 ): ViewModel() {
     private val _uiState = MutableStateFlow(FilterView.State())
     val uiState: StateFlow<FilterView.State> = _uiState
@@ -56,6 +59,7 @@ class FilterViewModel @Inject constructor(
     fun onAction(action: Action) {
         when(action) {
             Action.ShowBottomNav -> navigationEventBus.emitEvent(NavigationEventBusEvent.ChangeVisibleBottomNav(true))
+            Action.UpdateSearchAnime -> searchEventBus.emitEvent(SearchEventBusEvent.SearchAnime)
         }
     }
 
@@ -106,7 +110,7 @@ class FilterViewModel @Inject constructor(
         } else {
             filter.genres.orEmpty().minus(genreId)
         }
-        searchAnimeRepository.updateSearchFilter(filter.copy(genres =selectedGenreIds))
+        searchAnimeRepository.updateSearchFilter(filter.copy(genres = selectedGenreIds.ifEmpty { null }))
         updateFilter()
     }
 
@@ -118,7 +122,7 @@ class FilterViewModel @Inject constructor(
         } else {
             currentStatus.minus(status)
         }
-        searchAnimeRepository.updateSearchFilter(filter.copy(status =statusUpdated))
+        searchAnimeRepository.updateSearchFilter(filter.copy(status = statusUpdated.ifEmpty { null }))
         updateFilter()
     }
 

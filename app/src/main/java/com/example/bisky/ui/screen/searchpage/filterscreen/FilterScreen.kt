@@ -43,6 +43,7 @@ fun FilterScreen(
         uiState,
         onDoneClick = {
             viewModel.onAction(FilterView.Action.ShowBottomNav)
+            viewModel.onAction(FilterView.Action.UpdateSearchAnime)
             navController.popBackStack()
         },
         onClearClick = {
