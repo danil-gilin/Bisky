@@ -11,6 +11,8 @@ import com.example.bisky.ui.screen.archivepage.addedscreen.mapper.AnimeAddMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,6 +27,21 @@ class AddScreenViewModel @Inject constructor(
 
     init {
         initData()
+        subscribeAnimeCollection()
+    }
+
+    private fun subscribeAnimeCollection() = viewModelScope.launch {
+        archiveRepository
+            .subscribeUserCollectionAnime(CollectionAnime.ADDED)
+            .collectLatest {
+                val items = animeAddMapper.mapToUI(it)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        items = items
+                    )
+                }
+            }
     }
 
     fun onEvent(event: Event) {
@@ -38,18 +55,6 @@ class AddScreenViewModel @Inject constructor(
         _uiState.update {
             it.copy(isLoading = true)
         }
-        archiveRepository.getUserCollectionAnime(CollectionAnime.ADDED).onSuccess {
-            val items = animeAddMapper.mapToUI(it)
-            _uiState.update {
-                it.copy(
-                    isLoading = false,
-                    items = items
-                )
-            }
-        }.onError {
-            _uiState.update {
-                it.copy(isLoading = false)
-            }
-        }
+        archiveRepository.getUserCollectionAnime(CollectionAnime.ADDED)
     }
 }

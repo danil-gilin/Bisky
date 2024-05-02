@@ -4,11 +4,15 @@ import com.apollographql.apollo3.ApolloClient
 import com.example.bisky.data.anime.local.AnimeLocalSourceImpl
 import com.example.bisky.data.anime.remote.AnimeApi
 import com.example.bisky.data.anime.remote.AnimeRemoteSourceImpl
+import com.example.bisky.data.archive.local.AddCollectionDao
+import com.example.bisky.data.archive.local.CompleteCollectionDao
+import com.example.bisky.data.archive.local.WatchCollectionDao
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.bisky.domain.repository.anime.local.AnimeLocalSource
+import com.example.bisky.domain.repository.archive.remote.ArchiveRemoteSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,9 +33,10 @@ object AnimeDIModule {
     fun provideAnimeRepository(
         animeClient: AnimeRemoteSource,
         animeLocalSource: AnimeLocalSource,
-        resultWrapper: ResultWrapper
+        resultWrapper: ResultWrapper,
+        archiveRemoteSource: ArchiveRemoteSource
     ): AnimeRepository =
-        AnimeRepositoryImpl(animeClient, animeLocalSource, resultWrapper)
+        AnimeRepositoryImpl(animeClient, animeLocalSource, resultWrapper, archiveRemoteSource)
 
     @Singleton
     @Provides
@@ -45,7 +50,15 @@ object AnimeDIModule {
     @Singleton
     @Provides
     fun provideAnimeLocalSource(
-        dispatchersProvider: DispatchersProvider
+        dispatchersProvider: DispatchersProvider,
+        addCollectionDao: AddCollectionDao,
+        watchCollectionDao: WatchCollectionDao,
+        completeCollectionDao: CompleteCollectionDao
     ): AnimeLocalSource =
-        AnimeLocalSourceImpl(dispatchersProvider)
+        AnimeLocalSourceImpl(
+            dispatchersProvider,
+            addCollectionDao,
+            watchCollectionDao,
+            completeCollectionDao
+        )
 }

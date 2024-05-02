@@ -1,17 +1,24 @@
 package com.example.bisky.data.anime
 
 import com.example.bisky.data.anime.mapper.mapToDomain
+import com.example.bisky.data.archive.mapper.mapToAddCollection
+import com.example.bisky.data.archive.mapper.mapToCompleteCollection
+import com.example.bisky.data.archive.mapper.mapToDomain
+import com.example.bisky.data.archive.mapper.mapToWatchCollection
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.bisky.domain.repository.anime.local.AnimeLocalSource
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
+import com.example.bisky.domain.repository.archive.local.model.BaseAnimeCollection
+import com.example.bisky.domain.repository.archive.remote.ArchiveRemoteSource
 import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
     private val animeClient: AnimeRemoteSource,
     private val animeLocalSource: AnimeLocalSource,
-    private val resultWrapper: ResultWrapper
+    private val resultWrapper: ResultWrapper,
+    private val archiveRemoteSource: ArchiveRemoteSource
 ) : AnimeRepository {
 
     override suspend fun getAnime(id: String) = resultWrapper.wrap {
@@ -23,6 +30,15 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateCollection(collectionType: CollectionAnime, animeId: String) = resultWrapper.wrap  {
-        animeClient.updateCollection(collectionType, animeId)
+        val response = animeClient.updateCollection(collectionType, animeId)
+        val updatedCollection = archiveRemoteSource.getUserCollectionAnime(collectionType).map { it.mapToDomain() }
+        animeLocalSource.clearAnimeCollection(animeId)
+        when(collectionType) {
+            CollectionAnime.ADDED -> animeLocalSource.addToAddCollection(updatedCollection.mapToAddCollection())
+            CollectionAnime.COMPLETED -> animeLocalSource.addToCompleteCollection(updatedCollection.mapToCompleteCollection())
+            CollectionAnime.WATCHING -> animeLocalSource.addToWatchCollection(updatedCollection.mapToWatchCollection())
+            else -> Unit
+        }
+        response
     }
 }
