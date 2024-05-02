@@ -2,13 +2,10 @@ package com.example.bisky.ui.screen.archivepage.container.item
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.input.TextFieldState
@@ -38,7 +35,7 @@ import com.example.bisky.ui.screen.searchpage.searchrootscreen.model.SearchUI
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun QuickSelectAnimeItem(
+fun QuickSearchSelectAnimeItem(
     onSearchClick: () -> Unit,
     onQuickSelectClick: () -> Unit,
     onFilterClick: () -> Unit,
@@ -146,8 +143,8 @@ fun QuickSelectAnimeItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview(showBackground = true)
-fun QuickSelectAnimeItemPreview() {
-    QuickSelectAnimeItem(
+private fun QuickSelectAnimeItemPreview() {
+    QuickSearchSelectAnimeItem(
         onSearchClick = {},
         onFilterClick = {},
         onQuickSelectClick = {},

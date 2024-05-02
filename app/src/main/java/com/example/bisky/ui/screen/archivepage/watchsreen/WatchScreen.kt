@@ -25,9 +25,7 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.navigation.model.Destination
-import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView
-import com.example.bisky.ui.screen.archivepage.container.item.QuickSelectAnimeItem
-import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView
+import com.example.bisky.ui.screen.archivepage.container.item.QuickSearchSelectAnimeItem
 import com.example.bisky.ui.screen.archivepage.watchsreen.WatchScreenView.Event
 import com.example.bisky.ui.screen.archivepage.watchsreen.WatchScreenView.State
 import com.example.bisky.ui.screen.archivepage.watchsreen.items.AnimeWatchItems
@@ -56,7 +54,6 @@ fun WatchScreen(
             viewModel.onEvent(Event.OnSearchClick)
         },
         onQuickSelectClick = {
-
         }
     )
 }
@@ -78,7 +75,7 @@ fun WatchScreen(
     )
     val pullRefreshState = rememberPullRefreshState(uiState.isLoading, { onRefresh() })
     Column {
-        QuickSelectAnimeItem(
+        QuickSearchSelectAnimeItem(
             onSearchClick,
             onQuickSelectClick,
             onFilterClick,

@@ -98,5 +98,6 @@
     <string name="title_add">Запланировано</string>
     <string name="title_watched">Просмотрено</string>
     <string name="quick_select">Быстрый выбор</string>
+    <string name="vs">vs</string>
 
 </resources>

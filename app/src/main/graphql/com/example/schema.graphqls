@@ -385,6 +385,9 @@ input GeneralAnimeQuery {
 
   filter: FilterAnimeQuery = null
 
+  """
+  Set to true if pagination is not needed (Speeds up queries)
+  """
   isPaginationOff: Boolean! = false
 
   limit: LimitQuantityAnimeQuery = null
@@ -400,6 +403,8 @@ input GeneralAnimeQuery {
   searchInput: String = null
 
   sort: SortAnimeQuery = null
+
+  userFilters: UserFilterQuery = null
 }
 
 """
@@ -639,6 +644,10 @@ type Query {
     count: 10
     isPaginationOff: false
     page: 1
+    userFilters: {
+
+    }
+
   }
   , franchiseQuery: GeneralFranchiseQuery! = {
     count: 100
@@ -859,6 +868,21 @@ type StudioSimpleModel {
   name: String!
 
   relatedWorks: [String!]!
+}
+
+"""
+User anime display settings
+"""
+input UserFilterQuery {
+  """
+  Remove from the results all anime that are added to the skip list
+  """
+  isHiddenAnimeInSkipList: Boolean = false
+
+  """
+  Delete all anime that are in the user's list
+  """
+  isHiddenAnimeInUserList: Boolean = false
 }
 
 type UserListModel {

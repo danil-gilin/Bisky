@@ -1,5 +1,6 @@
 package com.example.bisky.ui.screen.searchpage.quicksearch.mapper
 
+import android.content.Context
 import com.example.bisky.R
 import com.example.bisky.common.ext.saveSubList
 import com.example.bisky.domain.repository.searchanime.model.AnimeQuickSearch
@@ -9,12 +10,15 @@ import com.example.bisky.ui.screen.searchpage.quicksearch.model.AnimeDescription
 import com.example.bisky.ui.screen.searchpage.quicksearch.model.AnimeFrontInfoUI
 import com.example.bisky.ui.screen.searchpage.quicksearch.model.AnimeStatusSelect
 import com.example.bisky.ui.screen.searchpage.quicksearch.model.ControlButtonUI
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.lang.Exception
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class QuickSearchAnimeMapper @Inject constructor() {
+class QuickSearchAnimeMapper @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
     fun mapToControlButtonUI(
         count: Int,
@@ -97,6 +101,8 @@ class QuickSearchAnimeMapper @Inject constructor() {
         in 0.0..4.9 -> R.color.red
         in 5.0..7.8 -> R.color.gray
         else -> R.color.lime
+    }.let {
+        context.getColor(it)
     }
 
     private fun AnimeQuickSearch?.mapToInfoDuration(): String {
@@ -137,7 +143,10 @@ class QuickSearchAnimeMapper @Inject constructor() {
         ONGOING -> R.color.blue
         ANONS -> R.color.orange
         else -> R.color.gray
+    }.let {
+        context.getColor(it)
     }
+
     companion object {
         private const val ANONS = "anons"
         private const val ONGOING = "ongoing"

@@ -1,5 +1,6 @@
 package com.example.bisky.data.archive
 
+import com.example.GetUserCollectionQuickSelectAnimeQuery
 import com.example.bisky.data.archive.mapper.mapToAddCollection
 import com.example.bisky.data.archive.mapper.mapToCompleteCollection
 import com.example.bisky.data.archive.mapper.mapToDomain
@@ -41,4 +42,13 @@ class CollectionRepositoryImpl @Inject constructor(
 
     override suspend fun subscribeUserCollectionAnime(collection: CollectionAnime) =
         collectionLocalSource.subscribeAnimeCollection(collection)
+
+    override suspend fun getUserCollectionQuickSelectAnime(
+        collection: CollectionAnime,
+        count: Int
+    ) = resultWrapper.wrap {
+        collectionRemoteSource.getUserCollectionQuickSelectAnime(collection, count).map {
+            it.mapToDomain()
+        }
+    }
 }

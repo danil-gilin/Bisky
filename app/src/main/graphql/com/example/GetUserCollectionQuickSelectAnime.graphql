@@ -1,0 +1,21 @@
+query GetUserCollectionQuickSelectAnime($userQuery: GeneralUserQuery!, $animeQuery: GeneralAnimeQuery!) {
+    getUserPublicData(userQuery: $userQuery, animeQuery: $animeQuery) {
+        animeEstimates {
+            base {
+                _id
+                poster
+                labels {
+                    en
+                    ru
+                }
+                episodes {
+                    averageDuration
+                    count
+                }
+                status
+                screenshots
+                kind
+            }
+        }
+    }
+}

@@ -29,8 +29,7 @@ import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.Event
 import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.State
 import com.example.bisky.ui.screen.archivepage.addedscreen.items.AnimeAddItems
 import com.example.bisky.ui.screen.archivepage.addedscreen.model.AnimeAddUI
-import com.example.bisky.ui.screen.archivepage.container.item.QuickSelectAnimeItem
-import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView
+import com.example.bisky.ui.screen.archivepage.container.item.QuickSearchSelectAnimeItem
 
 @Composable
 fun AddScreen(
@@ -77,7 +76,7 @@ fun AddScreen(
     )
     val pullRefreshState = rememberPullRefreshState(uiState.isLoading, { onRefresh() })
     Column {
-        QuickSelectAnimeItem(
+        QuickSearchSelectAnimeItem(
             onSearchClick,
             onQuickSelectClick,
             onFilterClick,

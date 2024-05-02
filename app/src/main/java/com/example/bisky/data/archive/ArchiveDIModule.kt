@@ -5,7 +5,7 @@ import com.example.bisky.data.archive.local.AddCollectionDao
 import com.example.bisky.data.archive.local.ArchiveLocalSourceImpl
 import com.example.bisky.data.archive.local.CompleteCollectionDao
 import com.example.bisky.data.archive.local.WatchCollectionDao
-import com.example.bisky.data.archive.remote.ArchiveRemoteSourceImpl
+import com.example.bisky.data.archive.remote.CollectionRemoteSourceImpl
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.data.room.AppDatabase
@@ -36,7 +36,7 @@ object ArchiveDIModule {
         apolloClient: ApolloClient,
         dispatchersProvider: DispatchersProvider
     ): CollectionRemoteSource =
-        ArchiveRemoteSourceImpl(apolloClient, dispatchersProvider)
+        CollectionRemoteSourceImpl(apolloClient, dispatchersProvider)
 
     @Singleton
     @Provides
