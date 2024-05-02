@@ -36,50 +36,71 @@ class ArchiveLocalSourceImpl(
             addCollectionDao.insertList(addAnime)
         }
 
-    override suspend fun clearAnimeCollection(id: String) =
+    override suspend fun deleteAnimeFromCollection(id: String) =
         withContext(dispatchersProvider.io) {
             addCollectionDao.deleteAnime(id)
             watchCollectionDao.deleteAnime(id)
             completeCollectionDao.deleteAnime(id)
         }
 
-    override suspend fun getAnimeCollection(collection: CollectionAnime): List<AnimeUserCollection> {
-        return when (collection) {
-            CollectionAnime.ADDED -> {
-                addCollectionDao.fetchAll().mapAddToAnimeUserCollection()
-            }
+    override suspend fun getAnimeCollection(collection: CollectionAnime) =
+        withContext(dispatchersProvider.io) {
+            when (collection) {
+                CollectionAnime.ADDED -> {
+                    addCollectionDao.fetchAll().mapAddToAnimeUserCollection()
+                }
 
-            CollectionAnime.COMPLETED -> {
-                completeCollectionDao.fetchAll().mapCompleteToAnimeUserCollection()
-            }
+                CollectionAnime.COMPLETED -> {
+                    completeCollectionDao.fetchAll().mapCompleteToAnimeUserCollection()
+                }
 
-            CollectionAnime.WATCHING -> {
-                watchCollectionDao.fetchAll().mapWatchToAnimeUserCollection()
-            }
+                CollectionAnime.WATCHING -> {
+                    watchCollectionDao.fetchAll().mapWatchToAnimeUserCollection()
+                }
 
-            else -> {
-                emptyList()
+                else -> {
+                    emptyList()
+                }
             }
         }
-    }
 
-    override suspend fun subscribeAnimeCollection(collection: CollectionAnime): Flow<List<AnimeUserCollection>> {
-        return when (collection) {
-            CollectionAnime.ADDED -> {
-                addCollectionDao.subscribe().map { it.mapAddToAnimeUserCollection() }
-            }
+    override suspend fun clearAnimeCollection(collection: CollectionAnime): Unit =
+        withContext(dispatchersProvider.io) {
+            when (collection) {
+                CollectionAnime.ADDED -> {
+                    addCollectionDao.clear()
+                }
 
-            CollectionAnime.COMPLETED -> {
-                completeCollectionDao.subscribe().map { it.mapCompleteToAnimeUserCollection() }
-            }
+                CollectionAnime.COMPLETED -> {
+                    completeCollectionDao.clear()
+                }
 
-            CollectionAnime.WATCHING -> {
-                watchCollectionDao.subscribe().map { it.mapWatchToAnimeUserCollection() }
-            }
+                CollectionAnime.WATCHING -> {
+                    watchCollectionDao.clear()
+                }
 
-            else -> {
-                flow<List<AnimeUserCollection>> { }
+                else -> Unit
             }
         }
-    }
+
+    override suspend fun subscribeAnimeCollection(collection: CollectionAnime) =
+        withContext(dispatchersProvider.io) {
+            when (collection) {
+                CollectionAnime.ADDED -> {
+                    addCollectionDao.subscribe().map { it.mapAddToAnimeUserCollection() }
+                }
+
+                CollectionAnime.COMPLETED -> {
+                    completeCollectionDao.subscribe().map { it.mapCompleteToAnimeUserCollection() }
+                }
+
+                CollectionAnime.WATCHING -> {
+                    watchCollectionDao.subscribe().map { it.mapWatchToAnimeUserCollection() }
+                }
+
+                else -> {
+                    flow { }
+                }
+            }
+        }
 }

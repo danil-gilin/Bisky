@@ -20,6 +20,7 @@ class CollectionRepositoryImpl @Inject constructor(
 
     override suspend fun getUserCollectionAnime(collection: CollectionAnime) = resultWrapper.wrap {
        val response = collectionRemoteSource.getUserCollectionAnime(collection).map { it.mapToDomain() }
+        collectionLocalSource.clearAnimeCollection(collection)
         when(collection) {
             CollectionAnime.ADDED ->{
                 collectionLocalSource.addToAddCollection(response.mapToAddCollection())

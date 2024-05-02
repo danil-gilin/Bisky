@@ -17,4 +17,7 @@ interface CompleteCollectionDao: BaseDao<CompleteAnime> {
 
     @Query("SELECT * FROM complete_collection_anime")
     fun subscribe(): Flow<List<CompleteAnime>>
+
+    @Query("DELETE FROM complete_collection_anime")
+    fun clear()
 }

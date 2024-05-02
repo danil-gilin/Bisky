@@ -11,7 +11,8 @@ interface CollectionLocalSource {
     suspend fun addToCompleteCollection(completeAnime: List<CompleteAnime>)
     suspend fun addToWatchCollection(watchAnime: List<WatchAnime>)
     suspend fun addToAddCollection(addAnime: List<AddAnime>)
-    suspend fun clearAnimeCollection(id: String)
+    suspend fun deleteAnimeFromCollection(id: String)
     suspend fun getAnimeCollection(collection: CollectionAnime): List<AnimeUserCollection>
+    suspend fun clearAnimeCollection(collection: CollectionAnime)
     suspend fun subscribeAnimeCollection(collection: CollectionAnime): Flow<List<AnimeUserCollection>>
 }

@@ -2,6 +2,7 @@ package com.example.bisky.ui.screen.archivepage.addedscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,8 @@ import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.Event
 import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.State
 import com.example.bisky.ui.screen.archivepage.addedscreen.items.AnimeAddItems
 import com.example.bisky.ui.screen.archivepage.addedscreen.model.AnimeAddUI
+import com.example.bisky.ui.screen.archivepage.container.item.QuickSelectAnimeItem
+import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView
 
 @Composable
 fun AddScreen(
@@ -44,7 +47,15 @@ fun AddScreen(
             viewModel.onEvent(Event.OnRefresh)
         },
         onAnimeClick = {
-            navController.navigate(Destination.Archive.Anime.route+"/$it")
+            navController.navigate(Destination.Archive.Anime.route + "/$it")
+        },
+        onFilterClick = {
+        },
+        onSearchClick = {
+            viewModel.onEvent(Event.OnSearchClick)
+        },
+        onQuickSelectClick = {
+
         }
     )
 }
@@ -55,40 +66,51 @@ fun AddScreen(
     uiState: State,
     onScrollItem: (Int) -> Unit,
     onRefresh: () -> Unit,
-    onAnimeClick: (String) -> Unit
+    onAnimeClick: (String) -> Unit,
+    onSearchClick: () -> Unit,
+    onQuickSelectClick: () -> Unit,
+    onFilterClick: () -> Unit,
 ) {
     val lazyListState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
         onScrollItem
     )
     val pullRefreshState = rememberPullRefreshState(uiState.isLoading, { onRefresh() })
-    Box(Modifier.pullRefresh(pullRefreshState)) {
-        LazyColumn(
-            state = lazyListState,
-            contentPadding = PaddingValues(top = 16.dp),
-            modifier = Modifier
-                .background(color = colorResource(id = R.color.bisky_dark_400))
-                .padding(start = 16.dp, end = 16.dp)
-                .fillMaxSize()
-        ) {
-            items(
-                uiState.items,
-                key = { it.itemId }
+    Column {
+        QuickSelectAnimeItem(
+            onSearchClick,
+            onQuickSelectClick,
+            onFilterClick,
+            uiState.quickSelectUI
+        )
+        Box(Modifier.pullRefresh(pullRefreshState)) {
+            LazyColumn(
+                state = lazyListState,
+                contentPadding = PaddingValues(top = 16.dp),
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.bisky_dark_400))
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxSize()
             ) {
-                when (it) {
-                    is AnimeAddUI -> AnimeAddItems(
-                        it,
-                        onAnimeClick,
-                        Modifier.padding(bottom = 8.dp)
-                    )
+                items(
+                    uiState.items,
+                    key = { it.itemId }
+                ) {
+                    when (it) {
+                        is AnimeAddUI -> AnimeAddItems(
+                            it,
+                            onAnimeClick,
+                            Modifier.padding(bottom = 8.dp)
+                        )
+                    }
                 }
             }
+            PullRefreshIndicator(
+                uiState.isLoading,
+                pullRefreshState,
+                Modifier.align(Alignment.TopCenter)
+            )
         }
-        PullRefreshIndicator(
-            uiState.isLoading,
-            pullRefreshState,
-            Modifier.align(Alignment.TopCenter)
-        )
     }
 }
 
@@ -101,6 +123,9 @@ fun AddScreenPreview() {
                 AnimeAddUI.preview
             )
         ),
+        {},
+        {},
+        {},
         {},
         {},
         {}

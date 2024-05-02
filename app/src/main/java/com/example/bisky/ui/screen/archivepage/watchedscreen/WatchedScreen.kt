@@ -2,6 +2,7 @@ package com.example.bisky.ui.screen.archivepage.watchedscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,7 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.navigation.model.Destination
-import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView
+import com.example.bisky.ui.screen.archivepage.container.item.QuickSelectAnimeItem
 import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView.Event
 import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView.State
 import com.example.bisky.ui.screen.archivepage.watchedscreen.items.AnimeWatchedItems
@@ -46,6 +47,14 @@ fun WatchedScreen(
         },
         onAnimeClick = {
             navController.navigate(Destination.Archive.Anime.route+"/$it")
+        },
+        onFilterClick = {
+        },
+        onSearchClick = {
+            viewModel.onEvent(Event.OnSearchClick)
+        },
+        onQuickSelectClick = {
+
         }
     )
 }
@@ -56,40 +65,51 @@ fun WatchedScreen(
     uiState: State,
     onScrollItem: (Int) -> Unit,
     onRefresh: () -> Unit,
-    onAnimeClick: (String) -> Unit
+    onAnimeClick: (String) -> Unit,
+    onSearchClick: () -> Unit,
+    onQuickSelectClick: () -> Unit,
+    onFilterClick: () -> Unit,
 ) {
     val lazyListState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
         onScrollItem
     )
     val pullRefreshState = rememberPullRefreshState(uiState.isLoading, { onRefresh() })
-    Box(Modifier.pullRefresh(pullRefreshState)) {
-        LazyColumn(
-            state = lazyListState,
-            contentPadding = PaddingValues(top = 16.dp),
-            modifier = Modifier
-                .background(color = colorResource(id = R.color.bisky_dark_400))
-                .padding(start = 16.dp, end = 16.dp)
-                .fillMaxSize()
-        ) {
-            items(
-                uiState.items,
-                key = { it.itemId }
+    Column {
+        QuickSelectAnimeItem(
+            onSearchClick,
+            onQuickSelectClick,
+            onFilterClick,
+            uiState.quickSelectUI
+        )
+        Box(Modifier.pullRefresh(pullRefreshState)) {
+            LazyColumn(
+                state = lazyListState,
+                contentPadding = PaddingValues(top = 16.dp),
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.bisky_dark_400))
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxSize()
             ) {
-                when (it) {
-                    is AnimeWatchedUI -> AnimeWatchedItems(
-                        it,
-                        onAnimeClick,
-                        Modifier.padding(bottom = 8.dp)
-                    )
+                items(
+                    uiState.items,
+                    key = { it.itemId }
+                ) {
+                    when (it) {
+                        is AnimeWatchedUI -> AnimeWatchedItems(
+                            it,
+                            onAnimeClick,
+                            Modifier.padding(bottom = 8.dp)
+                        )
+                    }
                 }
             }
+            PullRefreshIndicator(
+                uiState.isLoading,
+                pullRefreshState,
+                Modifier.align(Alignment.TopCenter)
+            )
         }
-        PullRefreshIndicator(
-            uiState.isLoading,
-            pullRefreshState,
-            Modifier.align(Alignment.TopCenter)
-        )
     }
 }
 
@@ -98,6 +118,9 @@ fun WatchedScreen(
 fun WatchedScreenPreview() {
     WatchedScreen(
         State(),
+        {},
+        {},
+        {},
         {},
         {},
         {}

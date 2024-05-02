@@ -18,4 +18,7 @@ interface WatchCollectionDao : BaseDao<WatchAnime> {
 
     @Query("SELECT * FROM watch_collection_anime")
     fun subscribe(): Flow<List<WatchAnime>>
+
+    @Query("DELETE FROM watch_collection_anime")
+    fun clear()
 }
