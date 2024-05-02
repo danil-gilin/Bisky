@@ -10,15 +10,14 @@ import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.bisky.domain.repository.anime.local.AnimeLocalSource
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
-import com.example.bisky.domain.repository.archive.local.model.BaseAnimeCollection
-import com.example.bisky.domain.repository.archive.remote.ArchiveRemoteSource
+import com.example.bisky.domain.repository.archive.remote.CollectionRemoteSource
 import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
     private val animeClient: AnimeRemoteSource,
     private val animeLocalSource: AnimeLocalSource,
     private val resultWrapper: ResultWrapper,
-    private val archiveRemoteSource: ArchiveRemoteSource
+    private val archiveRemoteSource: CollectionRemoteSource
 ) : AnimeRepository {
 
     override suspend fun getAnime(id: String) = resultWrapper.wrap {

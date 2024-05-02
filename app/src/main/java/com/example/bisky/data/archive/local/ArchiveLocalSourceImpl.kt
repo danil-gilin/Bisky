@@ -5,7 +5,7 @@ import com.example.bisky.data.archive.mapper.mapCompleteToAnimeUserCollection
 import com.example.bisky.data.archive.mapper.mapWatchToAnimeUserCollection
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
-import com.example.bisky.domain.repository.archive.local.ArchiveLocalSource
+import com.example.bisky.domain.repository.archive.local.CollectionLocalSource
 import com.example.bisky.domain.repository.archive.local.model.AddAnime
 import com.example.bisky.domain.repository.archive.local.model.CompleteAnime
 import com.example.bisky.domain.repository.archive.local.model.WatchAnime
@@ -20,7 +20,7 @@ class ArchiveLocalSourceImpl(
     private val addCollectionDao: AddCollectionDao,
     private val watchCollectionDao: WatchCollectionDao,
     private val completeCollectionDao: CompleteCollectionDao
-) : ArchiveLocalSource {
+) : CollectionLocalSource {
     override suspend fun addToWatchCollection(watchAnime: List<WatchAnime>) =
         withContext(dispatchersProvider.io) {
             watchCollectionDao.insertList(watchAnime)

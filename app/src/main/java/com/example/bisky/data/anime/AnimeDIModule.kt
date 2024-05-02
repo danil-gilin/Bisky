@@ -12,7 +12,7 @@ import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.anime.AnimeRepository
 import com.example.bisky.domain.repository.anime.remote.AnimeRemoteSource
 import com.example.bisky.domain.repository.anime.local.AnimeLocalSource
-import com.example.bisky.domain.repository.archive.remote.ArchiveRemoteSource
+import com.example.bisky.domain.repository.archive.remote.CollectionRemoteSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +34,7 @@ object AnimeDIModule {
         animeClient: AnimeRemoteSource,
         animeLocalSource: AnimeLocalSource,
         resultWrapper: ResultWrapper,
-        archiveRemoteSource: ArchiveRemoteSource
+        archiveRemoteSource: CollectionRemoteSource
     ): AnimeRepository =
         AnimeRepositoryImpl(animeClient, animeLocalSource, resultWrapper, archiveRemoteSource)
 

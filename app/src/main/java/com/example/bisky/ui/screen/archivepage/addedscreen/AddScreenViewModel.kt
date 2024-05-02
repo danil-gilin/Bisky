@@ -2,24 +2,21 @@ package com.example.bisky.ui.screen.archivepage.addedscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bisky.data.network.resultwrapper.onError
-import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
-import com.example.bisky.domain.repository.archive.ArchiveRepository
+import com.example.bisky.domain.repository.archive.CollectionRepository
 import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.Event
 import com.example.bisky.ui.screen.archivepage.addedscreen.mapper.AnimeAddMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddScreenViewModel @Inject constructor(
-    private val archiveRepository: ArchiveRepository,
+    private val collectionRepository: CollectionRepository,
     private val animeAddMapper: AnimeAddMapper
 ): ViewModel() {
     private val _uiState = MutableStateFlow(AddScreenView.State())
@@ -31,7 +28,7 @@ class AddScreenViewModel @Inject constructor(
     }
 
     private fun subscribeAnimeCollection() = viewModelScope.launch {
-        archiveRepository
+        collectionRepository
             .subscribeUserCollectionAnime(CollectionAnime.ADDED)
             .collectLatest {
                 val items = animeAddMapper.mapToUI(it)
@@ -55,6 +52,6 @@ class AddScreenViewModel @Inject constructor(
         _uiState.update {
             it.copy(isLoading = true)
         }
-        archiveRepository.getUserCollectionAnime(CollectionAnime.ADDED)
+        collectionRepository.getUserCollectionAnime(CollectionAnime.ADDED)
     }
 }

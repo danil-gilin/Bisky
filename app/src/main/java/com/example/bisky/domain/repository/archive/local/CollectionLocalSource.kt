@@ -7,7 +7,7 @@ import com.example.bisky.domain.repository.archive.local.model.WatchAnime
 import com.example.bisky.domain.repository.archive.model.AnimeUserCollection
 import kotlinx.coroutines.flow.Flow
 
-interface ArchiveLocalSource {
+interface CollectionLocalSource {
     suspend fun addToCompleteCollection(completeAnime: List<CompleteAnime>)
     suspend fun addToWatchCollection(watchAnime: List<WatchAnime>)
     suspend fun addToAddCollection(addAnime: List<AddAnime>)

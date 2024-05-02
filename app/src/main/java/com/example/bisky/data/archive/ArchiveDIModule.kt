@@ -6,17 +6,12 @@ import com.example.bisky.data.archive.local.ArchiveLocalSourceImpl
 import com.example.bisky.data.archive.local.CompleteCollectionDao
 import com.example.bisky.data.archive.local.WatchCollectionDao
 import com.example.bisky.data.archive.remote.ArchiveRemoteSourceImpl
-import com.example.bisky.data.genre.GenreRepositoryImpl
-import com.example.bisky.data.genre.remote.GenreRemoteSourceImpl
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.data.room.AppDatabase
-import com.example.bisky.domain.repository.archive.ArchiveRepository
-import com.example.bisky.domain.repository.archive.local.ArchiveLocalSource
-import com.example.bisky.domain.repository.archive.remote.ArchiveRemoteSource
-import com.example.bisky.domain.repository.genre.GenreRepository
-import com.example.bisky.domain.repository.genre.local.GenreLocalSource
-import com.example.bisky.domain.repository.genre.remote.GenreRemoteSource
+import com.example.bisky.domain.repository.archive.CollectionRepository
+import com.example.bisky.domain.repository.archive.local.CollectionLocalSource
+import com.example.bisky.domain.repository.archive.remote.CollectionRemoteSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,18 +24,18 @@ object ArchiveDIModule {
     @Singleton
     @Provides
     fun provideArchiveRepository(
-        archiveRemoteSource: ArchiveRemoteSource,
-        archiveLocalSource: ArchiveLocalSource,
+        archiveRemoteSource: CollectionRemoteSource,
+        archiveLocalSource: CollectionLocalSource,
         resultWrapper: ResultWrapper
-    ): ArchiveRepository =
-        ArchiveRepositoryImpl(archiveRemoteSource, archiveLocalSource, resultWrapper)
+    ): CollectionRepository =
+        CollectionRepositoryImpl(archiveRemoteSource, archiveLocalSource, resultWrapper)
 
     @Singleton
     @Provides
     fun provideArchiveRemoteSource(
         apolloClient: ApolloClient,
         dispatchersProvider: DispatchersProvider
-    ): ArchiveRemoteSource =
+    ): CollectionRemoteSource =
         ArchiveRemoteSourceImpl(apolloClient, dispatchersProvider)
 
     @Singleton
@@ -50,7 +45,7 @@ object ArchiveDIModule {
         addCollectionDao: AddCollectionDao,
         watchCollectionDao: WatchCollectionDao,
         completeCollectionDao: CompleteCollectionDao
-    ): ArchiveLocalSource =
+    ): CollectionLocalSource =
         ArchiveLocalSourceImpl(
             dispatchersProvider,
             addCollectionDao,
