@@ -91,6 +91,7 @@
     <string name="quick_search_init_loading">Подбираем вам лучшие аниме</string>
     <string name="quick_search_added_loading">Сохраняем ваш выбор</string>
     <string name="quick_search_finished_title">Вы оценили все аниме</string>
+    <string name="quick_search_error_title">Мы не смогли вам подобрать подходящие аниме. Попробуйте выбрать другие фильтры</string>
     <string name="quick_search_finished_btn">Закончить</string>
 
     // archive container

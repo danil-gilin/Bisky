@@ -101,8 +101,6 @@ class QuickSearchAnimeMapper @Inject constructor(
         in 0.0..4.9 -> R.color.red
         in 5.0..7.8 -> R.color.gray
         else -> R.color.lime
-    }.let {
-        context.getColor(it)
     }
 
     private fun AnimeQuickSearch?.mapToInfoDuration(): String {
@@ -143,8 +141,6 @@ class QuickSearchAnimeMapper @Inject constructor(
         ONGOING -> R.color.blue
         ANONS -> R.color.orange
         else -> R.color.gray
-    }.let {
-        context.getColor(it)
     }
 
     companion object {

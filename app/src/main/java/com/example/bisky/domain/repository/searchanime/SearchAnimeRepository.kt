@@ -11,4 +11,6 @@ interface SearchAnimeRepository {
     fun fetchSearchFilter(): FilterSearch
     fun updateSearchFilter(filterSearch: FilterSearch)
     fun clearSearchFilter()
+    suspend fun addToSkipList(animeId: String): Result<Boolean, Throwable>
+    suspend fun deleteFromSkipList(animeId: String): Result<Boolean, Throwable>
 }

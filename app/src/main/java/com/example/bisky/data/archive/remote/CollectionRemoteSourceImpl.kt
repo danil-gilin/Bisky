@@ -10,6 +10,7 @@ import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.archive.remote.CollectionRemoteSource
 import com.example.type.GeneralAnimeQuery
 import com.example.type.GeneralUserQuery
+import com.example.type.UserFilterQuery
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -21,7 +22,11 @@ class CollectionRemoteSourceImpl @Inject constructor(
     override suspend fun getUserCollectionAnime(collection: CollectionAnime) =
         withContext(dispatchersProvider.io) {
             val filterAnime = GeneralAnimeQuery(
-                count = 20.toOptional()
+                count = 20.toOptional(),
+                userFilters = UserFilterQuery(
+                    isHiddenAnimeInSkipList = false.toOptional(),
+                    isHiddenAnimeInUserList = false.toOptional(),
+                ).toOptional()
             )
             val filterUser = GeneralUserQuery(
                 animeListStatus = collection.mapToStatusEnum().toOptional()
@@ -39,7 +44,11 @@ class CollectionRemoteSourceImpl @Inject constructor(
     ) =
         withContext(dispatchersProvider.io) {
             val filterAnime = GeneralAnimeQuery(
-                count = count.toOptional()
+                count = count.toOptional(),
+                userFilters = UserFilterQuery(
+                    isHiddenAnimeInSkipList = false.toOptional(),
+                    isHiddenAnimeInUserList = false.toOptional(),
+                ).toOptional()
             )
             val filterUser = GeneralUserQuery(
                 animeListStatus = collection.mapToStatusEnum().toOptional()

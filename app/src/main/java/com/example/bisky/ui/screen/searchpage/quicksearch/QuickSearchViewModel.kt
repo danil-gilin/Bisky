@@ -62,6 +62,7 @@ class QuickSearchViewModel @Inject constructor(
             )
         }
     }
+
     private fun onLikeClick(id: String) {
         mapAnimeStatusSelect[id] = AnimeStatusSelect.Like
         val count = uiState.value.controlButtonUI.count.toInt() - 1
@@ -111,6 +112,15 @@ class QuickSearchViewModel @Inject constructor(
             listQuickSearchAnime = it
             maxCount = listQuickSearchAnime.size
             initAnimeStatusSelect(it)
+            if (it.isEmpty()) {
+                _uiState.update {
+                    it.copy(
+                        isInitLoading = false,
+                        isErrorScreenVisible = true,
+                    )
+                }
+                return@launch
+            }
             val backAnimeInfo = quickSearchAnimeMapper.mapToAnimeBackUI(
                 it.first()
             )
@@ -142,20 +152,29 @@ class QuickSearchViewModel @Inject constructor(
 
     private fun handleUpdateAnimeCollection(
         listAddedAnime: List<String>
-    ) = viewModelScope.launch{
+    ) = viewModelScope.launch {
         _uiState.update {
             it.copy(
                 isAddedLoading = true
             )
         }
-        val request = listAddedAnime.map {
+
+        val requestAdd = listAddedAnime.map {
             async {
                 animeRepository.updateCollection(CollectionAnime.ADDED, it).onError {
                     it
                 }
             }
         }
-        request.awaitAll()
+        val requestSkip = listQuickSearchAnime.filter { !listAddedAnime.contains(it._id) }.map {
+            async {
+                searchAnimeRepository.addToSkipList(it._id).onError {
+                    it
+                }
+            }
+        }
+        requestAdd.awaitAll()
+        requestSkip.awaitAll()
         _uiState.update {
             it.copy(
                 isAddedLoading = false,

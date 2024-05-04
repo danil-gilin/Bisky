@@ -95,6 +95,9 @@ fun QuickSearchScreen(
         if (uiState.isFinishedScreenVisible) {
             FinishedScreen(onBackClick)
         }
+        if (uiState.isErrorScreenVisible) {
+            ErrorScreen(onBackClick)
+        }
         if (uiState.isAnimeScreenVisible) {
             AnimeCard(
                 uiState.frontAnimeInfo,
@@ -223,6 +226,53 @@ private fun FinishedScreen(
 }
 
 @Composable
+private fun ErrorScreen(
+    onBackClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.bisky_dark_400))
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .wrapContentWidth()
+        ) {
+            Text(
+                text = stringResource(id = R.string.quick_search_error_title),
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 0.dp, 0.dp, 24.dp),
+                textAlign = TextAlign.Center,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W700,
+                letterSpacing = (-0.02).sp,
+                color = colorResource(R.color.light_100)
+            )
+            Text(
+                text = stringResource(id = R.string.quick_search_finished_btn),
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(colorResource(id = R.color.bisky_300))
+                    .align(Alignment.CenterHorizontally)
+                    .padding(24.dp, 16.dp, 24.dp, 16.dp)
+                    .noRippleClickable {
+                        onBackClick()
+                    },
+                textAlign = TextAlign.Center,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W700,
+                letterSpacing = (-0.02).sp,
+                color = colorResource(R.color.light_100)
+            )
+        }
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 fun QuickSearchScreenPreview() {
     QuickSearchScreen(
@@ -258,4 +308,9 @@ private fun LoadingInitScreenPreview() {
 @Preview(showBackground = true)
 private fun FinishedScreenPreview() {
     FinishedScreen({})
+}
+@Composable
+@Preview(showBackground = true)
+private fun ErrorScreenPreview() {
+    ErrorScreen({})
 }

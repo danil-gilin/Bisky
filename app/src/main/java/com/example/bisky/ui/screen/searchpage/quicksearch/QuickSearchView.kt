@@ -9,6 +9,7 @@ interface QuickSearchView {
         val isAddedLoading: Boolean = false,
         val isInitLoading: Boolean = true,
         val isFinishedScreenVisible: Boolean = false,
+        val isErrorScreenVisible: Boolean = false,
         val isAnimeScreenVisible: Boolean = false,
         val frontAnimeInfo: AnimeFrontInfoUI? = null,
         val backAnimeInfo: AnimeBackInfoUI? = null,

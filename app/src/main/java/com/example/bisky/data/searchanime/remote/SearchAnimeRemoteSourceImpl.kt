@@ -6,24 +6,22 @@ import com.example.GetSearchAnimeQuery
 import com.example.bisky.common.ext.toOptional
 import com.example.bisky.data.network.dispatcher.DispatchersProvider
 import com.example.bisky.data.searchanime.mapper.mapToDto
+import com.example.bisky.data.searchanime.remote.model.SkipListResponse
 import com.example.bisky.domain.repository.searchanime.model.FilterSearch
 import com.example.bisky.domain.repository.searchanime.remote.SearchAnimeRemoteSource
 import com.example.bisky.ui.screen.searchpage.filterscreen.model.SortAnimeFilter
-import com.example.type.DateBetweenQuery
 import com.example.type.FilterAnimeQuery
 import com.example.type.FloatBetweenQuery
 import com.example.type.GeneralAnimeQuery
 import com.example.type.SortAnimeQuery
+import com.example.type.UserFilterQuery
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 class SearchAnimeRemoteSourceImpl @Inject constructor(
     private val apolloClient: ApolloClient,
-    private val dispatchersProvider: DispatchersProvider
+    private val dispatchersProvider: DispatchersProvider,
+    private val searchApi: SearchApi
 ) : SearchAnimeRemoteSource {
     override suspend fun getAnimes(input: String?, filter: FilterSearch) =
         withContext(dispatchersProvider.io) {
@@ -66,6 +64,10 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
                             from = filter.scoreRange.start.toDouble().toOptional(),
                             to = filter.scoreRange.endInclusive.toDouble().toOptional()
                         ).toOptional(),
+                    ).toOptional(),
+                    userFilters = UserFilterQuery(
+                        isHiddenAnimeInSkipList = true.toOptional(),
+                        isHiddenAnimeInUserList = true.toOptional(),
                     ).toOptional()
                 )
             )
@@ -73,5 +75,13 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
             .execute()
             .data
             ?.getAnimes ?: emptyList()
+    }
+
+    override suspend fun addToSkipList(animeId: String) = withContext(dispatchersProvider.io) {
+        searchApi.addToSkipList(SkipListResponse(animeId))
+    }
+
+    override suspend fun deleteFromSkipList(animeId: String) = withContext(dispatchersProvider.io) {
+        searchApi.deleteFromSkipList(SkipListResponse(animeId))
     }
 }
