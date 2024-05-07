@@ -100,5 +100,7 @@
     <string name="title_watched">Просмотрено</string>
     <string name="quick_select">Быстрый выбор</string>
     <string name="vs">vs</string>
+    <string name="winner">Победитель!</string>
+    <string name="watch_winner">Смотреть</string>
 
 </resources>

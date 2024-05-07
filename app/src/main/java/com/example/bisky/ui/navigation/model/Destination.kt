@@ -46,6 +46,7 @@ sealed class Destination(
     ) {
         data object Anime : Archive("anime")
         data object ContainerScreen : Archive("home_screen")
+        data object QuickSelectScreen : Archive("quick_select_screen")
 
         companion object {
             const val route = "archive"

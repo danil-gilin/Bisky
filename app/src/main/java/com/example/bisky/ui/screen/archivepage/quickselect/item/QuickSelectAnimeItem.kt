@@ -25,6 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,11 +49,7 @@ fun QuickSelectAnimeItem(
             .noRippleClickable { onClickAnime() }
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(selectAnimeUI.poster)
-                .fetcherDispatcher(Dispatchers.IO)
-                .crossfade(true)
-                .build(),
+            model = selectAnimeUI.backGroundImg,
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
@@ -75,37 +72,35 @@ fun QuickSelectAnimeItem(
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(8.dp))
                 .background(colorResource(id = R.color.bisky_dark_300))
         ) {
             Column(
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .width(200.dp)
-                    .height(280.dp)
+                    .height(290.dp)
             ) {
                 AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(selectAnimeUI.poster)
-                        .fetcherDispatcher(Dispatchers.IO)
-                        .crossfade(true)
-                        .build(),
+                    model = selectAnimeUI.poster,
                     modifier = Modifier
                         .height(235.dp)
                         .width(152.dp)
                         .align(Alignment.CenterHorizontally)
-                        .clip(shape = RoundedCornerShape(30.dp)),
+                        .clip(shape = RoundedCornerShape(12.dp)),
                     placeholder = painterResource(id = R.drawable.ic_logo),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
                 Text(
                     text = selectAnimeUI.name,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     modifier = Modifier
                         .padding(12.dp, 0.dp, 12.dp, 12.dp),
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.W700,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
                     letterSpacing = (-0.02).sp,
                     color = colorResource(R.color.light_100)
                 )
@@ -114,8 +109,8 @@ fun QuickSelectAnimeItem(
                 selectAnimeUI,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(top = 8.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(8.dp))
+                    .padding(top = 4.dp)
                     .background(colorResource(id = R.color.bisky_dark_300))
             )
         }

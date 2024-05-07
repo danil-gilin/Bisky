@@ -54,7 +54,7 @@ fun AddScreen(
             viewModel.onEvent(Event.OnSearchClick)
         },
         onQuickSelectClick = {
-
+            navController.navigate(Destination.Archive.QuickSelectScreen.route)
         }
     )
 }

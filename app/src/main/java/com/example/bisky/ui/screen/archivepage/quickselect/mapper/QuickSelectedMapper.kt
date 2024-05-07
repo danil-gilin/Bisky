@@ -56,8 +56,6 @@ class QuickSelectedMapper @Inject constructor(
         ONGOING -> R.color.blue
         ANONS -> R.color.orange
         else -> R.color.gray
-    }.let {
-        context.getColor(it)
     }
 
     companion object {

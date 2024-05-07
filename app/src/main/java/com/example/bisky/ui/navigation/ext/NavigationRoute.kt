@@ -9,6 +9,7 @@ import androidx.navigation.navigation
 import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.animescreen.AnimeScreen
 import com.example.bisky.ui.screen.archivepage.container.ArchiveContainerScreen
+import com.example.bisky.ui.screen.archivepage.quickselect.QuickSelectScreen
 import com.example.bisky.ui.screen.homescreen.containehomescreen.HomeContainerScreen
 import com.example.bisky.ui.screen.homescreen.genre.genresscreen.GenreScreen
 import com.example.bisky.ui.screen.searchpage.filterscreen.FilterScreen
@@ -85,6 +86,9 @@ fun NavGraphBuilder.archiveNavGraph(navController: NavController) {
     ) {
         composable(route = Destination.Archive.ContainerScreen.route) {
             ArchiveContainerScreen(navController)
+        }
+        composable(route = Destination.Archive.QuickSelectScreen.route) {
+            QuickSelectScreen(navController)
         }
         composable(
             route = "${Destination.Archive.Anime.route}/{id}",
