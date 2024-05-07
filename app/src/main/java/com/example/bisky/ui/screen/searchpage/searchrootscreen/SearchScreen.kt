@@ -2,14 +2,19 @@ package com.example.bisky.ui.screen.searchpage.searchrootscreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -105,7 +110,10 @@ fun SearchScreen(
                 }
                 items(count = 3) { index ->
                     if (uiState.isLoading && index == 1) {
-                        ItemLoader()
+                        Column {
+                            ItemLoader()
+                            Spacer(Modifier.height(25.dp))
+                        }
                     }
                 }
             }
@@ -120,7 +128,7 @@ fun SearchScreen(
 @Preview(showBackground = true)
 fun SearchScreen() {
     SearchScreen(
-        State(),
+        State(isLoading = true),
         onScrollItem = {},
         onFilterClick = {},
         onGetMore = {},

@@ -23,12 +23,13 @@ class SearchAnimeRemoteSourceImpl @Inject constructor(
     private val dispatchersProvider: DispatchersProvider,
     private val searchApi: SearchApi
 ) : SearchAnimeRemoteSource {
-    override suspend fun getAnimes(input: String?, filter: FilterSearch) =
+    override suspend fun getAnimes(input: String?, filter: FilterSearch, page: Int) =
         withContext(dispatchersProvider.io) {
             apolloClient.query(
                 GetSearchAnimeQuery(
                     GeneralAnimeQuery(
                         count = 30.toOptional(),
+                        page = page.toOptional(),
                         searchInput = input.toOptional(),
                         filter = FilterAnimeQuery(
                             genres_ID_ONLY = filter.genres.toOptional(),

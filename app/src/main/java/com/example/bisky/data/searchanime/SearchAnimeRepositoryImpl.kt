@@ -1,16 +1,10 @@
 package com.example.bisky.data.searchanime
 
-import com.example.GetQuickSearchAnimeQuery
-import com.example.bisky.data.network.resultwrapper.Result
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.data.searchanime.mapper.mapToDomain
-import com.example.bisky.data.searchanime.remote.model.SkipListResponse
 import com.example.bisky.domain.repository.searchanime.SearchAnimeRepository
-import com.example.bisky.domain.repository.searchanime.model.AnimeQuickSearch
-import com.example.bisky.domain.repository.searchanime.model.AnimeSearch
 import com.example.bisky.domain.repository.searchanime.model.FilterSearch
 import com.example.bisky.domain.repository.searchanime.remote.SearchAnimeRemoteSource
-import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
@@ -30,9 +24,9 @@ class SearchAnimeRepositoryImpl @Inject constructor(
         localFilter.set(FilterSearch())
     }
 
-    override suspend fun getAnimes(input: String?)= resultWrapper.wrap {
+    override suspend fun getAnimes(input: String?, page: Int)= resultWrapper.wrap {
         val filter = localFilter.get()
-        searchAnimeRemoteSource.getAnimes(input, filter).map { it.mapToDomain() }
+        searchAnimeRemoteSource.getAnimes(input, filter, page).map { it.mapToDomain() }
     }
 
     override suspend fun getQuickSearchAnimes() = resultWrapper.wrap {
