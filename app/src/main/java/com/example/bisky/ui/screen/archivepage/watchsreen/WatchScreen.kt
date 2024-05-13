@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,8 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
+import com.example.bisky.ui.elements.ItemLoader
+import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfList
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.navigation.model.Destination
+import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView
 import com.example.bisky.ui.screen.archivepage.container.item.QuickSearchSelectAnimeItem
 import com.example.bisky.ui.screen.archivepage.watchsreen.WatchScreenView.Event
 import com.example.bisky.ui.screen.archivepage.watchsreen.WatchScreenView.State
@@ -54,6 +59,9 @@ fun WatchScreen(
             viewModel.onEvent(Event.OnSearchClick)
         },
         onQuickSelectClick = {
+        },
+        onGetMore = {
+            viewModel.onEvent(Event.OnGetMore)
         }
     )
 }
@@ -68,12 +76,16 @@ fun WatchScreen(
     onSearchClick: () -> Unit,
     onQuickSelectClick: () -> Unit,
     onFilterClick: () -> Unit,
+    onGetMore: () -> Unit
 ) {
     val lazyListState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
         onScrollItem
     )
     val pullRefreshState = rememberPullRefreshState(uiState.isLoading, { onRefresh() })
+    lazyListState.LaunchAtTheEndOfList(
+        onGetMore
+    )
     Column {
         QuickSearchSelectAnimeItem(
             onSearchClick,
@@ -102,6 +114,14 @@ fun WatchScreen(
                         )
                     }
                 }
+                item {
+                    if (uiState.isLoadingPagging) {
+                        ItemLoader()
+                    } else {
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+                    Spacer(modifier = Modifier.height(80.dp))
+                }
             }
             PullRefreshIndicator(
                 uiState.isLoading,
@@ -121,6 +141,7 @@ fun WatchScreenPreview() {
                 AnimeWatchUI.preview
             )
         ),
+        {},
         {},
         {},
         {},

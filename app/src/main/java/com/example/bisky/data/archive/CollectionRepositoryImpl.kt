@@ -19,27 +19,6 @@ class CollectionRepositoryImpl @Inject constructor(
     private val resultWrapper: ResultWrapper
 ) : CollectionRepository {
 
-    override suspend fun getUserCollectionAnime(collection: CollectionAnime) = resultWrapper.wrap {
-       val response = collectionRemoteSource.getUserCollectionAnime(collection).map { it.mapToDomain() }
-        collectionLocalSource.clearAnimeCollection(collection)
-        when(collection) {
-            CollectionAnime.ADDED ->{
-                collectionLocalSource.addToAddCollection(response.mapToAddCollection())
-            }
-            CollectionAnime.COMPLETED -> {
-                collectionLocalSource.addToCompleteCollection(response.mapToCompleteCollection())
-            }
-            CollectionAnime.WATCHING -> {
-                collectionLocalSource.addToWatchCollection(response.mapToWatchCollection())
-            }
-
-            else -> {
-                emptyList<AnimeUserCollection>()
-            }
-        }
-        collectionLocalSource.getAnimeCollection(collection)
-    }
-
     override suspend fun getUserCollectionAnimePagging(
         collection: CollectionAnime,
         page: Int,

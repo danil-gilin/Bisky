@@ -116,6 +116,14 @@ fun AddScreen(
                         )
                     }
                 }
+                item {
+                    if (uiState.isLoadingPagging) {
+                        ItemLoader()
+                    } else {
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+                    Spacer(modifier = Modifier.height(80.dp))
+                }
             }
             PullRefreshIndicator(
                 uiState.isLoading,

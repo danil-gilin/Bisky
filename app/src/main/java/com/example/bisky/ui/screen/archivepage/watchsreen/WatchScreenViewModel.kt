@@ -5,16 +5,22 @@ import androidx.compose.foundation.text2.input.TextFieldCharSequence
 import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bisky.data.network.resultwrapper.onError
+import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.archive.CollectionRepository
+import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView
 import com.example.bisky.ui.screen.archivepage.watchsreen.WatchScreenView.Event
 import com.example.bisky.ui.screen.archivepage.watchsreen.mapper.AnimeWatchMapper
 import com.example.bisky.ui.screen.searchpage.searchrootscreen.mapper.TextSearchUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,33 +35,46 @@ class WatchScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WatchScreenView.State())
     val uiState: StateFlow<WatchScreenView.State> = _uiState
 
+
+
+    @Volatile
+    var page = 2
+
+    @Volatile
+    var hasMore = false
+
     init {
-        initData()
         subscribeAnimeCollection()
+        subscribeSearchFlow()
     }
 
     private fun subscribeAnimeCollection() = viewModelScope.launch {
-        val searchFlow = _uiState.value.quickSelectUI.searchTextField.textAsFlow()
         collectionRepository
             .subscribeUserCollectionAnime(CollectionAnime.WATCHING)
-            .combine(searchFlow){ anime , query ->
-                updateTextSearchUi(query)
-                anime.mapNotNull {
-                    if (it.name.lowercase().contains(query.toString().lowercase())) {
-                        it
-                    } else {
-                        null
-                    }
-                }
-            }
+            .distinctUntilChanged()
             .collectLatest {
                 val items = animeWatchMapper.mapToUI(it)
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
                         items = items
                     )
                 }
+            }
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun subscribeSearchFlow() = viewModelScope.launch {
+        val searchFlow = _uiState.value.quickSelectUI.searchTextField.textAsFlow()
+        searchFlow
+            .map { query ->
+                updateTextSearchUi(query)
+                query.toString()
+            }
+            .distinctUntilChanged()
+            .debounce(500L)
+            .collectLatest { query ->
+                initData(1, query)
+                handleOnGetMore()
             }
     }
 
@@ -69,10 +88,42 @@ class WatchScreenViewModel @Inject constructor(
     }
 
     fun onEvent(event: Event) {
-        when(event) {
+        when (event) {
             is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
-            Event.OnRefresh -> initData()
+            Event.OnRefresh -> {
+                val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
+                initData(1, searchText)
+                handleOnGetMore()
+            }
+
             Event.OnSearchClick -> handleOnSearchClick()
+            Event.OnGetMore -> handleOnGetMore()
+        }
+    }
+
+    private fun handleOnGetMore() = viewModelScope.launch {
+        if (!hasMore || uiState.value.isLoading) {
+            pagingLoadEnd()
+            return@launch
+        }
+        _uiState.update {
+            it.copy(
+                isLoadingPagging = true
+            )
+        }
+        val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
+        page++
+        collectionRepository.getUserCollectionAnimePagging(
+            CollectionAnime.WATCHING,
+            page,
+            searchText,
+            false
+        ).onSuccess {
+            if (it.isEmpty()) {
+                pagingLoadEnd()
+            }
+        }.onError {
+            pagingLoadEnd()
         }
     }
 
@@ -84,10 +135,34 @@ class WatchScreenViewModel @Inject constructor(
         }
     }
 
-    private fun initData() = viewModelScope.launch {
+    private fun initData(
+        pages: Int,
+        textSearch: String
+    ) = viewModelScope.launch {
         _uiState.update {
-            it.copy(isLoading = true)
+            it.copy(
+                isLoading = true
+            )
         }
-        collectionRepository.getUserCollectionAnime(CollectionAnime.WATCHING)
+        page = pages
+        collectionRepository.getUserCollectionAnimePagging(CollectionAnime.WATCHING, page, textSearch, true)
+        hasMore = true
+        refreshLoadEnd()
+    }
+
+    private fun refreshLoadEnd() {
+        _uiState.update {
+            it.copy(
+                isLoading = false
+            )
+        }
+    }
+
+    private fun pagingLoadEnd() {
+        _uiState.update {
+            it.copy(
+                isLoadingPagging = false
+            )
+        }
     }
 }

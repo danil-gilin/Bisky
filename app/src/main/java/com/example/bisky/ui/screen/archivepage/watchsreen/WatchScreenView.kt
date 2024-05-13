@@ -9,6 +9,7 @@ import com.example.bisky.ui.screen.archivepage.watchsreen.model.AnimeWatchUI
 interface WatchScreenView {
     data class State(
         val isLoading: Boolean = true,
+        val isLoadingPagging: Boolean = true,
         val positionScroll: Int = 0,
         val items: List<BaseItem> = emptyList(),
         val quickSelectUI: QuickSelectItem = QuickSelectItem()
@@ -18,5 +19,6 @@ interface WatchScreenView {
         data class OnScrollItem(val position: Int) : Event()
         object OnRefresh : Event()
         object OnSearchClick : Event()
+        object OnGetMore : Event()
     }
 }
