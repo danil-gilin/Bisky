@@ -101,7 +101,7 @@ class WatchedScreenViewModel @Inject constructor(
     }
 
     private fun handleOnGetMore() = viewModelScope.launch {
-        if (!hasMore || uiState.value.isLoading) {
+        if (!hasMore) {
             pagingLoadEnd()
             return@launch
         }

@@ -131,13 +131,6 @@ fun AddScreen(
                 Modifier.align(Alignment.TopCenter)
             )
         }
-        if(uiState.isLoadingPagging) {
-            if (uiState.isLoading) {
-                ItemLoader()
-            } else {
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-        }
     }
 }
 
