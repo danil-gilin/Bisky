@@ -10,4 +10,10 @@ interface CollectionRemoteSource {
         collection: CollectionAnime,
         count: Int
     ): List<GetUserCollectionQuickSelectAnimeQuery.AnimeEstimate>
+
+    suspend fun getUserCollectionAnimePagging(
+        collection: CollectionAnime,
+        page: Int,
+        searchInput: String
+    ): List<GetUserCollectionAnimeQuery.AnimeEstimate>
 }

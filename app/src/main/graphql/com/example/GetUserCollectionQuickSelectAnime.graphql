@@ -9,7 +9,7 @@ query GetUserCollectionQuickSelectAnime($userQuery: GeneralUserQuery!, $animeQue
                     ru
                 }
                 episodes {
-                    averageDuration
+                    duration
                     count
                 }
                 status

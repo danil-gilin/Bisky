@@ -14,7 +14,7 @@ query GetQuickSearchAnime($animeQuery: GeneralAnimeQuery!) {
             ru
         }
         episodes {
-            averageDuration
+            duration
             count
         }
         franchise {

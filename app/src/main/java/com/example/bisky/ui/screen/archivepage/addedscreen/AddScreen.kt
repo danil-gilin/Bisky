@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bisky.R
+import com.example.bisky.ui.elements.ItemLoader
+import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfGrid
+import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfList
+import com.example.bisky.ui.elements.launch.lazyGridStateWithListenerScroll
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.Event
@@ -55,6 +61,9 @@ fun AddScreen(
         },
         onQuickSelectClick = {
             navController.navigate(Destination.Archive.QuickSelectScreen.route)
+        },
+        onGetMore = {
+            viewModel.onEvent(Event.OnGetMore)
         }
     )
 }
@@ -69,12 +78,16 @@ fun AddScreen(
     onSearchClick: () -> Unit,
     onQuickSelectClick: () -> Unit,
     onFilterClick: () -> Unit,
+    onGetMore: () -> Unit
 ) {
     val lazyListState = lazyListStateWithListenerScroll(
         uiState.positionScroll,
         onScrollItem
     )
     val pullRefreshState = rememberPullRefreshState(uiState.isLoading, { onRefresh() })
+    lazyListState.LaunchAtTheEndOfList(
+        onGetMore
+    )
     Column {
         QuickSearchSelectAnimeItem(
             onSearchClick,
@@ -110,6 +123,13 @@ fun AddScreen(
                 Modifier.align(Alignment.TopCenter)
             )
         }
+        if(uiState.isLoadingPagging) {
+            if (uiState.isLoading) {
+                ItemLoader()
+            } else {
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
     }
 }
 
@@ -122,6 +142,7 @@ fun AddScreenPreview() {
                 AnimeAddUI.preview
             )
         ),
+        {},
         {},
         {},
         {},

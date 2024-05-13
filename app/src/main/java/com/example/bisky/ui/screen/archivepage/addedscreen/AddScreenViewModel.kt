@@ -25,37 +25,54 @@ class AddScreenViewModel @Inject constructor(
     private val collectionRepository: CollectionRepository,
     private val animeAddMapper: AnimeAddMapper,
     private val searchUIMapper: TextSearchUIMapper
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(AddScreenView.State())
     val uiState: StateFlow<AddScreenView.State> = _uiState
+
+
+    @Volatile
+    var page = 2
+
+    @Volatile
+    var hasMore = true
 
     init {
         initData()
         subscribeAnimeCollection()
+        subscribeSearchFlow()
     }
 
     private fun subscribeAnimeCollection() = viewModelScope.launch {
-        val searchFlow = _uiState.value.quickSelectUI.searchTextField.textAsFlow()
         collectionRepository
             .subscribeUserCollectionAnime(CollectionAnime.ADDED)
-            .combine(searchFlow){ anime , query ->
-                updateTextSearchUi(query)
-                anime.mapNotNull {
-                    if (it.name.lowercase().contains(query.toString().lowercase())) {
-                        it
-                    } else {
-                        null
-                    }
-                }
-            }
             .collectLatest {
+                if (it.isEmpty()) {
+                    hasMore = false
+                }
                 val items = animeAddMapper.mapToUI(it)
                 _uiState.update {
                     it.copy(
+                        isLoadingPagging = false,
                         isLoading = false,
                         items = items
                     )
                 }
+            }
+    }
+
+    private fun subscribeSearchFlow() = viewModelScope.launch {
+        val searchFlow = _uiState.value.quickSelectUI.searchTextField.textAsFlow()
+        searchFlow
+            .collectLatest { query ->
+                updateTextSearchUi(query)
+                page = 1
+                collectionRepository.getUserCollectionAnimePagging(
+                    CollectionAnime.ADDED,
+                    page,
+                    query.toString(),
+                    true
+                )
+                hasMore = true
             }
     }
 
@@ -67,12 +84,32 @@ class AddScreenViewModel @Inject constructor(
             )
         }
     }
+
     fun onEvent(event: Event) {
-        when(event) {
+        when (event) {
             is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
-            Event.OnRefresh -> initData()
+            Event.OnRefresh -> {
+                initData()
+            }
             Event.OnSearchClick -> handleOnSearchClick()
+            Event.OnGetMore -> handleOnGetMore()
         }
+    }
+
+    private fun handleOnGetMore() = viewModelScope.launch {
+        _uiState.update {
+            it.copy(
+                isLoadingPagging = true
+            )
+        }
+        val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
+        page++
+        collectionRepository.getUserCollectionAnimePagging(
+            CollectionAnime.ADDED,
+            page,
+            searchText,
+            false
+        )
     }
 
     private fun handleOnSearchClick() {
@@ -87,6 +124,9 @@ class AddScreenViewModel @Inject constructor(
         _uiState.update {
             it.copy(isLoading = true)
         }
-        collectionRepository.getUserCollectionAnime(CollectionAnime.ADDED)
+        val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
+        hasMore = true
+        page = 1
+        collectionRepository.getUserCollectionAnimePagging(CollectionAnime.ADDED, page, searchText, true)
     }
 }

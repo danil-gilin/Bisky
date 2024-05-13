@@ -107,6 +107,6 @@ fun GetUserCollectionQuickSelectAnimeQuery.AnimeEstimate.mapToKindDomain() =
     }
 
 fun GetUserCollectionQuickSelectAnimeQuery.AnimeEstimate.mapEpisodesToDomain() = Episodes(
-    averageDuration = this.base.episodes.averageDuration,
+    averageDuration = this.base.episodes.duration ?: 0,
     count = this.base.episodes.count
 )

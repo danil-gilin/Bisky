@@ -10,4 +10,10 @@ interface CollectionRepository {
     suspend fun getUserCollectionAnime(collection: CollectionAnime): Result<List<AnimeUserCollection>, Throwable>
     suspend fun subscribeUserCollectionAnime(collection: CollectionAnime): Flow<List<AnimeUserCollection>>
     suspend fun getUserCollectionQuickSelectAnime(collection: CollectionAnime, count: Int): Result<List<AnimeQuickSelect>, Throwable>
+    suspend fun getUserCollectionAnimePagging(
+        collection: CollectionAnime,
+        page: Int,
+        searchInput: String,
+        needClear: Boolean
+    ): Result<List<AnimeUserCollection>, Throwable>
 }

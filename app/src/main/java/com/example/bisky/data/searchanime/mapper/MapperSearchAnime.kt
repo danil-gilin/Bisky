@@ -54,7 +54,7 @@ fun GetQuickSearchAnimeQuery.Score.mapToDomain() = Score(
 )
 
 fun GetQuickSearchAnimeQuery.Episodes.mapToDomain() = Episodes(
-    averageDuration = averageDuration,
+    averageDuration = duration ?: 0,
     count = count
 )
 

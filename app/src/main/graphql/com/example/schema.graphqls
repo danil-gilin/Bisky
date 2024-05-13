@@ -202,20 +202,18 @@ type DatesModel {
 General information about anime series
 """
 type EpisodesModel {
-  airedCount: Int!
-
-  averageDuration: Int!
+  airedCount: Int
 
   """
   Number of episodes/Episodes planned (if null, then the number of series is unlimited)
   """
   count: Int
 
+  duration: Int
+
   lastEpisodeAiredDate: DateTime
 
   nextEpisodeAiredDate: DateTime
-
-  singleEpisodes: [SingleEpisodeModel!]!
 }
 
 """
@@ -244,7 +242,9 @@ input FilterAnimeQuery {
 
   episodes_airedCount: IntBetweenQuery = null
 
-  episodes_averageDuration: DateBetweenQuery = null
+  episodes_count: IntBetweenQuery = null
+
+  episodes_duration: IntBetweenQuery = null
 
   episodes_lastEpisodeAiredDate: DateBetweenQuery = null
 
@@ -404,7 +404,7 @@ input GeneralAnimeQuery {
 
   sort: SortAnimeQuery = null
 
-  userFilters: UserFilterQuery = null
+  userFilters: UserFilterQuery
 }
 
 """
@@ -778,26 +778,6 @@ enum RoleEnum {
 }
 
 """
-Information about each series separately
-"""
-type SingleEpisodeModel {
-  """
-  Episode release date
-  """
-  airedOn: DateTime
-
-  """
-  Episode duration
-  """
-  duration: Int!
-
-  """
-  Episode title
-  """
-  name: String
-}
-
-"""
 Sorting documents (false - ascending; true - descending)
 """
 input SortAnimeCommentQuery {
@@ -816,7 +796,9 @@ input SortAnimeQuery {
 
   episodes_airedCount: Boolean = null
 
-  episodes_averageDuration: Boolean = null
+  episodes_count: Boolean = null
+
+  episodes_duration: Boolean = null
 
   episodes_lastEpisodeAiredDate: Boolean = null
 
@@ -877,12 +859,12 @@ input UserFilterQuery {
   """
   Remove from the results all anime that are added to the skip list
   """
-  isHiddenAnimeInSkipList: Boolean = false
+  isHiddenAnimeInSkipList: Boolean! = false
 
   """
   Delete all anime that are in the user's list
   """
-  isHiddenAnimeInUserList: Boolean = false
+  isHiddenAnimeInUserList: Boolean! = false
 }
 
 type UserListModel {

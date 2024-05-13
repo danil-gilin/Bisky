@@ -38,6 +38,31 @@ class CollectionRemoteSourceImpl @Inject constructor(
                 ?.animeEstimates ?: emptyList()
         }
 
+    override suspend fun getUserCollectionAnimePagging(
+        collection: CollectionAnime,
+        page: Int,
+        searchInput: String
+    ) =
+        withContext(dispatchersProvider.io) {
+            val filterAnime = GeneralAnimeQuery(
+                count = 20.toOptional(),
+                userFilters = UserFilterQuery(
+                    isHiddenAnimeInSkipList = false.toOptional(),
+                    isHiddenAnimeInUserList = false.toOptional(),
+                ).toOptional(),
+                page = page.toOptional(),
+                searchInput = searchInput.toOptional()
+            )
+            val filterUser = GeneralUserQuery(
+                animeListStatus = collection.mapToStatusEnum().toOptional()
+            )
+            apolloClient.query(GetUserCollectionAnimeQuery(filterUser, filterAnime))
+                .execute()
+                .data
+                ?.getUserPublicData
+                ?.animeEstimates ?: emptyList()
+        }
+
     override suspend fun getUserCollectionQuickSelectAnime(
         collection: CollectionAnime,
         count: Int
