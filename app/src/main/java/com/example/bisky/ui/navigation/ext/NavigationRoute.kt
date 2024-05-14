@@ -87,7 +87,9 @@ fun NavGraphBuilder.archiveNavGraph(navController: NavController) {
         composable(route = Destination.Archive.ContainerScreen.route) {
             ArchiveContainerScreen(navController)
         }
-        composable(route = Destination.Archive.QuickSelectScreen.route) {
+        composable(route = "${Destination.Archive.QuickSelectScreen.route}/{collection}",
+            arguments = listOf(navArgument("collection") { type = NavType.StringType })
+        ) {
             QuickSelectScreen(navController)
         }
         composable(

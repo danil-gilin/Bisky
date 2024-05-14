@@ -1,6 +1,7 @@
 package com.example.bisky.ui.screen.archivepage.quickselect
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class QuickSelectViewModel @Inject constructor(
     private val collectionRepository: CollectionRepository,
     private val quickSelectMapper: QuickSelectedMapper,
+    private val savedState: SavedStateHandle,
     private val navigationEventBus: NavigationEventBus
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
@@ -43,8 +45,9 @@ class QuickSelectViewModel @Inject constructor(
     }
 
     private fun initData() = viewModelScope.launch {
+        val collection = savedState.get<String>("collection") ?: return@launch
         collectionRepository.getUserCollectionQuickSelectAnime(
-            CollectionAnime.ADDED,
+            CollectionAnime.valueOf(collection),
             10
         ).onSuccess {
             listAnimeSelected = it
