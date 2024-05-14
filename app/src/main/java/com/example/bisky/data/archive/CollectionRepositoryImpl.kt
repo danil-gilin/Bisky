@@ -1,9 +1,6 @@
 package com.example.bisky.data.archive
 
-import com.example.bisky.data.archive.mapper.mapToAddCollection
-import com.example.bisky.data.archive.mapper.mapToCompleteCollection
 import com.example.bisky.data.archive.mapper.mapToDomain
-import com.example.bisky.data.archive.mapper.mapToWatchCollection
 import com.example.bisky.data.network.resultwrapper.Result
 import com.example.bisky.data.network.resultwrapper.ResultWrapper
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
@@ -22,29 +19,10 @@ class CollectionRepositoryImpl @Inject constructor(
     override suspend fun getUserCollectionAnimePagging(
         collection: CollectionAnime,
         page: Int,
-        searchInput: String,
-        needClear: Boolean
+        searchInput: String
     ): Result<List<AnimeUserCollection>, Throwable> = resultWrapper.wrap {
         val response = collectionRemoteSource.getUserCollectionAnimePagging(collection, page, searchInput).map { it.mapToDomain() }
-        if (page == 1 || needClear) {
-            collectionLocalSource.clearAnimeCollection(collection)
-        }
-        when(collection) {
-            CollectionAnime.ADDED ->{
-                collectionLocalSource.addToAddCollection(response.mapToAddCollection())
-            }
-            CollectionAnime.COMPLETED -> {
-                collectionLocalSource.addToCompleteCollection(response.mapToCompleteCollection())
-            }
-            CollectionAnime.WATCHING -> {
-                collectionLocalSource.addToWatchCollection(response.mapToWatchCollection())
-            }
-
-            else -> {
-                emptyList<AnimeUserCollection>()
-            }
-        }
-        collectionLocalSource.getAnimeCollection(collection)
+        response
     }
 
 

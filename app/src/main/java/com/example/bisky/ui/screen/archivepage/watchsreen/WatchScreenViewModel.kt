@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.eventbus.collection.watching.CollectionWatchingEventBus
+import com.example.bisky.domain.eventbus.collection.watching.CollectionWatchingEventBusEvent
+import com.example.bisky.domain.eventbus.collection.watching.CollectionWatchingEventBusEvent.UpdateCollection
+import com.example.bisky.domain.eventbus.collection.watching.CollectionWatchingEventBusImpl
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.domain.repository.archive.CollectionRepository
 import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView
@@ -30,7 +34,8 @@ import javax.inject.Inject
 class WatchScreenViewModel @Inject constructor(
     private val collectionRepository: CollectionRepository,
     private val animeWatchMapper: AnimeWatchMapper,
-    private val searchUIMapper: TextSearchUIMapper
+    private val searchUIMapper: TextSearchUIMapper,
+    private val watchingEventBus: CollectionWatchingEventBus
 ): ViewModel() {
     private val _uiState = MutableStateFlow(WatchScreenView.State())
     val uiState: StateFlow<WatchScreenView.State> = _uiState
@@ -38,30 +43,78 @@ class WatchScreenViewModel @Inject constructor(
 
 
     @Volatile
-    var page = 2
+    var page = 1
 
     @Volatile
-    var hasMore = false
+    var hasMore = true
 
     init {
-        subscribeAnimeCollection()
         subscribeSearchFlow()
+        subscribeWatchingEventBusEvent()
     }
 
-    private fun subscribeAnimeCollection() = viewModelScope.launch {
-        collectionRepository
-            .subscribeUserCollectionAnime(CollectionAnime.WATCHING)
-            .distinctUntilChanged()
-            .collectLatest {
-                val items = animeWatchMapper.mapToUI(it)
-                _uiState.update {
-                    it.copy(
-                        items = items,
-                        quickBtnEnabled = items.size > 2
-                    )
+    private fun subscribeWatchingEventBusEvent() = viewModelScope.launch {
+        watchingEventBus
+            .eventsFlow
+            .collectLatest { event ->
+                when(event) {
+                    UpdateCollection -> handleRefresh()
                 }
             }
     }
+
+    private fun onGetMore(isRefreshing: Boolean = false) = viewModelScope.launch {
+        val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
+
+        if (!uiState.value.isLoadingPagging && hasMore ) {
+            _uiState.update {
+                it.copy(
+                    isLoadingPagging = !isRefreshing,
+                    isLoading = isRefreshing,
+                    quickBtnEnabled = it.items.size > 2
+                )
+            }
+            collectionRepository.getUserCollectionAnimePagging(CollectionAnime.WATCHING, page, searchText).onSuccess {
+                val items = animeWatchMapper.mapToUI(it)
+                if (items.isEmpty()) {
+                    hasMore = false
+                    _uiState.update {
+                        it.copy(
+                            items = it.items,
+                            isLoading = false,
+                            isLoadingPagging = false,
+                            quickBtnEnabled = it.items.size > 2
+                        )
+                    }
+                } else {
+                    hasMore = true
+                    val newItems = if (isRefreshing) {
+                        items
+                    } else {
+                        uiState.value.items.plus(items)
+                    }
+                    _uiState.update {
+                        it.copy(
+                            items = newItems,
+                            isLoading = false,
+                            isLoadingPagging = false,
+                            quickBtnEnabled = newItems.size > 2
+                        )
+                    }
+                    page++
+                }
+            }.onError {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isLoadingPagging = false,
+                        quickBtnEnabled = false
+                    )
+                }
+            }
+        }
+    }
+
 
     @OptIn(FlowPreview::class)
     private fun subscribeSearchFlow() = viewModelScope.launch {
@@ -74,8 +127,7 @@ class WatchScreenViewModel @Inject constructor(
             .distinctUntilChanged()
             .debounce(500L)
             .collectLatest { query ->
-                initData(1, query)
-                handleOnGetMore()
+                handleRefresh()
             }
     }
 
@@ -91,40 +143,9 @@ class WatchScreenViewModel @Inject constructor(
     fun onEvent(event: Event) {
         when (event) {
             is Event.OnScrollItem -> _uiState.update { it.copy(positionScroll = event.position) }
-            Event.OnRefresh -> {
-                val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
-                initData(1, searchText)
-                handleOnGetMore()
-            }
-
+            Event.OnRefresh -> handleRefresh()
             Event.OnSearchClick -> handleOnSearchClick()
-            Event.OnGetMore -> handleOnGetMore()
-        }
-    }
-
-    private fun handleOnGetMore() = viewModelScope.launch {
-        if (!hasMore) {
-            pagingLoadEnd()
-            return@launch
-        }
-        _uiState.update {
-            it.copy(
-                isLoadingPagging = true
-            )
-        }
-        val searchText = _uiState.value.quickSelectUI.searchTextField.text.toString()
-        page++
-        collectionRepository.getUserCollectionAnimePagging(
-            CollectionAnime.WATCHING,
-            page,
-            searchText,
-            false
-        ).onSuccess {
-            if (it.isEmpty()) {
-                pagingLoadEnd()
-            }
-        }.onError {
-            pagingLoadEnd()
+            Event.OnGetMore -> onGetMore()
         }
     }
 
@@ -136,34 +157,9 @@ class WatchScreenViewModel @Inject constructor(
         }
     }
 
-    private fun initData(
-        pages: Int,
-        textSearch: String
-    ) = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                isLoading = true
-            )
-        }
-        page = pages
-        collectionRepository.getUserCollectionAnimePagging(CollectionAnime.WATCHING, page, textSearch, true)
+    private fun handleRefresh() {
+        page = 1
         hasMore = true
-        refreshLoadEnd()
-    }
-
-    private fun refreshLoadEnd() {
-        _uiState.update {
-            it.copy(
-                isLoading = false
-            )
-        }
-    }
-
-    private fun pagingLoadEnd() {
-        _uiState.update {
-            it.copy(
-                isLoadingPagging = false
-            )
-        }
+        onGetMore(true)
     }
 }

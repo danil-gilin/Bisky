@@ -12,7 +12,6 @@ interface CollectionRepository {
     suspend fun getUserCollectionAnimePagging(
         collection: CollectionAnime,
         page: Int,
-        searchInput: String,
-        needClear: Boolean
+        searchInput: String
     ): Result<List<AnimeUserCollection>, Throwable>
 }

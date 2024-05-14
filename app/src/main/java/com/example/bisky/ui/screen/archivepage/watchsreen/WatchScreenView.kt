@@ -8,8 +8,8 @@ import com.example.bisky.ui.screen.archivepage.watchsreen.model.AnimeWatchUI
 
 interface WatchScreenView {
     data class State(
-        val isLoading: Boolean = true,
-        val isLoadingPagging: Boolean = true,
+        val isLoading: Boolean = false,
+        val isLoadingPagging: Boolean = false,
         val positionScroll: Int = 0,
         val items: List<BaseItem> = emptyList(),
         val quickSelectUI: QuickSelectItem = QuickSelectItem(),

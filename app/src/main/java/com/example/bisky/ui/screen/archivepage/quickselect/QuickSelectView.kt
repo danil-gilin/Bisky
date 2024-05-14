@@ -1,5 +1,6 @@
 package com.example.bisky.ui.screen.archivepage.quickselect
 
+import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.screen.archivepage.quickselect.model.SelectAnimeUI
 
 
@@ -12,7 +13,8 @@ interface QuickSelectView {
         val currentPositionSelectAnime: Int = 2,
         val isWinnerScreen: Boolean = false,
         val winner: SelectAnimeUI = SelectAnimeUI.default,
-        val winnerIsRight: Boolean = false
+        val winnerIsRight: Boolean = false,
+        val collection: CollectionAnime = CollectionAnime.NONE
     )
 
     sealed class Event {

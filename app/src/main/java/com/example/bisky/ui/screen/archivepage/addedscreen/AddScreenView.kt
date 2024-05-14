@@ -6,8 +6,8 @@ import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView
 
 interface AddScreenView {
     data class State(
-        val isLoading: Boolean = true,
-        val isLoadingPagging: Boolean = true,
+        val isLoading: Boolean = false,
+        val isLoadingPagging: Boolean = false,
         val quickBtnEnabled: Boolean = false,
         val positionScroll: Int = 0,
         val items: List<BaseItem> = emptyList(),

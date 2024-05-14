@@ -78,7 +78,7 @@ fun QuickSelectScreen(
         onWatchWinnerClick = {
             viewModel.onAction(Action.ShowBottomNav)
             navController.navigate(Destination.Archive.Anime.route+"/$it") {
-                navController.popBackStack(Destination.Archive.QuickSelectScreen.route, true)
+                navController.popBackStack(Destination.Archive.QuickSelectScreen.route + "/${uiState.collection}", true)
             }
         }
     )

@@ -32,11 +32,9 @@ object AnimeDIModule {
     @Provides
     fun provideAnimeRepository(
         animeClient: AnimeRemoteSource,
-        animeLocalSource: AnimeLocalSource,
-        resultWrapper: ResultWrapper,
-        archiveRemoteSource: CollectionRemoteSource
+        resultWrapper: ResultWrapper
     ): AnimeRepository =
-        AnimeRepositoryImpl(animeClient, animeLocalSource, resultWrapper, archiveRemoteSource)
+        AnimeRepositoryImpl(animeClient, resultWrapper)
 
     @Singleton
     @Provides

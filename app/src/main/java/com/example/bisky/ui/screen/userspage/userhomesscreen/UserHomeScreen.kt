@@ -86,7 +86,7 @@ fun UserHomeScreen(
             fontSize = 20.sp,
             fontWeight = FontWeight.W800,
             modifier = Modifier
-                .padding(top = 12.dp, start = 8.dp)
+                .padding(top = 12.dp)
                 .fillMaxWidth(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

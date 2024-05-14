@@ -5,7 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
+import com.example.bisky.domain.eventbus.collection.add.CollectionAddEventBus
+import com.example.bisky.domain.eventbus.collection.add.CollectionAddEventBusEvent
+import com.example.bisky.domain.eventbus.collection.completed.CollectionCompletedEventBus
+import com.example.bisky.domain.eventbus.collection.completed.CollectionCompletedEventBusEvent
+import com.example.bisky.domain.eventbus.collection.watching.CollectionWatchingEventBus
+import com.example.bisky.domain.eventbus.collection.watching.CollectionWatchingEventBusEvent
 import com.example.bisky.domain.repository.anime.AnimeRepository
+import com.example.bisky.domain.repository.anime.model.Anime
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.Event
 import com.example.bisky.ui.screen.animescreen.AnimeScreenView.State
@@ -23,11 +30,15 @@ import kotlinx.coroutines.launch
 class AnimeScreenViewModel @Inject constructor(
     private val animeRepository: AnimeRepository,
     private val savedState: SavedStateHandle,
-    private val animeFullInfoMapper: AnimeFullInfoMapper
+    private val animeFullInfoMapper: AnimeFullInfoMapper,
+    private val collectionAddEventBus: CollectionAddEventBus,
+    private val collectionWatchingEventBus: CollectionWatchingEventBus,
+    private val collectionCompletedEventBus: CollectionCompletedEventBus
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState
 
+    var animeDomain: Anime? = null
     init {
         viewModelScope.launch {
             getAnimeInfo()
@@ -54,7 +65,7 @@ class AnimeScreenViewModel @Inject constructor(
         val item = uiState.value.items.find { it.itemId == ANIME_RATING_INFO } as? AnimeRatingUI ?: return@launch
         val animeId = savedState.get<String>("id") ?: return@launch
         val rating = item.selectedScore + 1
-        animeRepository.updateAnimeApi(rating,animeId).onSuccess {
+        animeRepository.updateAnimeScore(rating,animeId).onSuccess {
             getAnimeInfo()
         }.onError {
             it
@@ -63,7 +74,7 @@ class AnimeScreenViewModel @Inject constructor(
 
     private fun onDeleteScoreClick() = viewModelScope.launch {
         val animeId = savedState.get<String>("id") ?: return@launch
-        animeRepository.updateAnimeApi(null ,animeId).onSuccess {
+        animeRepository.updateAnimeScore(null ,animeId).onSuccess {
             getAnimeInfo()
         }.onError {
             it
@@ -77,11 +88,26 @@ class AnimeScreenViewModel @Inject constructor(
     }
 
     private fun onCollectionSelected(type: CollectionAnime) = viewModelScope.launch{
+        val oldAnimeCollection = animeDomain?.userData?.collection
         val animeId = savedState.get<String>("id") ?: return@launch
         animeRepository.updateCollection(type,animeId).onSuccess {
             getAnimeInfo()
         }.onError {
             it
+        }
+        sendEventUpdateCollection(oldAnimeCollection)
+        sendEventUpdateCollection(type)
+    }
+
+    private fun sendEventUpdateCollection(type: CollectionAnime?) = viewModelScope.launch{
+        when(type) {
+            CollectionAnime.ADDED ->
+                collectionAddEventBus.emitEvent(CollectionAddEventBusEvent.UpdateCollection)
+            CollectionAnime.COMPLETED ->
+                collectionCompletedEventBus.emitEvent(CollectionCompletedEventBusEvent.UpdateCollection)
+            CollectionAnime.WATCHING ->
+                collectionWatchingEventBus.emitEvent(CollectionWatchingEventBusEvent.UpdateCollection)
+            else -> Unit
         }
     }
 
@@ -89,6 +115,7 @@ class AnimeScreenViewModel @Inject constructor(
         val id = savedState.get<String>("id") ?: return
         animeRepository.getAnime(id).onSuccess { anime ->
             if (anime == null) return
+            animeDomain = anime
             _uiState.update {
                 it.copy(items = animeFullInfoMapper.map(anime))
             }

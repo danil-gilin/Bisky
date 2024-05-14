@@ -55,7 +55,8 @@ class QuickSelectViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     currentPositionSelectAnime = 2,
-                    allCountSelectedAnime = listAnimeSelected.size
+                    allCountSelectedAnime = listAnimeSelected.size,
+                    collection = CollectionAnime.valueOf(collection)
                 )
             }
         }.onError {
