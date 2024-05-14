@@ -55,7 +55,8 @@ class WatchedScreenViewModel @Inject constructor(
                 val items = animeWatchedMapper.mapToUI(it)
                 _uiState.update {
                     it.copy(
-                        items = items
+                        items = items,
+                        quickBtnEnabled = items.size > 2
                     )
                 }
             }

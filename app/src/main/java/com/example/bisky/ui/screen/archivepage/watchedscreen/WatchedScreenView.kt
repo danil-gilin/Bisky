@@ -7,6 +7,7 @@ interface WatchedScreenView {
     data class State(
         val isLoading: Boolean = true,
         val isLoadingPagging: Boolean = true,
+        val quickBtnEnabled: Boolean = false,
         val positionScroll: Int = 0,
         val items: List<BaseItem> = emptyList(),
         val quickSelectUI: QuickSelectItem = QuickSelectItem()

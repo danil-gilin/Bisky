@@ -30,7 +30,6 @@ import com.example.bisky.ui.elements.ItemLoader
 import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfList
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.navigation.model.Destination
-import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView
 import com.example.bisky.ui.screen.archivepage.container.item.QuickSearchSelectAnimeItem
 import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView.Event
 import com.example.bisky.ui.screen.archivepage.watchedscreen.WatchedScreenView.State
@@ -93,7 +92,8 @@ fun WatchedScreen(
             onSearchClick,
             onQuickSelectClick,
             onFilterClick,
-            uiState.quickSelectUI
+            uiState.quickSelectUI,
+            uiState.quickBtnEnabled
         )
         Box(Modifier.pullRefresh(pullRefreshState)) {
             LazyColumn(

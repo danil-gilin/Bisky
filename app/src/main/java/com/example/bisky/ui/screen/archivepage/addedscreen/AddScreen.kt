@@ -27,9 +27,7 @@ import androidx.navigation.NavController
 import com.example.bisky.R
 import com.example.bisky.domain.repository.anime.model.CollectionAnime
 import com.example.bisky.ui.elements.ItemLoader
-import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfGrid
 import com.example.bisky.ui.elements.launch.LaunchAtTheEndOfList
-import com.example.bisky.ui.elements.launch.lazyGridStateWithListenerScroll
 import com.example.bisky.ui.elements.launch.lazyListStateWithListenerScroll
 import com.example.bisky.ui.navigation.model.Destination
 import com.example.bisky.ui.screen.archivepage.addedscreen.AddScreenView.Event
@@ -94,7 +92,8 @@ fun AddScreen(
             onSearchClick,
             onQuickSelectClick,
             onFilterClick,
-            uiState.quickSelectUI
+            uiState.quickSelectUI,
+            uiState.quickBtnEnabled
         )
         Box(Modifier.pullRefresh(pullRefreshState)) {
             LazyColumn(

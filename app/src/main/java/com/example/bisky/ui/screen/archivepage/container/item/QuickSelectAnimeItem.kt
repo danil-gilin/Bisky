@@ -39,7 +39,8 @@ fun QuickSearchSelectAnimeItem(
     onSearchClick: () -> Unit,
     onQuickSelectClick: () -> Unit,
     onFilterClick: () -> Unit,
-    quickSelectItem: QuickSelectItem
+    quickSelectItem: QuickSelectItem,
+    quickBtnEnabled: Boolean
 ) {
     val tintSearch = if (quickSelectItem.isSearchVisible) {
         R.color.bisky_100
@@ -48,6 +49,7 @@ fun QuickSearchSelectAnimeItem(
     }.let {
         colorResource(it)
     }
+    val btnVisible = quickBtnEnabled && !quickSelectItem.isSearchVisible
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,7 +66,7 @@ fun QuickSearchSelectAnimeItem(
             modifier = Modifier
                 .constrainAs(edSearch) {
                     visibility =
-                        if (quickSelectItem.isSearchVisible) Visibility.Visible else Visibility.Gone
+                        if (btnVisible) Visibility.Gone else Visibility.Visible
                     width = Dimension.fillToConstraints
                     top.linkTo(parent.top)
                     linkTo(parent.start, filter.start, bias = 0F)
@@ -79,7 +81,7 @@ fun QuickSearchSelectAnimeItem(
                 .background(colorResource(id = R.color.bisky_300))
                 .constrainAs(btnQuickSearch) {
                     visibility =
-                        if (quickSelectItem.isSearchVisible) Visibility.Gone else Visibility.Visible
+                        if (btnVisible) Visibility.Visible else Visibility.Gone
                     top.linkTo(parent.top)
                     linkTo(parent.start, filter.start, bias = 0F)
                     bottom.linkTo(parent.bottom)
@@ -146,13 +148,14 @@ fun QuickSearchSelectAnimeItem(
 private fun QuickSelectAnimeItemPreview() {
     QuickSearchSelectAnimeItem(
         onSearchClick = {},
-        onFilterClick = {},
         onQuickSelectClick = {},
+        onFilterClick = {},
         quickSelectItem = QuickSelectItem(
             "sdaasd",
             isSearchVisible = true,
             searchTextField = TextFieldState("dfsdf"),
             searchUI = SearchUI()
-        )
+        ),
+        quickBtnEnabled = true
     )
 }

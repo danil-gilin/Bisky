@@ -12,7 +12,8 @@ interface WatchScreenView {
         val isLoadingPagging: Boolean = true,
         val positionScroll: Int = 0,
         val items: List<BaseItem> = emptyList(),
-        val quickSelectUI: QuickSelectItem = QuickSelectItem()
+        val quickSelectUI: QuickSelectItem = QuickSelectItem(),
+        val quickBtnEnabled: Boolean = false
     )
 
     sealed class Event {
