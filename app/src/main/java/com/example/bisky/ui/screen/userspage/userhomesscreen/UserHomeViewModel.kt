@@ -13,6 +13,7 @@ import com.example.bisky.ui.screen.userspage.userhomesscreen.UserHomeView.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +28,21 @@ class UserHomeViewModel @Inject constructor(
     fun onEvent(event: Event) {
         when(event) {
            is Event.OnLogoutClick -> onLogoutClick()
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            initData()
+        }
+    }
+
+    private suspend fun initData() {
+        val user = loginRepository.fetchUser()
+        _uiState.update {
+            it.copy(
+                userName = user?.username.orEmpty()
+            )
         }
     }
 

@@ -24,8 +24,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -76,6 +80,18 @@ fun UserHomeScreen(
             placeholder = painterResource(id = R.drawable.ic_logo),
             contentScale = ContentScale.Crop,
             contentDescription = null
+        )
+        Text(
+            text = uiState.userName,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.W800,
+            modifier = Modifier
+                .padding(top = 12.dp, start = 8.dp)
+                .fillMaxWidth(),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+            color = colorResource(id = R.color.white)
         )
         Button(
             modifier = Modifier
