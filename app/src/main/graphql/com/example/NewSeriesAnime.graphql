@@ -1,0 +1,25 @@
+query GetNewSeriesAnime( $animeQuery: GeneralAnimeQuery!) {
+    getAnimes(animeQuery: $animeQuery) {
+        _id
+        labels {
+            en
+            ru
+        }
+        poster
+        score {
+            averageScore
+        }
+        episodes {
+            airedCount
+        }
+        status
+        userData {
+            animeStatus
+            score
+        }
+        usersList {
+            generalCount
+            addedCount
+        }
+    }
+}

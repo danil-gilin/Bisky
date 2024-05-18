@@ -12,8 +12,22 @@ type AnimeCommentModel {
   violations: [String!]!
 }
 
+type AnimeEstimateHistoryModel {
+  animeId: AnimeSimpleModel!
+
+  animeType: ListStatusEnum
+
+  count: Int
+
+  type: EHistoryEnum!
+
+  updateDate: DateTime!
+}
+
 type AnimeEstimateModel {
   base: AnimeSimpleModel!
+
+  history: [AnimeEstimateHistoryModel!]!
 
   score: Int
 
@@ -199,6 +213,21 @@ type DatesModel {
 }
 
 """
+AnimeEstimate history type
+"""
+enum EHistoryEnum {
+  added
+
+  changedEstimateType
+
+  deleted
+
+  scored
+
+  watchedEpisode
+}
+
+"""
 General information about anime series
 """
 type EpisodesModel {
@@ -225,6 +254,26 @@ type FactModel {
   en: String
 
   ru: String
+}
+
+input FavoriteAnimesQuery {
+  """
+  Number of output items
+  """
+  count: Int! = 10
+
+  """
+  Page when paginated
+  """
+  page: Int! = 1
+}
+
+type FavoriteModel {
+  animeIds: [AnimeSimpleModel!]!
+}
+
+input FavoriteQuery {
+  animesQuery: FavoriteAnimesQuery = null
 }
 
 """
@@ -385,6 +434,8 @@ input GeneralAnimeQuery {
 
   filter: FilterAnimeQuery = null
 
+  filterExclude: FilterAnimeQuery = null
+
   """
   Set to true if pagination is not needed (Speeds up queries)
   """
@@ -480,6 +531,15 @@ User arguments (If you pass an access-token, it will return the anime of a speci
 """
 input GeneralUserQuery {
   animeListStatus: ListStatusEnum = null
+
+  favorites: FavoriteQuery! = {
+    animesQuery: {
+      count: 20
+      page: 1
+    }
+
+  }
+
 
   filter: FilterUserQuery = null
 }
@@ -711,6 +771,13 @@ type Query {
     page: 1
   }
   , userQuery: GeneralUserQuery! = {
+    favorites: {
+      animesQuery: {
+        count: 20
+        page: 1
+      }
+
+    }
 
   }
   ): UserPublicFullModel!
@@ -775,6 +842,12 @@ enum RoleEnum {
   moderator
 
   user
+}
+
+type SkippedAnimeModel {
+  animeId: String!
+
+  updateDate: DateTime!
 }
 
 """
@@ -879,6 +952,12 @@ type UserListModel {
   watchingCount: Int!
 }
 
+type UserPersonalizationModel {
+  background: String
+
+  badge: String
+}
+
 type UserPublicFullModel {
   _id: String!
 
@@ -888,9 +967,17 @@ type UserPublicFullModel {
 
   email: String!
 
+  favorites: FavoriteModel!
+
   lastOnlineDate: DateTime!
 
   role: RoleEnum!
+
+  skippedAnime: [SkippedAnimeModel!]!
+
+  subscriptions: [UserPublicModel!]!
+
+  userPersonalization: UserPersonalizationModel!
 
   username: String!
 }

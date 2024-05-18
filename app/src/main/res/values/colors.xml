@@ -18,9 +18,11 @@
     <color name="bisky_200_alpha_70">#B3BE3D73</color>
     <color name="bisky_300">#801A59</color>
     <color name="bisky_400">#731750</color>
+    <color name="bisky_400_alpha_30">#4D731750</color>
     <color name="bisky_400_alpha_70">#B3731750</color>
 
     <color name="bisky_dark_100">#472F4D</color>
+    <color name="bisky_dark_100_alpha_50">#80472F4D</color>
     <color name="bisky_dark_100_alpha_20">#33472F4D</color>
     <color name="bisky_dark_200">#322136</color>
     <color name="bisky_dark_200_alpha_60">#99322136</color>

@@ -103,4 +103,6 @@
     <string name="winner">Победитель!</string>
     <string name="watch_winner">Смотреть</string>
 
+
+    <string name="empty_new_series">В настоящий момент нет новых серий</string>
 </resources>
