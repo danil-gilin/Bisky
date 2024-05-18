@@ -2,15 +2,28 @@ package com.example.bisky.ui.screen.animescreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -67,6 +80,11 @@ fun AnimeScreen(
         },
         onBackClicked = {
             navController.popBackStack()
+        },
+        onPlayClick = { id ->
+            navController.navigate(
+                "${Destination.Home.AnimePlayer.route}/$id"
+            )
         }
     )
 }
@@ -80,29 +98,63 @@ fun AnimeScreen(
     onSelectScore: (Int) -> Unit,
     onCompleteScore: () -> Unit,
     onCollectionSelected: (CollectionAnime) -> Unit,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onPlayClick: (String) -> Unit
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(bottom = 40.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.bisky_dark_400))
-    ) {
-        items(
-            uiState.items,
-            key = { item -> item.itemId }
+    Box {
+        LazyColumn(
+            contentPadding = PaddingValues(bottom = 40.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorResource(R.color.bisky_dark_400))
         ) {
-            when(it) {
-                is HeaderItemUI -> HeaderAnimeItem(it, onCollectionSelected, onBackClicked)
-                is AnimeDescriptionUI -> AnimeDescriptionItems(it, onClickMoreInfo = onClickMoreInfo)
-                is AnimeProducerInfoUI -> AnimeProducerInfoItem(it)
-                is AnimeScreenshotsUI -> AnimeScreenshotItem(it)
-                is AnimeUserListUI -> AnimeUserListItem(it)
-                is AnimeVideoUI -> AnimeVideoItem(it)
-                is SimilarAnimeListUI -> AnimeSimilarItem(it, onClickAnime)
-                is AnimeRatingUI -> AnimeRatingItem(it, onDeleteScoreClick, onSelectScore, onCompleteScore)
+            items(
+                uiState.items,
+                key = { item -> item.itemId }
+            ) {
+                when (it) {
+                    is HeaderItemUI -> HeaderAnimeItem(it, onCollectionSelected, onBackClicked)
+                    is AnimeDescriptionUI -> AnimeDescriptionItems(
+                        it,
+                        onClickMoreInfo = onClickMoreInfo
+                    )
+
+                    is AnimeProducerInfoUI -> AnimeProducerInfoItem(it)
+                    is AnimeScreenshotsUI -> AnimeScreenshotItem(it)
+                    is AnimeUserListUI -> AnimeUserListItem(it)
+                    is AnimeVideoUI -> AnimeVideoItem(it)
+                    is SimilarAnimeListUI -> AnimeSimilarItem(it, onClickAnime)
+                    is AnimeRatingUI -> AnimeRatingItem(
+                        it,
+                        onDeleteScoreClick,
+                        onSelectScore,
+                        onCompleteScore
+                    )
+                }
             }
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
+            }
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(start = 8.dp, end = 8.dp, bottom = 60.dp),
+            onClick = {
+                onPlayClick(uiState.animeId)
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(id = R.color.bisky_200)
+            ),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(text = stringResource(id = R.string.watch))
         }
     }
 }
@@ -123,6 +175,9 @@ fun AnimeScreenPreview() {
         onCompleteScore = {
 
         },
-        {},{}
+        {}, {},
+        onPlayClick = {
+
+        }
     )
 }

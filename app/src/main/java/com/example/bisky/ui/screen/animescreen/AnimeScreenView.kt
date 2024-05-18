@@ -8,7 +8,8 @@ interface AnimeScreenView {
     data class State(
         val isLoading: Boolean = false,
         val isFullDescription: Boolean = false,
-        val items: List<BaseItem> = emptyList()
+        val items: List<BaseItem> = emptyList(),
+        val animeId: String =""
     )
 
     sealed class Event {

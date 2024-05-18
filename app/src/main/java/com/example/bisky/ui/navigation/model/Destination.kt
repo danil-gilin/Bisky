@@ -15,6 +15,7 @@ sealed class Destination(
         R.drawable.ic_home
     ) {
         data object HomeScreen : Home("home_screen")
+        data object AnimePlayer : Home("anime_player")
         data object SeasonAnime : Home("season_anime")
         data object Anime : Home("anime")
         data object Genre : Home("anime")
@@ -31,6 +32,7 @@ sealed class Destination(
     ) {
         data object SearchScreen : Search("search_screen")
         data object Anime : Search("anime")
+        data object AnimePlayer : Search("anime_player")
         data object Filter : Search("filter")
         data object QuickSearch : Search("quick_search")
 
@@ -45,6 +47,7 @@ sealed class Destination(
         R.drawable.ic_archive
     ) {
         data object Anime : Archive("anime")
+        data object AnimePlayer : Archive("anime_player")
         data object ContainerScreen : Archive("home_screen")
         data object QuickSelectScreen : Archive("quick_select_screen")
 
@@ -58,8 +61,9 @@ sealed class Destination(
         R.string.profile,
         R.drawable.ic_profile
     ) {
-        data object Anime : Archive("anime")
-        data object HomeScreen : Archive("profile_home_screen")
+        data object Anime : Profile("anime")
+        data object AnimePlayer : Profile("anime_player")
+        data object HomeScreen : Profile("profile_home_screen")
 
         companion object {
             const val route = "profile"

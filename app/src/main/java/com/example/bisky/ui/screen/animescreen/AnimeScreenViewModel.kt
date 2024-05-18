@@ -117,7 +117,10 @@ class AnimeScreenViewModel @Inject constructor(
             if (anime == null) return
             animeDomain = anime
             _uiState.update {
-                it.copy(items = animeFullInfoMapper.map(anime))
+                it.copy(
+                    items = animeFullInfoMapper.map(anime),
+                    animeId = id
+                )
             }
         }.onError {
             it

@@ -105,4 +105,7 @@
 
 
     <string name="empty_new_series">В настоящий момент нет новых серий</string>
+
+
+    <string name="watch">Смотреть</string>
 </resources>

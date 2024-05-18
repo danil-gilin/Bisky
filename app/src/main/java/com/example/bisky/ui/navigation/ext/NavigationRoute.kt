@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.bisky.ui.navigation.model.Destination
+import com.example.bisky.ui.screen.animeplayer.AnimePlayerScreen
 import com.example.bisky.ui.screen.animescreen.AnimeScreen
 import com.example.bisky.ui.screen.archivepage.container.ArchiveContainerScreen
 import com.example.bisky.ui.screen.archivepage.quickselect.QuickSelectScreen
@@ -53,6 +54,12 @@ fun NavGraphBuilder.homeNavGraph(navController: NavController) {
         ) {
             AnimeScreen(navController)
         }
+        composable(
+            route = "${Destination.Home.AnimePlayer.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimePlayerScreen(navController)
+        }
     }
 }
 
@@ -76,6 +83,12 @@ fun NavGraphBuilder.searchNavGraph(navController: NavController) {
         composable(route = Destination.Search.QuickSearch.route) {
             QuickSearchScreen(navController = navController)
         }
+        composable(
+            route = "${Destination.Search.AnimePlayer.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimePlayerScreen(navController)
+        }
     }
 }
 
@@ -98,6 +111,12 @@ fun NavGraphBuilder.archiveNavGraph(navController: NavController) {
         ) {
             AnimeScreen(navController)
         }
+        composable(
+            route = "${Destination.Archive.AnimePlayer.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimePlayerScreen(navController)
+        }
     }
 }
 
@@ -114,6 +133,12 @@ fun NavGraphBuilder.profileNavGraph(navController: NavController) {
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             AnimeScreen(navController)
+        }
+        composable(
+            route = "${Destination.Profile.AnimePlayer.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            AnimePlayerScreen(navController)
         }
     }
 }
