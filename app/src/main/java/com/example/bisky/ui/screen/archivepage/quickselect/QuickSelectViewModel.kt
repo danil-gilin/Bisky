@@ -16,6 +16,8 @@ import com.example.bisky.ui.screen.archivepage.quickselect.QuickSelectView.Event
 import com.example.bisky.ui.screen.archivepage.quickselect.QuickSelectView.State
 import com.example.bisky.ui.screen.archivepage.quickselect.mapper.QuickSelectedMapper
 import com.example.bisky.ui.screen.archivepage.quickselect.model.SelectAnimeUI
+import com.example.bisky.ui.screen.archivepage.quickselect.model.LosingAnimePosition
+import com.example.bisky.ui.screen.archivepage.quickselect.model.SelectSide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +40,8 @@ class QuickSelectViewModel @Inject constructor(
     var iteratorAnime = 0
     var leftIndex = 0
     var rightIndex = 1
+
+    private val losingAnime = mutableListOf<LosingAnimePosition>()
 
     init {
         navigationEventBus.emitEvent(NavigationEventBusEvent.ChangeVisibleBottomNav(false))
@@ -69,7 +73,7 @@ class QuickSelectViewModel @Inject constructor(
         when (event) {
             Event.OnLeftSelect -> handleOnLeftAnimeSelected()
             Event.OnRightSelect -> handleOnRightAnimeSelected()
-            Event.OnPreviewSelectedClick -> Unit
+            Event.OnPreviewSelectedClick -> previewSelectedCLick()
         }
     }
 
@@ -79,6 +83,32 @@ class QuickSelectViewModel @Inject constructor(
         when (action) {
             Action.ShowBottomNav -> navigationEventBus.emitEvent(NavigationEventBusEvent.ChangeVisibleBottomNav(true))
         }
+    }
+
+    private fun previewSelectedCLick() {
+        val looserPosition = losingAnime.lastOrNull() ?: return
+        if (looserPosition.selectSide == SelectSide.RIGHT) {
+            iteratorAnime--
+            rightIndex = looserPosition.index
+            val animeRight = listAnimeSelected[rightIndex]
+            _uiState.update {
+                it.copy(
+                    rightAnimeUI = quickSelectMapper.mapSelectAnimeToUI(animeRight),
+                    currentPositionSelectAnime = iteratorAnime + 1
+                )
+            }
+        } else {
+            iteratorAnime--
+            leftIndex = looserPosition.index
+            val animeLeft= listAnimeSelected[leftIndex]
+            _uiState.update {
+                it.copy(
+                    leftAnimeUI = quickSelectMapper.mapSelectAnimeToUI(animeLeft),
+                    currentPositionSelectAnime = iteratorAnime + 1
+                )
+            }
+        }
+        losingAnime.removeLast()
     }
 
     private fun updateSelectAnime(
@@ -94,6 +124,7 @@ class QuickSelectViewModel @Inject constructor(
     }
 
     private fun handleOnLeftAnimeSelected() {
+        losingAnime.add(LosingAnimePosition(rightIndex, SelectSide.RIGHT))
         if (iteratorAnime == listAnimeSelected.size - 1) {
             selectWinnerAnime(_uiState.value.leftAnimeUI, false)
             return
@@ -110,6 +141,7 @@ class QuickSelectViewModel @Inject constructor(
     }
 
     private fun handleOnRightAnimeSelected() {
+        losingAnime.add(LosingAnimePosition(leftIndex, SelectSide.LEFT))
         if (iteratorAnime == listAnimeSelected.size - 1) {
             selectWinnerAnime(_uiState.value.rightAnimeUI, true)
             return

@@ -73,7 +73,7 @@ fun QuickSelectScreen(
             navController.popBackStack()
         },
         onPreviewSelectedClick = {
-            viewModel.onEvent(Event.OnRightSelect)
+            viewModel.onEvent(Event.OnPreviewSelectedClick)
         },
         onWatchWinnerClick = {
             viewModel.onAction(Action.ShowBottomNav)

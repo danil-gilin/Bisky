@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -79,13 +81,16 @@ fun TabArchiveScreen(
         horizontalArrangement = Arrangement.Start
     ) {
         Image(painter = painterResource(R.drawable.ic_logo), contentDescription = null)
-        Row(
+        LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(alignment = Alignment.CenterVertically),
             horizontalArrangement = Arrangement.Start
         ) {
-            uiState.listTab.forEach {
+            items(
+                uiState.listTab,
+                key = {it.name}
+            ) {
                 if (it.isSelected) {
                     SelectedTab(it, onTabClick)
                 } else {
@@ -116,6 +121,7 @@ fun SelectedTab(tab: ArchiveTab, onTabClick: (ArchiveTabType) -> Unit) {
             text = stringResource(id = tab.name),
             fontWeight = FontWeight.W700,
             fontSize = 16.sp,
+            maxLines = 1,
             color = colorResource(id = R.color.light_100)
         )
         Box(
@@ -143,6 +149,7 @@ fun UnselectedTab(tab: ArchiveTab, onTabClick: (ArchiveTabType) -> Unit) {
         text = stringResource(id = tab.name),
         fontWeight = FontWeight.W700,
         fontSize = 16.sp,
+        maxLines = 1,
         color = colorResource(id = R.color.light_100)
     )
 }
