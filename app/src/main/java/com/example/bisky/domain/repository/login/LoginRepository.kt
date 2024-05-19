@@ -10,4 +10,5 @@ interface LoginRepository {
     suspend fun sigIn(name: String, password: String): Result<Unit, Throwable>
     suspend fun sigOut(): Result<Boolean, Throwable>
     suspend fun fetchUser(): User?
+    suspend fun refreshToken(): Result<Unit, Throwable>
 }

@@ -8,6 +8,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.bisky.data.login.manager.TokenManager
 import com.example.bisky.ui.navigation.elements.Navigation
 import com.example.bisky.ui.navigation.ext.NavigationRoute.*
 import com.example.bisky.ui.screen.loginScreen.boardingScreen.BoardingScreen
@@ -49,6 +50,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TokenManager.startTokenRefresh(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        TokenManager.stopTokenRefresh()
     }
 }
 

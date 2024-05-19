@@ -55,4 +55,10 @@ class LoginRepositoryImpl(
         }
         loginLocalSource.fetchUser()?.mapToDomain()
     }
+
+    override suspend fun refreshToken() = resultWrapper.wrap {
+        tokenPreference.clearAccessToken()
+        val refreshResult = loginRemoteSource.refreshToken()
+        tokenPreference.saveToken(refreshResult.accessToken, refreshResult.refreshToken)
+    }
 }
