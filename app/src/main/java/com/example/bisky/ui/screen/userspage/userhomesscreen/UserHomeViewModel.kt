@@ -3,6 +3,7 @@ package com.example.bisky.ui.screen.userspage.userhomesscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.bisky.R
 import com.example.bisky.data.network.resultwrapper.onError
 import com.example.bisky.data.network.resultwrapper.onSuccess
 import com.example.bisky.domain.eventbus.navigation.NavigationEventBus
@@ -41,7 +42,8 @@ class UserHomeViewModel @Inject constructor(
         val user = loginRepository.fetchUser()
         _uiState.update {
             it.copy(
-                userName = user?.username.orEmpty()
+                userName = user?.username.orEmpty(),
+                userImg = user?.avatar ?: R.drawable.profile_test_img
             )
         }
     }

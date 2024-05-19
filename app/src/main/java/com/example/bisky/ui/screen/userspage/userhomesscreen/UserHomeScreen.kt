@@ -66,7 +66,7 @@ fun UserHomeScreen(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(R.drawable.profile_test_img)
+                .data(uiState.userImg)
                 .fetcherDispatcher(Dispatchers.IO)
                 .crossfade(true)
                 .build(),
@@ -77,7 +77,7 @@ fun UserHomeScreen(
                 .width(100.dp)
                 .align(Alignment.CenterHorizontally)
                 .clip(shape = RoundedCornerShape(8.dp)),
-            placeholder = painterResource(id = R.drawable.ic_logo),
+            placeholder = painterResource(id = R.drawable.profile_test_img),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
