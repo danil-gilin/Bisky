@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 object TokenManager {
 
-    private const val INTERVAL: Long = 9 * 60 * 1000 // 5 минут в миллисекундах
+    private const val INTERVAL: Long = 9 * 60 * 1000
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var runnable: Runnable
 

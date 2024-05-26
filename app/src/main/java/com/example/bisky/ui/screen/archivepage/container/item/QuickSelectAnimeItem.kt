@@ -131,6 +131,7 @@ fun QuickSearchSelectAnimeItem(
             modifier = Modifier
                 .padding(start = 0.dp, end = 16.dp, top = 0.dp)
                 .constrainAs(filter) {
+                    visibility = Visibility.Gone
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
@@ -152,7 +153,7 @@ private fun QuickSelectAnimeItemPreview() {
         onFilterClick = {},
         quickSelectItem = QuickSelectItem(
             "sdaasd",
-            isSearchVisible = true,
+            isSearchVisible = false,
             searchTextField = TextFieldState("dfsdf"),
             searchUI = SearchUI()
         ),

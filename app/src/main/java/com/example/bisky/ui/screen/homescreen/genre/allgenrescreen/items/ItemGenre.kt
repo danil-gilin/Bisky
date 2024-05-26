@@ -148,10 +148,9 @@ fun ItemGenre(
         )
         Text(
             text = genreUI.description,
-            fontSize = 13.sp,
-            lineHeight = 14.sp,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
             overflow = TextOverflow.Ellipsis,
-            fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.W700,
             color = colorResource(R.color.light_300),
             modifier = Modifier
@@ -159,7 +158,7 @@ fun ItemGenre(
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
                     top.linkTo(title.bottom, 12.dp)
-                    end.linkTo(imgBackground.end, 8.dp)
+                    end.linkTo(parent.end, 8.dp)
                     start.linkTo(title.start)
                     bottom.linkTo(parent.bottom, 8.dp)
                 }
