@@ -153,7 +153,11 @@ class SearchViewModel @Inject constructor(
     private fun subscribeSearchEvent() = viewModelScope.launch {
         searchEventBus.eventsFlow.collectLatest { event ->
             when (event) {
-                SearchEventBusEvent.SearchAnime -> getAnime(_uiState.value.searchTextField.text.toString())
+                SearchEventBusEvent.SearchAnime -> {
+                    page = 1
+                    hasMore = true
+                    getAnime(_uiState.value.searchTextField.text.toString())
+                }
             }
         }
     }

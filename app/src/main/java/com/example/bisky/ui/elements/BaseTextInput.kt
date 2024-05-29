@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text2.BasicTextField2
+import androidx.compose.foundation.text2.input.CodepointTransformation
+import androidx.compose.foundation.text2.input.InputTransformation
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.clearText
@@ -23,8 +25,11 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -46,6 +51,12 @@ fun BaseTextInput(
     val isKeyboardOpen by keyboardAsState()
     val focusManager = LocalFocusManager.current
     if (!isKeyboardOpen) focusManager.clearFocus() else focusManager.moveFocus(FocusDirection.Enter)
+
+    val inputTransformation = if (keyboardType == KeyboardType.Password) {
+        passwordCodepointTransformation()
+    } else {
+        null
+    }
 
     ConstraintLayout(
         modifier = modifier
@@ -70,6 +81,7 @@ fun BaseTextInput(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Done
             ),
+            codepointTransformation = inputTransformation,
             lineLimits = TextFieldLineLimits.SingleLine,
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -112,6 +124,13 @@ fun BaseTextInput(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun passwordCodepointTransformation(): CodepointTransformation {
+    return CodepointTransformation { codepoint, _ ->
+        '*'.code
+    }
+}
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview(showBackground = true)
