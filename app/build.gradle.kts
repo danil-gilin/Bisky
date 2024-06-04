@@ -6,6 +6,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.apollographql.apollo3").version("3.7.3")
     id("androidx.room")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 apollo {
@@ -122,4 +124,9 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
     implementation("com.wajahatkarim:flippable:1.5.4")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
+    implementation("com.google.firebase:firebase-crashlytics")
 }

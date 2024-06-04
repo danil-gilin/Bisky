@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "711374454884",
+    "project_id": "bisky-ae77f",
+    "storage_bucket": "bisky-ae77f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711374454884:android:df9a6775ee59415d10df71",
+        "android_client_info": {
+          "package_name": "com.example.bisky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMisCL2x7zzvUgCfYOkRlN-tEQjC_22iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
